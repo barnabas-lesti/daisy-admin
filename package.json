@@ -3,14 +3,19 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"serve": "vue-cli-service serve",
-		"build": "vue-cli-service build",
-		"lint": "vue-cli-service lint"
+		"serve:client": "vue-cli-service serve",
+		"serve:server": "nodemon --watch ./src/server ./src/server/main.js --env=development",
+		"build:client": "vue-cli-service build",
+		"lint:client": "vue-cli-service lint"
 	},
 	"dependencies": {
+		"app-root-path": "^2.1.0",
+		"config": "^3.0.1",
 		"feather-icons": "^4.17.0",
+		"restify": "^7.7.0",
 		"vue": "^2.5.22",
-		"vue-router": "^3.0.1"
+		"vue-router": "^3.0.1",
+		"yargs": "^12.0.5"
 	},
 	"devDependencies": {
 		"@vue/cli-plugin-babel": "^3.4.0",
@@ -22,6 +27,7 @@
 		"eslint-plugin-vue": "^5.0.0",
 		"less": "^3.0.4",
 		"less-loader": "^4.1.0",
+		"nodemon": "^1.18.10",
 		"vue-template-compiler": "^2.5.21"
 	}
 }
