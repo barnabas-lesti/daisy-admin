@@ -2,6 +2,9 @@
 
 At home stuff helper application thingy.
 
+## General
+- Design reference: https://colorlib.com//polygon/admindek/default/index.html
+
 ## Development
 ```bash
 # Install dependencies
