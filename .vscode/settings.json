@@ -1,0 +1,11 @@
+{
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"files.eol": "\n",
+	"eslint.enable": true,
+	"eslint.packageManager": "yarn",
+	"eslint.validate": [
+		"javascript",
+		"vue"
+	],
+}
