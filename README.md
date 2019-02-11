@@ -10,8 +10,11 @@ At home stuff helper application thingy.
 # Install dependencies
 yarn
 
-# Start development server
-yarn serve
+# Start the client development server
+yarn serve:client
+
+# Build the client bundle
+yarn build:client
 ```
 
 The base of this project was generated with the help of [Vue CLI](https://cli.vuejs.org).
