@@ -1,5 +1,5 @@
-const path = require('path');
 const appRootPath = require('app-root-path').path;
+const path = require('path');
 const yargs = require('yargs');
 
 process.env.NODE_ENV = yargs.argv.env || process.env.NODE_ENV;
@@ -12,9 +12,9 @@ const configLib = require('config');
  * Application configuration object.
  */
 const config = {
-	common: {
-		PORT: configLib.get('common.PORT'),
-	},
+	ENV: process.env.NODE_ENV,
+	MONGO_URI: process.env.MONGO_URI || configLib.get('MONGO_URI'),
+	PORT: process.env.PORT || configLib.get('PORT'),
 };
 
 module.exports = config;
