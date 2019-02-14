@@ -8,8 +8,12 @@
 <script>
 import Feather from 'feather-icons';
 
-const iconMapping = {
+const iconMap = {
 	'dashboard': 'bar-chart-2',
+	'edit': 'edit',
+	'save': 'check-circle',
+	'delete': 'trash-2',
+	'food': 'shopping-cart',
 	'home': 'home',
 };
 
@@ -17,7 +21,7 @@ export default {
 	data () {
 		return {
 			iconHtml: type => {
-				const icon = Feather.icons[iconMapping[type]];
+				const icon = Feather.icons[iconMap[type]];
 				return icon ? icon.toSvg({
 					height: 18,
 					width: 18,
@@ -32,8 +36,8 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-@import (reference) '../styles/variables.less';
+<style lang="less">
+@import (reference) '../../styles/variables.less';
 
 .Icon {
 	display: inline-block;

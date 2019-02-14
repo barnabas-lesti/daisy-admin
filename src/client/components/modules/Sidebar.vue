@@ -10,7 +10,7 @@
 			<router-link
 				v-for="(navItem, index) in navItems"
 				:key="index"
-				:to="{ name: navItem.name }"
+				:to="{ name: navItem.routeName }"
 				class="Sidebar_link"
 			>
 				<Icon
@@ -25,29 +25,32 @@
 </template>
 
 <script>
-import { routes } from '../routes';
 import Icon from './Icon.vue';
-
-const navItems = [
-	routes.HOME,
-	routes.DASHBOARD,
-];
 
 export default {
 	components: {
 		Icon,
 	},
-	data () {
-		return {
-			navItems,
-		};
-	},
 	name: 'Sidebar',
+	props: {
+		navItems: {
+			required: true,
+			type: Array,
+			validator: items => {
+				for (const item of items) {
+					if (!item.label || !item.routeName) {
+						return false;
+					}
+				}
+				return true;
+			},
+		},
+	},
 };
 </script>
 
-<style scoped lang="less">
-@import (reference) '../styles/variables.less';
+<style lang="less">
+@import (reference) '../../styles/variables.less';
 
 .Sidebar {
 	@_bgColor: @colors_dark1;

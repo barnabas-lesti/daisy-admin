@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"app-root-path": "^2.1.0",
+		"axios": "^0.18.0",
 		"config": "^3.0.1",
 		"feather-icons": "^4.17.0",
 		"mongoose": "^5.4.11",
@@ -17,7 +18,7 @@
 		"restify-await-promise": "^2.1.0",
 		"restify-errors": "^6.1.1",
 		"restify-logger": "^2.0.1",
-		"restify-pino-logger": "^3.0.0",
+		"url-join": "^4.0.0",
 		"vue": "^2.5.22",
 		"vue-router": "^3.0.1",
 		"yargs": "^12.0.5"

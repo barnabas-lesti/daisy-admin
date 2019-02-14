@@ -3,30 +3,28 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-export const routes = {
-	DASHBOARD: {
-		component: () => import('./views/Dashboard.vue'),
-		icon: 'dashboard',
-		label: 'Dashboard',
-		name: 'dashboard',
-		path: '/dashboard',
-	},
-	HOME: {
-		icon: 'home',
-		label: 'Home',
-		name: 'home',
-		path: '/',
-		redirect: {
-			name: 'dashboard',
-		},
-	},
-};
-
 export const router = new Router({
 	base: process.env.BASE_URL,
 	mode: 'history',
 	routes: [
-		...Object.values(routes),
+		{
+			component: () => import('./components/views/Dashboard.vue'),
+			name: 'dashboard',
+			path: '/dashboard',
+		},
+		{
+			component: () => import('./components/views/Foods.vue'),
+			name: 'foods',
+			path: '/foods',
+		},
+
+		{
+			name: 'home',
+			path: '/',
+			redirect: {
+				name: 'dashboard',
+			},
+		},
 		{
 			path: '**',
 			redirect: {
