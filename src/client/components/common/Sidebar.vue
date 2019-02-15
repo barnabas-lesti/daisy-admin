@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import Icon from './Icon.vue';
+import Icon from './Icon';
 
 export default {
 	components: {
@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables.less';
+@import (reference) '../../styles/variables';
 
 .Sidebar {
 	@_bgColor: @colors_dark1;

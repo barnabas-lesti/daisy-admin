@@ -1,21 +1,38 @@
 const mongoose = require('mongoose');
 
 const foodSchema = new mongoose.Schema({
-	amount: Number,
-	calories: Number,
-	label: String,
 	macros: {
-		carbs: Number,
-		fat: Number,
-		protein: Number,
+		calories: {
+			default: 0,
+			type: Number,
+		},
+		carbs: {
+			default: 0,
+			type: Number,
+		},
+		fat: {
+			default: 0,
+			type: Number,
+		},
+		protein: {
+			default: 0,
+			type: Number,
+		},
 	},
 	name: {
-		lowercase: true,
 		required: true,
 		type: String,
-		unique: true,
 	},
-	unit: String,
+	serving: {
+		unit: {
+			default: 'g',
+			type: String,
+		},
+		value: {
+			default: 0,
+			type: Number,
+		},
+	},
 });
 
 const Food = mongoose.model('Food', foodSchema);

@@ -8,14 +8,14 @@ export const router = new Router({
 	mode: 'history',
 	routes: [
 		{
-			component: () => import('./components/views/Dashboard.vue'),
+			component: () => import('./components/dashboard/DashboardView'),
 			name: 'dashboard',
 			path: '/dashboard',
 		},
 		{
-			component: () => import('./components/views/Foods.vue'),
-			name: 'foods',
-			path: '/foods',
+			component: () => import('./components/food/FoodView'),
+			name: 'food',
+			path: '/food',
 		},
 
 		{

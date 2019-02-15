@@ -11,7 +11,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables.less';
+@import (reference) '../../styles/variables';
 
 .Header {
 	@_boxShadow: @common_bottomBoxShadow;

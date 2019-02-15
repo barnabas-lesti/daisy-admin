@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Header from './modules/Header.vue';
-import Sidebar from './modules/Sidebar.vue';
+import Header from './common/Header';
+import Sidebar from './common/Sidebar';
 
 const navItems = [
 	{
@@ -20,8 +20,8 @@ const navItems = [
 	},
 	{
 		icon: 'food',
-		label: 'Foods',
-		routeName: 'foods',
+		label: 'Food',
+		routeName: 'food',
 	},
 ];
 
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../styles/variables.less';
+@import (reference) '../styles/variables';
 
 .App {
 	&_content {
