@@ -18,6 +18,7 @@ restifyPromise.install(server);
 
 server.use(restifyLogger('tiny'));
 server.use(corsSetup.actual);
+server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser({ mapParams: true }));
 
 server.pre(corsSetup.preflight);

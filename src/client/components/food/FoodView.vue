@@ -7,14 +7,25 @@
 		>
 			Sorry, an unknown error occured. Please try again.
 		</div>
+
 		<div class="_controls">
-			<button
-				class="button is-primary"
-				@click="onNewButtonClick()"
-			>
-				New
-			</button>
+			<div class="field">
+				<FoodSearch
+					:initialValue="searchString"
+					:disabled="foodLoadingInProgress"
+					@search="onSearch($event)"
+				/>
+			</div>
+			<div class="field">
+				<button
+					class="button is-primary"
+					@click="onNewButtonClick()"
+				>
+					New
+				</button>
+			</div>
 		</div>
+
 		<FoodTable
 			v-if="food"
 			:initialItems="food"
@@ -38,11 +49,13 @@
 </template>
 
 <script>
-import FoodTable from './FoodTable';
-import FoodModal from './FoodModal';
-import Spinner from '../common/Spinner';
 import foodService from '../../services/foodService';
 import Food from '../../models/Food';
+
+import Spinner from '../common/Spinner';
+import FoodTable from './FoodTable';
+import FoodModal from './FoodModal';
+import FoodSearch from './FoodSearch';
 
 const ERROR_DISPLAY_DURATION = 3000;
 
@@ -51,12 +64,13 @@ export default {
 		Spinner,
 		FoodTable,
 		FoodModal,
+		FoodSearch,
 	},
 	methods: {
-		loadFood () {
+		loadFood (searchString = '') {
 			this.foodLoadingInProgress = true;
 			this.food = undefined;
-			foodService.getMany()
+			foodService.getMany({ searchString })
 				.then(food => {
 					this.food = food;
 				})
@@ -123,6 +137,9 @@ export default {
 					this.foodChangeInProgress = false;
 				});
 		},
+		onSearch ({ searchString }) {
+			this.loadFood(searchString);
+		},
 	},
 	created () {
 		this.loadFood();
@@ -134,6 +151,7 @@ export default {
 			errorOccured: false,
 			food: undefined,
 			modalSubject: undefined,
+			searchString: undefined,
 		};
 	},
 };
@@ -148,7 +166,6 @@ export default {
 
 	._controls {
 		margin-bottom: 1rem;
-		text-align: right;
 	}
 
 	._loaderContainer {
