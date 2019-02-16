@@ -1743,10 +1743,6 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
-
 clean-css@4.2.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.1.tgz#2d411ef76b8569b6d0c84068dabe85b0aa5e5c17"
@@ -2010,7 +2006,7 @@ copy-webpack-plugin@^4.6.0:
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
 
-core-js@^2.5.3, core-js@^2.5.7, core-js@^2.6.3:
+core-js@^2.5.7, core-js@^2.6.3:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.4.tgz#b8897c062c4d769dd30a0ac5c73976c47f92ea0d"
 
@@ -3222,13 +3218,6 @@ faye-websocket@~0.11.1:
   resolved "https://registry.yarnpkg.com/faye-websocket/-/faye-websocket-0.11.1.tgz#f0efe18c4f56e4f40afc7e06c719fd5ee6188f38"
   dependencies:
     websocket-driver ">=0.5.1"
-
-feather-icons@^4.17.0:
-  version "4.17.0"
-  resolved "https://registry.yarnpkg.com/feather-icons/-/feather-icons-4.17.0.tgz#45bd49d05134c6db1f8161c0fe648eb5fb7c4aea"
-  dependencies:
-    classnames "^2.2.5"
-    core-js "^2.5.3"
 
 figgy-pudding@^3.5.1:
   version "3.5.1"

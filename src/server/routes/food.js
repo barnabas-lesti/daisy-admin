@@ -10,7 +10,15 @@ const food = server => {
 	});
 
 	server.get('/food', async (req, res, next) => {
-		const foodDocs = await Food.find({});
+		const { searchQuery } = req.query;
+		const nameRegex = new RegExp(
+			searchQuery
+				.split(',')
+				.map(fragment => fragment.trim())
+				.join('|'),
+			'i'
+		);
+		const foodDocs = await Food.find({ name: nameRegex });
 		res.send(foodDocs);
 		return next();
 	});

@@ -8,8 +8,9 @@ class FoodService {
 
 	// getOne (id) {}
 
-	async getMany () {
-		const responseData = await httpService.get('/food');
+	async getMany ({ searchString = '' }) {
+		const searchQuery = searchString;
+		const responseData = await httpService.get(`/food`, { searchQuery });
 		const food = this._convertResponseDataToViewData(responseData);
 		return food;
 	}
