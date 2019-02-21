@@ -11,10 +11,10 @@
 			@input="onInput()"
 		/>
 		<input
-			v-if="!autoSearch"
 			class="SearchInput_input button is-info"
 			type="submit"
 			value="Search"
+			v-if="!autoSearch"
 			:disabled="disabled"
 		/>
 	</form>
@@ -26,31 +26,21 @@ const DEFAULT_THROTTLE = 500;
 export default {
 	name: 'SearchInput',
 	props: {
-		initialValue: {
-			default: '',
-			type: String,
-		},
-		disabled: {
-			default: false,
-			type: Boolean,
-		},
-		autoSearch: {
-			default: false,
-			type: Boolean,
-		},
+		autoSearch: Boolean,
+		disabled: Boolean,
+		initialValue: String,
 	},
 	methods: {
-		emitSearch () {
-			this.$emit('search', { searchString: this.searchString });
+		emitSearch (searchString) {
+			this.$emit('search', { searchString });
 		},
 
 		onInput () {
 			if (this.inputThrottleId) {
 				window.clearTimeout(this.inputThrottleId);
 			}
-
 			this.inputThrottleId = window.setTimeout(() => {
-				this.emitSearch();
+				this.emitSearch(this.searchString);
 			}, DEFAULT_THROTTLE);
 		},
 	},

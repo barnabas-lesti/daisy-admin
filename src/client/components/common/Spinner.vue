@@ -3,8 +3,8 @@
 		:class="[
 			'Spinner',
 			{ 'Spinner-dark': dark },
-			{ 'Spinner-small': small },
 			{ 'Spinner-large': large },
+			{ 'Spinner-small': small },
 		]"
 	></div>
 </template>

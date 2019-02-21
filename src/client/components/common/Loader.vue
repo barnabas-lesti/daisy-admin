@@ -1,6 +1,10 @@
 <template>
 	<div class="Loader">
-		<Spinner :dark="dark" :large="large" :small="small" />
+		<Spinner
+			:dark="dark"
+			:large="large"
+			:small="small"
+		/>
 	</div>
 </template>
 
@@ -14,16 +18,16 @@ export default {
 	},
 	props: {
 		dark: Boolean,
-		small: Boolean,
 		large: Boolean,
+		small: Boolean,
 	},
 };
 </script>
 
 <style lang="less">
 .Loader {
+	align-items: center;
 	display: flex;
 	justify-content: center;
-	align-items: center;
 }
 </style>

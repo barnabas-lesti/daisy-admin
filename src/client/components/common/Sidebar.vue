@@ -8,8 +8,8 @@
 		</router-link>
 		<div class="Sidebar_links">
 			<router-link
-				class="Sidebar_link"
 				activeClass="Sidebar_link-active"
+				class="Sidebar_link"
 				v-for="(navItem, index) in navItems"
 				:key="index"
 				:to="{ name: navItem.routeName }"
@@ -59,10 +59,10 @@ export default {
 	@_bgColor-hover: lighten(@colors_dark1, 10%);
 	@_brandBoxShadow: @common_bottomBoxShadow;
 	@_brandHeight: @layout_headerHeight;
+	@_gutter: 1rem;
 	@_textColor: @colors_light1;
 	@_textColor-hover: lighten(@colors_light1, 10%);
 	@_width: @layout_sidebarWidth;
-	@_gutter: 1rem;
 
 	background-color: @_bgColor;
 	height: 100%;
@@ -85,8 +85,8 @@ export default {
 		width: 100%;
 
 		&:hover {
-			color: @_textColor-hover;
 			background-color: @_bgColor-hover;
+			color: @_textColor-hover;
 		}
 	}
 
