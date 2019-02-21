@@ -10,8 +10,7 @@ class FoodService {
 
 	async getMany ({ searchString = '' }) {
 		const searchQuery = searchString;
-		const responseData = await httpService.get(`/food`, { searchQuery });
-		const food = this._convertResponseDataToViewData(responseData);
+		const food = await httpService.get(`/food`, { searchQuery });
 		return food;
 	}
 
@@ -23,25 +22,6 @@ class FoodService {
 	async delete (id) {
 		const result = await httpService.delete(`/food/${id}`);
 		return result;
-	}
-
-	/**
-	 * Converts raw response data from the server to view compatible data.
-	 *
-	 * @param {Object} responseData Response data from the server
-	 * @returns {Object} View compatible data
-	 */
-	_convertResponseDataToViewData (responseData) {
-		return responseData.map(item => {
-			const {
-				_id,
-				...otherProps
-			} = item;
-			return {
-				id: _id,
-				...otherProps,
-			};
-		});
 	}
 }
 

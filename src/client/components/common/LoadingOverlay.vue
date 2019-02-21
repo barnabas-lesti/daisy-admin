@@ -1,6 +1,6 @@
 <template>
 	<div class="LoadingOverlay">
-		<Spinner class="_spinner" />
+		<Spinner />
 	</div>
 </template>
 
@@ -29,9 +29,5 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
-	._spinner {
-		font-size: 4rem;
-	}
 }
 </style>

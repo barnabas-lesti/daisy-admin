@@ -36,25 +36,25 @@
 					</div>
 				</div>
 				<FoodModalInput
-					v-model="subject.macros.calories"
+					v-model="subject.macros.calories.value"
 					label="Calories"
 					type="number"
 					postfix="kcal"
 				/>
 				<FoodModalInput
-					v-model="subject.macros.protein"
+					v-model="subject.macros.protein.value"
 					label="Protein"
 					type="number"
 					postfix="g"
 				/>
 				<FoodModalInput
-					v-model="subject.macros.fat"
+					v-model="subject.macros.fat.value"
 					label="Fat"
 					type="number"
 					postfix="g"
 				/>
 				<FoodModalInput
-					v-model="subject.macros.carbs"
+					v-model="subject.macros.carbs.value"
 					label="Carbs"
 					type="number"
 					postfix="g"
@@ -123,16 +123,8 @@ export default {
 	},
 	data () {
 		return {
-			subject: Utils.deepCopyObject(this.initialItem),
+			subject: Utils.cloneDeep(this.initialItem),
 		};
 	},
 };
 </script>
-
-<style lang="less">
-@import (reference) '../../styles/variables';
-
-.FoodModal {
-
-}
-</style>

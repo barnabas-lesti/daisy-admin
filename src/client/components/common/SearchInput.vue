@@ -1,17 +1,18 @@
 <template>
 	<form
-		class="FoodSearch"
+		class="SearchInput"
 		@submit.prevent="emitSearch($event)"
 	>
 		<input
-			class="_input input"
+			class="SearchInput_input input"
 			type="text"
 			ref="searchInput"
 			v-model="searchString"
-			:disabled="disabled"
+			@input="onInput()"
 		/>
 		<input
-			class="_button button is-info"
+			v-if="!autoSearch"
+			class="SearchInput_input button is-info"
 			type="submit"
 			value="Search"
 			:disabled="disabled"
@@ -20,8 +21,10 @@
 </template>
 
 <script>
+const DEFAULT_THROTTLE = 500;
+
 export default {
-	name: 'FoodSearch',
+	name: 'SearchInput',
 	props: {
 		initialValue: {
 			default: '',
@@ -31,10 +34,24 @@ export default {
 			default: false,
 			type: Boolean,
 		},
+		autoSearch: {
+			default: false,
+			type: Boolean,
+		},
 	},
 	methods: {
 		emitSearch () {
 			this.$emit('search', { searchString: this.searchString });
+		},
+
+		onInput () {
+			if (this.inputThrottleId) {
+				window.clearTimeout(this.inputThrottleId);
+			}
+
+			this.inputThrottleId = window.setTimeout(() => {
+				this.emitSearch();
+			}, DEFAULT_THROTTLE);
 		},
 	},
 	data () {
@@ -46,11 +63,15 @@ export default {
 </script>
 
 <style lang="less">
-.FoodSearch {
+.SearchInput {
 	display: flex;
 
-	._input {
+	&_input {
 		margin-right: 1rem;
+
+		&:last-of-type {
+			margin-right: 0;
+		}
 	}
 }
 </style>

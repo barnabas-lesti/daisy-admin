@@ -12,6 +12,7 @@
 		"app-root-path": "^2.1.0",
 		"axios": "^0.18.0",
 		"config": "^3.0.1",
+		"lodash": "^4.17.11",
 		"mongoose": "^5.4.11",
 		"restify": "^7.7.0",
 		"restify-await-promise": "^2.1.0",

@@ -8,15 +8,16 @@
 		</router-link>
 		<div class="Sidebar_links">
 			<router-link
+				class="Sidebar_link"
+				activeClass="Sidebar_link-active"
 				v-for="(navItem, index) in navItems"
 				:key="index"
 				:to="{ name: navItem.routeName }"
-				class="Sidebar_link"
 			>
 				<Icon
+					class="Sidebar_linkIcon"
 					v-if="navItem.icon"
 					:type="navItem.icon"
-					class="Sidebar_linkIcon"
 				/>
 				{{ navItem.label }}
 			</router-link>
@@ -54,6 +55,7 @@ export default {
 
 .Sidebar {
 	@_bgColor: @colors_dark1;
+	@_bgColor-active: lighten(@colors_dark1, 5%);
 	@_bgColor-hover: lighten(@colors_dark1, 10%);
 	@_brandBoxShadow: @common_bottomBoxShadow;
 	@_brandHeight: @layout_headerHeight;
@@ -100,6 +102,11 @@ export default {
 		display: block;
 		padding: @_gutter @_gutter @_gutter @_gutter * 3;
 		position: relative;
+
+		&-active {
+			color: @_textColor-hover;
+			background-color: @_bgColor-hover;
+		}
 
 		&:hover {
 			color: @_textColor-hover;

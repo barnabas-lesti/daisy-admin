@@ -1,5 +1,10 @@
 class Food {
-	macros = {};
+	macros = {
+		calories: {},
+		carbs: {},
+		fat: {},
+		protein: {},
+	};
 	serving = {};
 }
 

@@ -1,6 +1,9 @@
 <template>
 	<div class="FoodTable">
-		<table class="table is-fullwidth">
+		<table
+			v-if="items && items.length > 0"
+			class="table is-fullwidth is-hoverable"
+		>
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -13,23 +16,33 @@
 			</thead>
 			<tbody>
 				<tr
-					v-for="item in initialItems"
+					v-for="item in items.slice(0, maxNumberOfItems)"
 					:key="item.id"
 					@click="selectItem(item)"
 				>
 					<td>{{ item.name }}</td>
 					<td>{{ item.serving.value }} {{ item.serving.unit }}</td>
-					<td>{{ item.macros.calories }} g</td>
-					<td>{{ item.macros.protein }} g</td>
-					<td>{{ item.macros.fat }} g</td>
-					<td>{{ item.macros.carbs }} g</td>
+					<td>{{ item.macros.calories.value }} g</td>
+					<td>{{ item.macros.protein.value }} g</td>
+					<td>{{ item.macros.fat.value }} g</td>
+					<td>{{ item.macros.carbs.value }} g</td>
 				</tr>
 			</tbody>
 		</table>
+
+		<p v-if="items && items.length > maxNumberOfItems">
+			More than {{ maxNumberOfItems }} items were found, {{ items.length - maxNumberOfItems }} items are not visible.
+		</p>
+
+		<p v-if="items && items.length === 0">
+			No items found.
+		</p>
 	</div>
 </template>
 
 <script>
+const MAX_NUMBER_OF_ITEMS = 20;
+
 export default {
 	name: 'FoodTable',
 	methods: {
@@ -43,27 +56,11 @@ export default {
 			type: Array,
 		},
 	},
+	data () {
+		return {
+			items: this.initialItems,
+			maxNumberOfItems: MAX_NUMBER_OF_ITEMS,
+		};
+	},
 };
 </script>
-
-<style lang="less">
-@import (reference) '../../styles/mixins';
-
-.FoodTable {
-	tbody {
-		tr {
-			.transition(background-color);
-			background-color: #ffffff;
-
-			td {
-				vertical-align: middle;
-			}
-
-			&:hover {
-				cursor: pointer;
-				background-color: #eeeeee;
-			}
-		}
-	}
-}
-</style>

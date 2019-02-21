@@ -1,22 +1,36 @@
 const mongoose = require('mongoose');
 
+const calculateServingMultiplier = (serving, macro) => serving === 0 ? 0 : macro / serving;
+
 const foodSchema = new mongoose.Schema({
+	keywords: {
+		default: [],
+		type: Array,
+	},
 	macros: {
 		calories: {
-			default: 0,
-			type: Number,
+			value: {
+				default: 0,
+				type: Number,
+			},
 		},
 		carbs: {
-			default: 0,
-			type: Number,
+			value: {
+				default: 0,
+				type: Number,
+			},
 		},
 		fat: {
-			default: 0,
-			type: Number,
+			value: {
+				default: 0,
+				type: Number,
+			},
 		},
 		protein: {
-			default: 0,
-			type: Number,
+			value: {
+				default: 0,
+				type: Number,
+			},
 		},
 	},
 	name: {
@@ -33,6 +47,31 @@ const foodSchema = new mongoose.Schema({
 			type: Number,
 		},
 	},
+}, {
+	toJSON: {
+		versionKey: false,
+		virtuals: true,
+	},
+	toObject: {
+		versionKey: false,
+		virtuals: true,
+	},
+});
+
+foodSchema.virtual('macros.calories.servingMultiplier').get(function () {
+	return calculateServingMultiplier(this.serving.value, this.macros.calories.value);
+});
+
+foodSchema.virtual('macros.carbs.servingMultiplier').get(function () {
+	return calculateServingMultiplier(this.serving.value, this.macros.carbs.value);
+});
+
+foodSchema.virtual('macros.fat.servingMultiplier').get(function () {
+	return calculateServingMultiplier(this.serving.value, this.macros.fat.value);
+});
+
+foodSchema.virtual('macros.protein.servingMultiplier').get(function () {
+	return calculateServingMultiplier(this.serving.value, this.macros.protein.value);
 });
 
 const Food = mongoose.model('Food', foodSchema);
