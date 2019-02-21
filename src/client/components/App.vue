@@ -23,6 +23,11 @@ const navItems = [
 		label: 'Food',
 		routeName: 'food',
 	},
+	{
+		icon: 'recipes',
+		label: 'Recipes',
+		routeName: 'recipes',
+	},
 ];
 
 export default {

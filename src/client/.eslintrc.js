@@ -25,5 +25,6 @@ module.exports = {
 			'always',
 		],
 		'sort-vars': 2,
+		'no-return-assign': 0,
 	},
 };

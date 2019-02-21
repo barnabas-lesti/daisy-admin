@@ -16,48 +16,48 @@
 
 			<section class="modal-card-body">
 				<FoodModalInput
-					v-model="subject.name"
 					label="Name"
+					v-model="subject.name"
 				/>
 				<div class="columns">
 					<div class="column">
 						<FoodModalInput
-							v-model="subject.serving.value"
 							label="Serving"
 							type="number"
+							v-model="subject.serving.value"
 						/>
 					</div>
 					<div class="column">
 						<FoodModalInput
-							v-model="subject.serving.unit"
 							label="Unit"
 							type="select"
+							v-model="subject.serving.unit"
 						/>
 					</div>
 				</div>
 				<FoodModalInput
-					v-model="subject.macros.calories"
 					label="Calories"
 					type="number"
 					postfix="kcal"
+					v-model="subject.macros.calories.value"
 				/>
 				<FoodModalInput
-					v-model="subject.macros.protein"
 					label="Protein"
 					type="number"
 					postfix="g"
+					v-model="subject.macros.protein.value"
 				/>
 				<FoodModalInput
-					v-model="subject.macros.fat"
 					label="Fat"
 					type="number"
 					postfix="g"
+					v-model="subject.macros.fat.value"
 				/>
 				<FoodModalInput
-					v-model="subject.macros.carbs"
 					label="Carbs"
 					type="number"
 					postfix="g"
+					v-model="subject.macros.carbs.value"
 				/>
 			</section>
 
@@ -116,23 +116,12 @@ export default {
 			required: true,
 			type: Object,
 		},
-		isLoading: {
-			default: false,
-			type: Boolean,
-		},
+		isLoading: Boolean,
 	},
 	data () {
 		return {
-			subject: Utils.deepCopyObject(this.initialItem),
+			subject: Utils.cloneDeep(this.initialItem),
 		};
 	},
 };
 </script>
-
-<style lang="less">
-@import (reference) '../../styles/variables';
-
-.FoodModal {
-
-}
-</style>

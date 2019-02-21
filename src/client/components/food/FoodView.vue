@@ -1,18 +1,11 @@
 <template>
 	<div class="FoodView">
 		<h1>Food</h1>
-		<div
-			v-if="errorOccured"
-			class="_errorMessage"
-		>
-			Sorry, an unknown error occured. Please try again.
-		</div>
 
-		<div class="_controls">
+		<div class="FoodView_controls">
 			<div class="field">
-				<FoodSearch
-					:initialValue="searchString"
-					:disabled="foodLoadingInProgress"
+				<SearchInput
+					autoSearch
 					@search="onSearch($event)"
 				/>
 			</div>
@@ -31,12 +24,12 @@
 			:initialItems="food"
 			@select="onFoodSelect($event)"
 		/>
-		<div
+
+		<Loader
 			v-if="foodLoadingInProgress"
-			class="_loaderContainer"
-		>
-			<Spinner class="_loader" />
-		</div>
+			dark
+		/>
+
 		<FoodModal
 			v-if="modalSubject"
 			:initialItem="modalSubject"
@@ -52,19 +45,17 @@
 import foodService from '../../services/foodService';
 import Food from '../../models/Food';
 
-import Spinner from '../common/Spinner';
+import Loader from '../common/Loader';
+import SearchInput from '../common/SearchInput';
 import FoodTable from './FoodTable';
 import FoodModal from './FoodModal';
-import FoodSearch from './FoodSearch';
-
-const ERROR_DISPLAY_DURATION = 3000;
 
 export default {
 	components: {
-		Spinner,
+		Loader,
+		SearchInput,
 		FoodTable,
 		FoodModal,
-		FoodSearch,
 	},
 	methods: {
 		loadFood (searchString = '') {
@@ -86,17 +77,6 @@ export default {
 		},
 		showModal (subject) {
 			this.modalSubject = subject;
-		},
-		showError (error) {
-			console.warn(error);
-			this.errorOccured = true;
-
-			if (this.errorTimeoutId) {
-				clearTimeout(this.errorTimeoutId);
-			}
-			this.errorTimeoutId = window.setTimeout(() => {
-				this.errorOccured = false;
-			}, ERROR_DISPLAY_DURATION);
 		},
 
 		onNewButtonClick () {
@@ -130,7 +110,7 @@ export default {
 					this.loadFood();
 				})
 				.catch(error => {
-					this.showError(error);
+					console.warn(error);
 				})
 				.finally(() => {
 					this.closeModal();
@@ -148,10 +128,8 @@ export default {
 		return {
 			foodChangeInProgress: false,
 			foodLoadingInProgress: false,
-			errorOccured: false,
 			food: undefined,
 			modalSubject: undefined,
-			searchString: undefined,
 		};
 	},
 };
@@ -159,31 +137,12 @@ export default {
 
 <style lang="less">
 @import (reference) '../../styles/partials';
-@import (reference) '../../styles/variables';
 
 .FoodView {
 	&:extend(.page all);
 
-	._controls {
+	&_controls {
 		margin-bottom: 1rem;
-	}
-
-	._loaderContainer {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	._loader {
-		font-size: 3rem;
-
-		&::after {
-			border-color: @colors_dark1;
-		}
-	}
-
-	._errorMessage {
-		color: @colors_danger0;
 	}
 }
 </style>

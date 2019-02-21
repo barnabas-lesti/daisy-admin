@@ -12,6 +12,7 @@ const iconMap = {
 	'dashboard': 'fas fa-chart-line',
 	'food': 'fas fa-utensils',
 	'circle': 'far fa-circle',
+	'recipes': 'fas fa-book-open',
 };
 
 export default {

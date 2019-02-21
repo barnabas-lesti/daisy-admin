@@ -8,14 +8,14 @@
 				:value="value"
 				:class="[
 					'input',
-					'_input',
-					{ '_input-hasPostfix': postfix },
+					'FoodModalInput_input',
+					{ 'FoodModalInput_input-hasPostfix': postfix },
 				]"
 				@input="onInput($event)"
 			/>
 			<div
-				v-if="type === 'select'"
 				class="select"
+				v-if="type === 'select'"
 			>
 				<select
 					:value="value"
@@ -26,8 +26,8 @@
 				</select>
 			</div>
 			<span
+				class="FoodModalInput_postfix"
 				v-if="postfix"
-				class="_postfix"
 			>
 				{{ postfix }}
 			</span>
@@ -48,33 +48,31 @@ export default {
 			required: true,
 			type: String,
 		},
-		value: {
-			type: [
-				String,
-				Number,
-			],
-		},
+		value: [
+			String,
+			Number,
+		],
 		type: {
 			type: String,
 			default: 'text',
 		},
-		postfix: {
-			type: String,
-		},
+		postfix: String,
 	},
 };
 </script>
 
 <style lang="less">
 .FoodModalInput {
-	._postfix {
+	&_postfix {
 			display: inline-block;
 			margin-top: 0.5rem;
 			margin-left: .5rem;
 	}
 
-	._input-hasPostfix {
-		width: 90%;
+	&_input {
+		&-hasPostfix {
+			width: 90%;
+		}
 	}
 }
 </style>
