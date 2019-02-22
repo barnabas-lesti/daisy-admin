@@ -1,66 +1,157 @@
 <template>
 	<div class="FoodTable">
-		<table
-			v-if="items && items.length > 0"
-			class="table is-fullwidth is-hoverable"
+		<SearchInput
+			autoSearch
+			class="FoodTable_search"
+			@search="onSearch($event)"
+		/>
+
+		<Loader
+			v-if="isLoading"
+			dark
+			class="FoodTable_loader"
+		/>
+
+		<div
+			v-if="!isLoading"
+			class="FoodTable_content"
 		>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Serving</th>
-					<th>Calories</th>
-					<th>Protein</th>
-					<th>Fat</th>
-					<th>Carbs</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr
-					v-for="item in items.slice(0, maxNumberOfItems)"
-					:key="item.id"
-					@click="selectItem(item)"
-				>
-					<td>{{ item.name }}</td>
-					<td>{{ item.serving.value }} {{ item.serving.unit }}</td>
-					<td>{{ item.macros.calories.value }} g</td>
-					<td>{{ item.macros.protein.value }} g</td>
-					<td>{{ item.macros.fat.value }} g</td>
-					<td>{{ item.macros.carbs.value }} g</td>
-				</tr>
-			</tbody>
-		</table>
+			<table
+				v-if="items && items.length > 0"
+				class="table is-fullwidth is-hoverable"
+			>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Serving</th>
+						<th>Calories</th>
+						<th>Protein</th>
+						<th>Fat</th>
+						<th>Carbs</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						v-for="item of computedItems"
+						:key="item.id"
+						@click="onTableRowClick(item)"
+					>
+						<td>{{ item.name }}</td>
+						<td>{{ item.serving.value }} {{ item.serving.unit }}</td>
+						<td>{{ item.macros.calories.value }} g</td>
+						<td>{{ item.macros.protein.value }} g</td>
+						<td>{{ item.macros.fat.value }} g</td>
+						<td>{{ item.macros.carbs.value }} g</td>
+					</tr>
+				</tbody>
+			</table>
 
-		<p v-if="items && items.length > maxNumberOfItems">
-			More than {{ maxNumberOfItems }} items were found, {{ items.length - maxNumberOfItems }} items are not visible.
-		</p>
+			<p v-if="items && items.length > maxNumberOfItems">
+				More than {{ maxNumberOfItems }} items were found, {{ items.length - maxNumberOfItems }} items are not visible.
+			</p>
 
-		<p v-if="items && items.length === 0">
-			No items found.
-		</p>
+			<p v-if="items && items.length === 0">
+				No items found.
+			</p>
+		</div>
 	</div>
 </template>
 
 <script>
-const MAX_NUMBER_OF_ITEMS = 20;
+import foodService from '../../services/foodService';
+
+import Loader from '../common/Loader';
+import SearchInput from '../common/SearchInput';
+
+const DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
 
 export default {
 	name: 'FoodTable',
+	components: {
+		Loader,
+		SearchInput,
+	},
 	methods: {
-		selectItem (item) {
-			this.$emit('select', { item });
+		loadFood (searchString = '') {
+			this.isLoading = true;
+			foodService.getMany({ searchString })
+				.then(food => this.setFood(food))
+				.catch(error => this.emitError(error))
+				.finally(() => this.isLoading = false);
+		},
+		setFood (food) {
+			this.items = food;
+			this.emitInput(this.items);
+		},
+
+		emitInput (value) {
+			this.$emit('input', value);
+		},
+		emitError (error) {
+			this.$emit('error', { error });
+		},
+		emitSelect (selectedFood) {
+			this.$emit('select', { selectedFood });
+		},
+
+		onTableRowClick (item) {
+			this.emitSelect(item);
+		},
+		onSearch (searchString) {
+			this.loadFood(searchString);
 		},
 	},
 	props: {
-		initialItems: {
-			required: true,
+		autoLoad: Boolean,
+		maxNumberOfItems: {
+			default: DEFAULT_MAX_NUMBER_OF_ITEMS,
+			type: Number,
+		},
+		value: {
+			default: () => [],
 			type: Array,
 		},
 	},
+	computed: {
+		computedItems () {
+			return this.items.slice(0, this.maxNumberOfItems).sort((a, b) => {
+				if (a.name < b.name) {
+					return -1;
+				}
+				if (a.name > b.name) {
+					return 1;
+				}
+				return 0;
+			});
+		},
+	},
+	watch: {
+		value (newValue) {
+			this.setFood(newValue);
+		},
+	},
+	created () {
+		if (this.autoLoad) {
+			this.loadFood();
+		}
+	},
 	data () {
 		return {
-			items: this.initialItems,
-			maxNumberOfItems: MAX_NUMBER_OF_ITEMS,
+			items: this.value,
+			isLoading: false,
 		};
 	},
 };
 </script>
+
+<style lang="less">
+.FoodTable {
+	&_search {
+		margin-bottom: 1rem;
+	}
+
+	&_loader {
+		margin-top: 2rem;
+	}
+}
+</style>

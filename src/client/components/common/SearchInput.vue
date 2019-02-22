@@ -1,20 +1,20 @@
 <template>
 	<form
 		class="SearchInput"
-		@submit.prevent="emitSearch($event)"
+		@submit="onSubmit($event)"
 	>
 		<input
+			v-model="searchString"
 			class="SearchInput_input input"
 			type="text"
 			ref="searchInput"
-			v-model="searchString"
 			@input="onInput()"
 		/>
 		<input
+			v-if="!autoSearch"
 			class="SearchInput_input button is-info"
 			type="submit"
 			value="Search"
-			v-if="!autoSearch"
 			:disabled="disabled"
 		/>
 	</form>
@@ -31,17 +31,27 @@ export default {
 		initialValue: String,
 	},
 	methods: {
-		emitSearch (searchString) {
-			this.$emit('search', { searchString });
-		},
-
-		onInput () {
+		clearThrottle () {
 			if (this.inputThrottleId) {
 				window.clearTimeout(this.inputThrottleId);
 			}
+		},
+
+		emitSearch (searchString) {
+			this.$emit('search', searchString);
+		},
+
+		onInput () {
+			this.clearThrottle();
 			this.inputThrottleId = window.setTimeout(() => {
 				this.emitSearch(this.searchString);
 			}, DEFAULT_THROTTLE);
+		},
+		onSubmit (event) {
+			event.preventDefault();
+
+			this.clearThrottle();
+			this.emitSearch(this.searchString);
 		},
 	},
 	data () {

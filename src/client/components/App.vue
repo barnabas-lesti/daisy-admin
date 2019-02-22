@@ -24,9 +24,9 @@ const navItems = [
 		routeName: 'food',
 	},
 	{
-		icon: 'recipes',
-		label: 'Recipes',
-		routeName: 'recipes',
+		icon: 'calculator',
+		label: 'Calculator',
+		routeName: 'calculator',
 	},
 ];
 

@@ -1,41 +1,43 @@
 <template>
-	<div class="RecipesView">
-		<h1>Recipes</h1>
+	<div class="CalculatorView">
+		<h1>Calculator</h1>
 
 		<div class="columns">
-			<div class="column is-two-thirds">
-				<RecipesTable
-					:initialItems="tableModel"
-				/>
-			</div>
 			<div class="column">
-				<RecipesFoodSelector
+				<FoodTable
 					@select="onFoodSelect($event)"
 					autoSearch
 				/>
 			</div>
 		</div>
+
+		<div class="columns">
+			<div class="column">
+				<CalculatorTable :value="tableData" />
+			</div>
+		</div>
+
 	</div>
 </template>
 
 <script>
-import RecipesFoodSelector from './RecipesFoodSelector';
-import RecipesTable from './RecipesTable';
+import FoodTable from '../food/FoodTable';
+import CalculatorTable from './CalculatorTable';
 
 export default {
-	name: 'RecipesView',
+	name: 'CalculatorView',
 	components: {
-		RecipesFoodSelector,
-		RecipesTable,
+		FoodTable,
+		CalculatorTable,
 	},
 	methods: {
 		onFoodSelect ({ selectedItem }) {
-			this.tableModel.push(selectedItem);
+			this.tableData.push(selectedItem);
 		},
 	},
 	data () {
 		return {
-			tableModel: [],
+			tableData: [],
 		};
 	},
 };
@@ -45,7 +47,7 @@ export default {
 @import (reference) '../../styles/partials';
 @import (reference) '../../styles/variables';
 
-.RecipesView {
+.CalculatorView {
 	&:extend(.page all);
 }
 </style>

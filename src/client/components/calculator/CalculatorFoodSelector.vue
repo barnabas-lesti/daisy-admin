@@ -1,7 +1,7 @@
 <template>
-	<div class="RecipesFoodSelector">
+	<div class="CalculatorFoodSelector">
 		<SearchInput
-			class="RecipesFoodSelector_search"
+			class="CalculatorFoodSelector_search"
 			autoSearch
 			@search="onSearch($event)"
 		/>
@@ -21,8 +21,8 @@
 					:key="foodItem.id"
 					@click="onFoodItemClick(foodItem)"
 					:class="[
-						'RecipesFoodSelector_foodItem',
-						{ 'RecipesFoodSelector_foodItem-selected': lastSelectedFoodItem && lastSelectedFoodItem.id === foodItem.id },
+						'CalculatorFoodSelector_foodItem',
+						{ 'CalculatorFoodSelector_foodItem-selected': lastSelectedFoodItem && lastSelectedFoodItem.id === foodItem.id },
 					]"
 				>
 					<td>{{ foodItem.name }}</td>
@@ -51,7 +51,7 @@ const SELECTION_FADE_TIMEOUT = 1000;
 const MAX_ITEM_COUNT = 10;
 
 export default {
-	name: 'RecipesFoodSelector',
+	name: 'CalculatorFoodSelector',
 	components: {
 		Loader,
 		SearchInput,
@@ -110,7 +110,7 @@ export default {
 @import (reference) '../../styles/mixins';
 @import (reference) '../../styles/variables';
 
-.RecipesFoodSelector {
+.CalculatorFoodSelector {
 	@_foodItemBgColor-selected: @colors_light1;
 
 	&_search {

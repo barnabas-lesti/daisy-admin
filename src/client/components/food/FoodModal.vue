@@ -16,48 +16,44 @@
 
 			<section class="modal-card-body">
 				<FoodModalInput
-					label="Name"
 					v-model="subject.name"
+					label="Name"
+					type="text"
 				/>
 				<div class="columns">
 					<div class="column">
 						<FoodModalInput
-							label="Serving"
-							type="number"
 							v-model="subject.serving.value"
+							label="Serving"
 						/>
 					</div>
 					<div class="column">
 						<FoodModalInput
+							v-model="subject.serving.unit"
 							label="Unit"
 							type="select"
-							v-model="subject.serving.unit"
 						/>
 					</div>
 				</div>
 				<FoodModalInput
-					label="Calories"
-					type="number"
-					postfix="kcal"
 					v-model="subject.macros.calories.value"
+					label="Calories"
+					postfix="kcal"
 				/>
 				<FoodModalInput
-					label="Protein"
-					type="number"
-					postfix="g"
 					v-model="subject.macros.protein.value"
+					label="Protein"
+					postfix="g"
 				/>
 				<FoodModalInput
-					label="Fat"
-					type="number"
-					postfix="g"
 					v-model="subject.macros.fat.value"
+					label="Fat"
+					postfix="g"
 				/>
 				<FoodModalInput
-					label="Carbs"
-					type="number"
-					postfix="g"
 					v-model="subject.macros.carbs.value"
+					label="Carbs"
+					postfix="g"
 				/>
 			</section>
 
@@ -88,8 +84,10 @@
 
 <script>
 import Utils from '../../Utils';
-import FoodModalInput from './FoodModalInput';
+import foodService from '../../services/foodService';
+
 import LoadingOverlay from '../common/LoadingOverlay';
+import FoodModalInput from './FoodModalInput';
 
 export default {
 	name: 'FoodModal',
@@ -98,29 +96,64 @@ export default {
 		FoodModalInput,
 	},
 	methods: {
-		saveItem () {
+		emitClose () {
+			this.$emit('close');
+		},
+		emitDelete (id) {
+			this.$emit('delete', { id });
+		},
+		emitSave () {
+			const {
+				subject,
+				initialValue,
+			} = this;
 			this.$emit('save', {
-				initialItem: this.initialItem,
-				updatedItem: this.subject,
+				subject,
+				initialValue,
 			});
 		},
-		deleteItem () {
-			this.$emit('delete', { id: this.initialItem.id });
+		emitError (error) {
+			this.$emit('error', { error });
 		},
+
 		close () {
-			this.$emit('close');
+			this.emitClose();
+		},
+		deleteItem () {
+			this.isLoading = true;
+			foodService.delete(this.subject.id)
+				.then(() => this.emitDelete(this.subject.id))
+				.catch(error => this.emitError(error))
+				.finally(() => {
+					this.isLoading = false;
+					this.close();
+				});
+		},
+		saveItem () {
+			this.isLoading = true;
+			const operationPromise = this.initialValue.id ? foodService.update(this.initialValue.id, this.subject) : foodService.save(this.subject);
+			operationPromise
+				.then(food => {
+					this.subject = this.subject.id ? this.subject : food;
+					this.emitSave();
+				})
+				.catch(error => this.emitError(error))
+				.finally(() => {
+					this.isLoading = false;
+					this.close();
+				});
 		},
 	},
 	props: {
-		initialItem: {
+		initialValue: {
 			required: true,
 			type: Object,
 		},
-		isLoading: Boolean,
 	},
 	data () {
 		return {
-			subject: Utils.cloneDeep(this.initialItem),
+			subject: Utils.cloneDeep(this.initialValue),
+			isLoading: false,
 		};
 	},
 };

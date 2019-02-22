@@ -1,5 +1,5 @@
 <template>
-	<div class="RecipesTable">
+	<div class="CalculatorTable">
 		<table class="table is-fullwidth">
 			<thead>
 				<tr>
@@ -12,41 +12,41 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="RecipesTable_summaryRow">
+				<tr class="CalculatorTable_summaryRow">
 					<td>Summary</td>
 					<td></td>
-					<td>{{ summaryValues.calories }} kcal</td>
-					<td>{{ summaryValues.protein }} g</td>
-					<td>{{ summaryValues.fat }} g</td>
-					<td>{{ summaryValues.carbs }} g</td>
+					<td>{{ summaryValues.calories.toFixed(0) }} kcal</td>
+					<td>{{ summaryValues.protein.toFixed(0) }} g</td>
+					<td>{{ summaryValues.fat.toFixed(0) }} g</td>
+					<td>{{ summaryValues.carbs.toFixed(0) }} g</td>
 				</tr>
-				<tr class="RecipesTable_summaryRow RecipesTable_summaryRow-percent">
+				<tr class="CalculatorTable_summaryRow CalculatorTable_summaryRow-percent">
 					<td></td>
 					<td></td>
 					<td></td>
-					<td>{{ summaryPercentages.protein }} %</td>
-					<td>{{ summaryPercentages.fat }} %</td>
-					<td>{{ summaryPercentages.carbs }} %</td>
+					<td>{{ summaryPercentages.protein.toFixed(0) }} %</td>
+					<td>{{ summaryPercentages.fat.toFixed(0) }} %</td>
+					<td>{{ summaryPercentages.carbs.toFixed(0) }} %</td>
 				</tr>
 				<tr
-					v-for="(item, index) in initialItems"
+					v-for="(item, index) in items"
 					:key="index"
 				>
 					<td>{{ item.name }}</td>
 					<td>
-						<div class="RecipesTable_serving">
+						<div class="CalculatorTable_serving">
 							<input
-								class="RecipesTable_servingInput input"
+								class="CalculatorTable_servingInput input"
 								type="number"
 								v-model="item.serving.value"
 							/>
 							<span>{{ item.serving.unit }}</span>
 						</div>
 					</td>
-					<td>{{ computedItems[index].macros.calories.value }} kcal</td>
-					<td>{{ computedItems[index].macros.protein.value }} g</td>
-					<td>{{ computedItems[index].macros.fat.value }} g</td>
-					<td>{{ computedItems[index].macros.carbs.value }} g</td>
+					<td>{{ computedItems[index].macros.calories.value.toFixed(2) }} kcal</td>
+					<td>{{ computedItems[index].macros.protein.value.toFixed(2) }} g</td>
+					<td>{{ computedItems[index].macros.fat.value.toFixed(2) }} g</td>
+					<td>{{ computedItems[index].macros.carbs.value.toFixed(2) }} g</td>
 				</tr>
 			</tbody>
 		</table>
@@ -57,19 +57,19 @@
 import Utils from '../../Utils';
 
 export default {
-	name: 'RecipesTable',
+	name: 'CalculatorTable',
 	methods: {
-		calculateMacroValue: (macro, serving) => Utils.round(macro.servingMultiplier * serving.value, 2),
+		calculateMacroValue: (macro, serving) => macro.servingMultiplier * serving.value,
 	},
 	props: {
-		initialItems: {
+		value: {
 			default: () => [],
 			type: Array,
 		},
 	},
 	computed: {
 		computedItems () {
-			return this.initialItems.map(item => {
+			return this.items.map(item => {
 				item.macros.calories.value = this.calculateMacroValue(item.macros.calories, item.serving);
 				item.macros.protein.value = this.calculateMacroValue(item.macros.protein, item.serving);
 				item.macros.fat.value = this.calculateMacroValue(item.macros.fat, item.serving);
@@ -88,11 +88,16 @@ export default {
 		summaryPercentages () {
 			const divider = this.summaryValues.protein + this.summaryValues.fat + this.summaryValues.carbs;
 			return {
-				protein: Utils.round(this.summaryValues.protein / divider * 100) || 0,
-				fat: Utils.round(this.summaryValues.fat / divider * 100) || 0,
-				carbs: Utils.round(this.summaryValues.carbs / divider * 100) || 0,
+				protein: (this.summaryValues.protein / divider * 100) || 0,
+				fat: (this.summaryValues.fat / divider * 100) || 0,
+				carbs: (this.summaryValues.carbs / divider * 100) || 0,
 			};
 		},
+	},
+	data () {
+		return {
+			items: this.value,
+		};
 	},
 };
 </script>
@@ -100,7 +105,7 @@ export default {
 <style lang="less">
 @import (reference) '../../styles/variables';
 
-.RecipesTable {
+.CalculatorTable {
 	@_summaryBgColor: @colors_light3;
 	@_summaryBorderColor: darken(@colors_light3, 5%);
 

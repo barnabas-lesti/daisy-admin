@@ -18,9 +18,9 @@ export const router = new Router({
 			path: '/food',
 		},
 		{
-			component: () => import('./components/recipes/RecipesView'),
-			name: 'recipes',
-			path: '/recipes',
+			component: () => import('./components/calculator/CalculatorView'),
+			name: 'calculator',
+			path: '/calculator',
 		},
 
 		{

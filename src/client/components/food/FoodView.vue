@@ -2,38 +2,24 @@
 	<div class="FoodView">
 		<h1>Food</h1>
 
-		<div class="FoodView_controls">
-			<div class="field">
-				<SearchInput
-					autoSearch
-					@search="onSearch($event)"
-				/>
-			</div>
-			<div class="field">
-				<button
-					class="button is-primary"
-					@click="onNewButtonClick()"
-				>
-					New
-				</button>
-			</div>
+		<div class="FoodView_actions">
+			<button
+				class="button is-primary"
+				@click="onNewButtonClick()"
+			>
+				New
+			</button>
 		</div>
 
 		<FoodTable
-			v-if="food"
-			:initialItems="food"
+			autoLoad
+			v-model="food"
 			@select="onFoodSelect($event)"
-		/>
-
-		<Loader
-			v-if="foodLoadingInProgress"
-			dark
 		/>
 
 		<FoodModal
 			v-if="modalSubject"
-			:initialItem="modalSubject"
-			:isLoading="foodChangeInProgress"
+			:initialValue="modalSubject"
 			@close="onModalClose()"
 			@save="onModalSave($event)"
 			@delete="onModalDelete($event)"
@@ -42,93 +28,41 @@
 </template>
 
 <script>
-import foodService from '../../services/foodService';
 import Food from '../../models/Food';
 
-import Loader from '../common/Loader';
-import SearchInput from '../common/SearchInput';
 import FoodTable from './FoodTable';
 import FoodModal from './FoodModal';
 
 export default {
 	components: {
-		Loader,
-		SearchInput,
 		FoodTable,
 		FoodModal,
 	},
 	methods: {
-		loadFood (searchString = '') {
-			this.foodLoadingInProgress = true;
-			this.food = undefined;
-			foodService.getMany({ searchString })
-				.then(food => {
-					this.food = food;
-				})
-				.catch(error => {
-					this.showError(error);
-				})
-				.finally(() => {
-					this.foodLoadingInProgress = false;
-				});
-		},
-		closeModal () {
-			this.modalSubject = undefined;
-		},
-		showModal (subject) {
-			this.modalSubject = subject;
-		},
-
 		onNewButtonClick () {
-			this.showModal(new Food());
+			this.modalSubject = new Food();
 		},
-		onFoodSelect ({ item }) {
-			this.showModal(item);
+		onFoodSelect ({ selectedFood }) {
+			this.modalSubject = selectedFood;
 		},
 		onModalClose () {
-			this.closeModal();
+			this.modalSubject = undefined;
 		},
-		onModalSave ({ initialItem, updatedItem }) {
-			this.foodChangeInProgress = true;
-			const operationPromise = initialItem.id ? foodService.update(initialItem.id, updatedItem) : foodService.save(updatedItem);
-			operationPromise
-				.then(() => {
-					this.loadFood();
-				})
-				.catch(error => {
-					this.showError(error);
-				})
-				.finally(() => {
-					this.closeModal();
-					this.foodChangeInProgress = false;
-				});
+		onModalSave ({ initialValue, subject }) {
+			if (initialValue.id) {
+				this.food = this.food.map(item => item.id === initialValue.id ? subject : item);
+			} else {
+				this.food.push(subject);
+			}
 		},
 		onModalDelete ({ id }) {
-			this.foodChangeInProgress = true;
-			foodService.delete(id)
-				.then(() => {
-					this.loadFood();
-				})
-				.catch(error => {
-					console.warn(error);
-				})
-				.finally(() => {
-					this.closeModal();
-					this.foodChangeInProgress = false;
-				});
-		},
-		onSearch ({ searchString }) {
-			this.loadFood(searchString);
+			this.food = this.food.filter(item => item.id !== id);
 		},
 	},
-	created () {
-		this.loadFood();
-	},
+
 	data () {
 		return {
-			foodChangeInProgress: false,
-			foodLoadingInProgress: false,
-			food: undefined,
+			food: [],
 			modalSubject: undefined,
 		};
 	},
@@ -141,7 +75,7 @@ export default {
 .FoodView {
 	&:extend(.page all);
 
-	&_controls {
+	&_actions {
 		margin-bottom: 1rem;
 	}
 }
