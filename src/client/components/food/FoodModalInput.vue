@@ -1,7 +1,12 @@
 <template>
 	<div class="FoodModalInput field">
 		<div class="control">
-			<label class="label">{{ label }}</label>
+			<label
+				v-if="label"
+				class="label"
+			>
+				{{ label }}
+			</label>
 			<input
 				v-if="type !== 'select'"
 				:type="type"
@@ -14,8 +19,8 @@
 				@input="onInput($event)"
 			/>
 			<div
-				class="select"
 				v-if="type === 'select'"
+				class="select"
 			>
 				<select
 					:value="value"
@@ -26,8 +31,8 @@
 				</select>
 			</div>
 			<span
-				class="FoodModalInput_postfix"
 				v-if="postfix"
+				class="FoodModalInput_postfix"
 			>
 				{{ postfix }}
 			</span>
@@ -44,17 +49,14 @@ export default {
 		},
 	},
 	props: {
-		label: {
-			required: true,
-			type: String,
-		},
+		label: String,
 		value: [
 			String,
 			Number,
 		],
 		type: {
 			type: String,
-			default: 'text',
+			default: 'number',
 		},
 		postfix: String,
 	},
