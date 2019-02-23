@@ -3,6 +3,7 @@
 		<SearchInput
 			autoSearch
 			class="FoodTable_search"
+			:placeholder="searchPlaceholder"
 			@search="onSearch($event)"
 		/>
 
@@ -18,9 +19,14 @@
 		>
 			<table
 				v-if="items && items.length > 0"
-				class="table is-fullwidth is-hoverable"
+				:class="[
+					'table',
+					'is-fullwidth',
+					'is-hoverable',
+					{ 'is-bordered': bordered },
+				]"
 			>
-				<thead>
+				<thead v-if="!mini">
 					<tr>
 						<th>Name</th>
 						<th>Serving</th>
@@ -37,11 +43,11 @@
 						@click="onTableRowClick(item)"
 					>
 						<td>{{ item.name }}</td>
-						<td>{{ item.serving.value }} {{ item.serving.unit }}</td>
-						<td>{{ item.macros.calories.value }} g</td>
-						<td>{{ item.macros.protein.value }} g</td>
-						<td>{{ item.macros.fat.value }} g</td>
-						<td>{{ item.macros.carbs.value }} g</td>
+						<td v-if="!mini">{{ item.serving.value }} {{ item.serving.unit }}</td>
+						<td v-if="!mini">{{ item.macros.calories.value }} g</td>
+						<td v-if="!mini">{{ item.macros.protein.value }} g</td>
+						<td v-if="!mini">{{ item.macros.fat.value }} g</td>
+						<td v-if="!mini">{{ item.macros.carbs.value }} g</td>
 					</tr>
 				</tbody>
 			</table>
@@ -58,6 +64,7 @@
 </template>
 
 <script>
+import Utils from '../../Utils';
 import foodService from '../../services/foodService';
 
 import Loader from '../common/Loader';
@@ -70,6 +77,20 @@ export default {
 	components: {
 		Loader,
 		SearchInput,
+	},
+	props: {
+		autoLoad: Boolean,
+		mini: Boolean,
+		bordered: Boolean,
+		searchPlaceholder: String,
+		maxNumberOfItems: {
+			default: DEFAULT_MAX_NUMBER_OF_ITEMS,
+			type: Number,
+		},
+		value: {
+			default: () => [],
+			type: Array,
+		},
 	},
 	methods: {
 		loadFood (searchString = '') {
@@ -91,7 +112,7 @@ export default {
 			this.$emit('error', { error });
 		},
 		emitSelect (selectedFood) {
-			this.$emit('select', { selectedFood });
+			this.$emit('select', { selectedFood: Utils.cloneDeep(selectedFood) });
 		},
 
 		onTableRowClick (item) {
@@ -101,28 +122,18 @@ export default {
 			this.loadFood(searchString);
 		},
 	},
-	props: {
-		autoLoad: Boolean,
-		maxNumberOfItems: {
-			default: DEFAULT_MAX_NUMBER_OF_ITEMS,
-			type: Number,
-		},
-		value: {
-			default: () => [],
-			type: Array,
-		},
-	},
 	computed: {
 		computedItems () {
-			return this.items.slice(0, this.maxNumberOfItems).sort((a, b) => {
-				if (a.name < b.name) {
-					return -1;
-				}
-				if (a.name > b.name) {
-					return 1;
-				}
-				return 0;
-			});
+			return this.items
+				.slice(0)
+				.sort((a, b) => {
+					const aName = a.name.toLowerCase();
+					const bName = b.name.toLowerCase();
+					if (aName < bName) return -1;
+					if (aName > bName) return 1;
+					return 0;
+				})
+				.slice(0, this.maxNumberOfItems);
 		},
 	},
 	watch: {

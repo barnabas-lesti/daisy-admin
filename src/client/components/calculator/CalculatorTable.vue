@@ -3,8 +3,8 @@
 		<table class="table is-fullwidth">
 			<thead>
 				<tr>
-					<th>Name</th>
-					<th>Serving</th>
+					<th v-if="!onlySummary">Name</th>
+					<th v-if="!onlySummary">Serving</th>
 					<th>Calories</th>
 					<th>Protein</th>
 					<th>Fat</th>
@@ -12,24 +12,30 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="CalculatorTable_summaryRow">
-					<td>Summary</td>
-					<td></td>
+				<tr
+					v-if="!noSummary"
+					class="CalculatorTable_summaryRow"
+				>
+					<td v-if="!onlySummary">Summary</td>
+					<td v-if="!onlySummary"></td>
 					<td>{{ summaryValues.calories.toFixed(0) }} kcal</td>
 					<td>{{ summaryValues.protein.toFixed(0) }} g</td>
 					<td>{{ summaryValues.fat.toFixed(0) }} g</td>
 					<td>{{ summaryValues.carbs.toFixed(0) }} g</td>
 				</tr>
-				<tr class="CalculatorTable_summaryRow CalculatorTable_summaryRow-percent">
-					<td></td>
-					<td></td>
+				<tr
+					v-if="!noSummary"
+					class="CalculatorTable_summaryRow CalculatorTable_summaryRow-percent"
+				>
+					<td v-if="!onlySummary"></td>
+					<td v-if="!onlySummary"></td>
 					<td></td>
 					<td>{{ summaryPercentages.protein.toFixed(0) }} %</td>
 					<td>{{ summaryPercentages.fat.toFixed(0) }} %</td>
 					<td>{{ summaryPercentages.carbs.toFixed(0) }} %</td>
 				</tr>
 				<tr
-					v-for="(item, index) in items"
+					v-for="(item, index) in (onlySummary ? [] : sortedItems)"
 					:key="index"
 				>
 					<td>{{ item.name }}</td>
@@ -43,10 +49,10 @@
 							<span>{{ item.serving.unit }}</span>
 						</div>
 					</td>
-					<td>{{ computedItems[index].macros.calories.value.toFixed(2) }} kcal</td>
-					<td>{{ computedItems[index].macros.protein.value.toFixed(2) }} g</td>
-					<td>{{ computedItems[index].macros.fat.value.toFixed(2) }} g</td>
-					<td>{{ computedItems[index].macros.carbs.value.toFixed(2) }} g</td>
+					<td>{{ macroCalculatedItems[index].macros.calories.value.toFixed(2) }} kcal</td>
+					<td>{{ macroCalculatedItems[index].macros.protein.value.toFixed(2) }} g</td>
+					<td>{{ macroCalculatedItems[index].macros.fat.value.toFixed(2) }} g</td>
+					<td>{{ macroCalculatedItems[index].macros.carbs.value.toFixed(2) }} g</td>
 				</tr>
 			</tbody>
 		</table>
@@ -58,18 +64,31 @@ import Utils from '../../Utils';
 
 export default {
 	name: 'CalculatorTable',
-	methods: {
-		calculateMacroValue: (macro, serving) => macro.servingMultiplier * serving.value,
-	},
 	props: {
 		value: {
 			default: () => [],
 			type: Array,
 		},
+		onlySummary: Boolean,
+		noSummary: Boolean,
+	},
+	methods: {
+		calculateMacroValue: (macro, serving) => macro.servingMultiplier * serving.value,
 	},
 	computed: {
-		computedItems () {
-			return this.items.map(item => {
+		sortedItems () {
+			return this.items
+				.slice(0)
+				.sort((a, b) => {
+					const aName = a.name.toLowerCase();
+					const bName = b.name.toLowerCase();
+					if (aName < bName) return -1;
+					if (aName > bName) return 1;
+					return 0;
+				});
+		},
+		macroCalculatedItems () {
+			return this.sortedItems.map(item => {
 				item.macros.calories.value = this.calculateMacroValue(item.macros.calories, item.serving);
 				item.macros.protein.value = this.calculateMacroValue(item.macros.protein, item.serving);
 				item.macros.fat.value = this.calculateMacroValue(item.macros.fat, item.serving);
@@ -79,10 +98,10 @@ export default {
 		},
 		summaryValues () {
 			return {
-				calories: Utils.sumArrayValues(this.computedItems.map(item => item.macros.calories.value)),
-				protein: Utils.sumArrayValues(this.computedItems.map(item => item.macros.protein.value)),
-				fat: Utils.sumArrayValues(this.computedItems.map(item => item.macros.fat.value)),
-				carbs: Utils.sumArrayValues(this.computedItems.map(item => item.macros.carbs.value)),
+				calories: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.calories.value)),
+				protein: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.protein.value)),
+				fat: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.fat.value)),
+				carbs: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.carbs.value)),
 			};
 		},
 		summaryPercentages () {
@@ -92,6 +111,11 @@ export default {
 				fat: (this.summaryValues.fat / divider * 100) || 0,
 				carbs: (this.summaryValues.carbs / divider * 100) || 0,
 			};
+		},
+	},
+	watch: {
+		value (newValue) {
+			this.items = newValue;
 		},
 	},
 	data () {

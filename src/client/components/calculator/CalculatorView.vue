@@ -4,16 +4,28 @@
 
 		<div class="columns">
 			<div class="column">
-				<FoodTable
-					@select="onFoodSelect($event)"
-					autoSearch
+				<CalculatorTable
+					onlySummary
+					:value="calculatorModel"
 				/>
 			</div>
 		</div>
 
 		<div class="columns">
 			<div class="column">
-				<CalculatorTable :value="tableData" />
+				<FoodTable
+					autoLoad
+					bordered
+					mini
+					searchPlaceholder="Search for food..."
+					@select="onFoodSelect($event)"
+				/>
+			</div>
+			<div class="column is-three-quarters">
+				<CalculatorTable
+					noSummary
+					:value="calculatorModel"
+				/>
 			</div>
 		</div>
 
@@ -31,13 +43,13 @@ export default {
 		CalculatorTable,
 	},
 	methods: {
-		onFoodSelect ({ selectedItem }) {
-			this.tableData.push(selectedItem);
+		onFoodSelect ({ selectedFood }) {
+			this.calculatorModel.push(selectedFood);
 		},
 	},
 	data () {
 		return {
-			tableData: [],
+			calculatorModel: [],
 		};
 	},
 };

@@ -8,6 +8,7 @@
 			class="SearchInput_input input"
 			type="text"
 			ref="searchInput"
+			:placeholder="placeholder"
 			@input="onInput()"
 		/>
 		<input
@@ -29,6 +30,7 @@ export default {
 		autoSearch: Boolean,
 		disabled: Boolean,
 		initialValue: String,
+		placeholder: String,
 	},
 	methods: {
 		clearThrottle () {

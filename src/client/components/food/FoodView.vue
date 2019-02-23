@@ -39,14 +39,21 @@ export default {
 		FoodModal,
 	},
 	methods: {
+		openModal (modalSubject = new Food()) {
+			this.modalSubject = modalSubject;
+		},
+		closeModal () {
+			this.modalSubject = undefined;
+		},
+
 		onNewButtonClick () {
-			this.modalSubject = new Food();
+			this.openModal();
 		},
 		onFoodSelect ({ selectedFood }) {
-			this.modalSubject = selectedFood;
+			this.openModal(selectedFood);
 		},
 		onModalClose () {
-			this.modalSubject = undefined;
+			this.closeModal();
 		},
 		onModalSave ({ initialValue, subject }) {
 			if (initialValue.id) {
@@ -59,7 +66,6 @@ export default {
 			this.food = this.food.filter(item => item.id !== id);
 		},
 	},
-
 	data () {
 		return {
 			food: [],

@@ -96,26 +96,6 @@ export default {
 		FoodModalInput,
 	},
 	methods: {
-		emitClose () {
-			this.$emit('close');
-		},
-		emitDelete (id) {
-			this.$emit('delete', { id });
-		},
-		emitSave () {
-			const {
-				subject,
-				initialValue,
-			} = this;
-			this.$emit('save', {
-				subject,
-				initialValue,
-			});
-		},
-		emitError (error) {
-			this.$emit('error', { error });
-		},
-
 		close () {
 			this.emitClose();
 		},
@@ -142,6 +122,26 @@ export default {
 					this.isLoading = false;
 					this.close();
 				});
+		},
+
+		emitClose () {
+			this.$emit('close');
+		},
+		emitDelete (id) {
+			this.$emit('delete', { id });
+		},
+		emitSave () {
+			const {
+				subject,
+				initialValue,
+			} = this;
+			this.$emit('save', {
+				subject,
+				initialValue,
+			});
+		},
+		emitError (error) {
+			this.$emit('error', { error });
 		},
 	},
 	props: {
