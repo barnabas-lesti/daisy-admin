@@ -40,7 +40,7 @@ export default {
 		},
 
 		emitSearch (searchString) {
-			this.$emit('search', searchString);
+			this.$emit('search', { searchString });
 		},
 
 		onInput () {

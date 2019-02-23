@@ -118,7 +118,7 @@ export default {
 		onTableRowClick (item) {
 			this.emitSelect(item);
 		},
-		onSearch (searchString) {
+		onSearch ({ searchString }) {
 			this.loadFood(searchString);
 		},
 	},
