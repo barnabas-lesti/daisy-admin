@@ -15,6 +15,7 @@ const iconMap = {
 	'recipes': 'fas fa-book-open',
 	'calculator': 'fas fa-calculator',
 	'chevronDown': 'fas fa-chevron-down',
+	'trash': 'far fa-trash-alt',
 };
 
 export default {

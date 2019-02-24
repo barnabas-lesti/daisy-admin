@@ -9,12 +9,13 @@
 					<th>Protein</th>
 					<th>Fat</th>
 					<th>Carbs</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr
 					v-if="!noSummary"
-					class="CalculatorTable_summaryRow"
+					class="CalculatorTable_tableRow CalculatorTable_tableRow-summary"
 				>
 					<td v-if="!onlySummary">Summary</td>
 					<td v-if="!onlySummary"></td>
@@ -22,10 +23,11 @@
 					<td>{{ summaryValues.protein.toFixed(0) }} g</td>
 					<td>{{ summaryValues.fat.toFixed(0) }} g</td>
 					<td>{{ summaryValues.carbs.toFixed(0) }} g</td>
+					<td></td>
 				</tr>
 				<tr
 					v-if="!noSummary"
-					class="CalculatorTable_summaryRow CalculatorTable_summaryRow-percent"
+					class="CalculatorTable_tableRow CalculatorTable_tableRow-summary CalculatorTable_tableRow-summaryPercent"
 				>
 					<td v-if="!onlySummary"></td>
 					<td v-if="!onlySummary"></td>
@@ -33,9 +35,11 @@
 					<td>{{ summaryPercentages.protein.toFixed(0) }} %</td>
 					<td>{{ summaryPercentages.fat.toFixed(0) }} %</td>
 					<td>{{ summaryPercentages.carbs.toFixed(0) }} %</td>
+					<td></td>
 				</tr>
 				<tr
 					v-for="(item, index) in (onlySummary ? [] : sortedItems)"
+					class="CalculatorTable_tableRow"
 					:key="index"
 				>
 					<td>{{ item.name }}</td>
@@ -53,6 +57,16 @@
 					<td>{{ macroCalculatedItems[index].macros.protein.value.toFixed(2) }} g</td>
 					<td>{{ macroCalculatedItems[index].macros.fat.value.toFixed(2) }} g</td>
 					<td>{{ macroCalculatedItems[index].macros.carbs.value.toFixed(2) }} g</td>
+					<td>
+						<div class="CalculatorTable_rowActions">
+							<div
+								class="CalculatorTable_action"
+								@click="onDeleteClick(index)"
+							>
+								<Icon type="trash" />
+							</div>
+						</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -62,8 +76,13 @@
 <script>
 import Utils from '../../Utils';
 
+import Icon from '../common/Icon';
+
 export default {
 	name: 'CalculatorTable',
+	components: {
+		Icon,
+	},
 	props: {
 		value: {
 			default: () => [],
@@ -74,6 +93,21 @@ export default {
 	},
 	methods: {
 		calculateMacroValue: (macro, serving) => macro.servingMultiplier * serving.value,
+		setItems (items) {
+			this.items = items;
+			this.emitInput();
+		},
+		removeItem (toRemoveIndex) {
+			this.setItems(this.items.filter((item, index) => index !== toRemoveIndex));
+		},
+
+		emitInput () {
+			this.$emit('input', this.items);
+		},
+
+		onDeleteClick (index) {
+			this.removeItem(index);
+		},
 	},
 	computed: {
 		sortedItems () {
@@ -127,23 +161,32 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '../../styles/mixins';
 @import (reference) '../../styles/variables';
 
 .CalculatorTable {
 	@_summaryBgColor: @colors_light3;
 	@_summaryBorderColor: darken(@colors_light3, 5%);
 
-	&_summaryRow {
-		font-weight: 500;
-		font-size: 1.2rem;
-		background-color: @_summaryBgColor !important;
+	&_tableRow {
+		&-summary {
+			font-weight: 500;
+			font-size: 1.2rem;
+			background-color: @_summaryBgColor !important;
 
-		td {
-			border-color: @_summaryBorderColor;
+			td {
+				border-color: @_summaryBorderColor;
+			}
 		}
 
-		&-percent {
+		&-summaryPercent {
 			font-size: 1rem;
+		}
+
+		&:hover {
+			.CalculatorTable_rowActions {
+				opacity: 1;
+			}
 		}
 	}
 
@@ -155,6 +198,21 @@ export default {
 	&_servingInput {
 		margin-right: .25rem;
 		max-width: 5rem;
+	}
+
+	&_rowActions {
+		.transition(opacity);
+		opacity: .3;
+	}
+
+	&_action {
+		.transition(opacity);
+		opacity: .5;
+
+		&:hover {
+			opacity: 1;
+			cursor: pointer;
+		}
 	}
 }
 </style>
