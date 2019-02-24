@@ -4,6 +4,7 @@
 
 # Environment files
 /env/local.yml
+/env/production.yml
 
 # Log files
 npm-debug.log*
