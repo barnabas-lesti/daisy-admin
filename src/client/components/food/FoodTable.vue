@@ -3,6 +3,7 @@
 		<SearchInput
 			autoSearch
 			class="FoodTable_search"
+			:initialValue="searchString"
 			:placeholder="searchPlaceholder"
 			@search="onSearch($event)"
 		/>
@@ -56,7 +57,7 @@
 				More than {{ maxNumberOfItems }} items were found, {{ items.length - maxNumberOfItems }} items are not visible.
 			</p>
 
-			<p v-if="items && items.length === 0">
+			<p v-if="loadOccurred && items && items.length === 0">
 				No items found.
 			</p>
 		</div>
@@ -83,6 +84,7 @@ export default {
 		mini: Boolean,
 		bordered: Boolean,
 		searchPlaceholder: String,
+		searchString: String,
 		maxNumberOfItems: {
 			default: DEFAULT_MAX_NUMBER_OF_ITEMS,
 			type: Number,
@@ -98,7 +100,10 @@ export default {
 			foodService.getMany({ searchString })
 				.then(food => this.setFood(food))
 				.catch(error => this.emitError(error))
-				.finally(() => this.isLoading = false);
+				.finally(() => {
+					this.isLoading = false;
+					this.loadOccurred = true;
+				});
 		},
 		setFood (food) {
 			this.items = food;
@@ -114,12 +119,16 @@ export default {
 		emitSelect (selectedFood) {
 			this.$emit('select', { selectedFood: Utils.cloneDeep(selectedFood) });
 		},
+		emitSearch (searchString) {
+			this.$emit('search', { searchString });
+		},
 
 		onTableRowClick (item) {
 			this.emitSelect(item);
 		},
 		onSearch ({ searchString }) {
 			this.loadFood(searchString);
+			this.emitSearch(searchString);
 		},
 	},
 	computed: {
@@ -150,6 +159,7 @@ export default {
 		return {
 			items: this.value,
 			isLoading: false,
+			loadOccurred: false,
 		};
 	},
 };

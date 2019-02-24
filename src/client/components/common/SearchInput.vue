@@ -7,7 +7,6 @@
 			v-model="searchString"
 			class="SearchInput_input input"
 			type="text"
-			ref="searchInput"
 			:placeholder="placeholder"
 			@input="onInput()"
 		/>
@@ -42,12 +41,16 @@ export default {
 		emitSearch (searchString) {
 			this.$emit('search', { searchString });
 		},
+		emitInput (searchString) {
+			this.$emit('input', searchString);
+		},
 
 		onInput () {
 			this.clearThrottle();
 			this.inputThrottleId = window.setTimeout(() => {
 				this.emitSearch(this.searchString);
 			}, DEFAULT_THROTTLE);
+			this.emitInput(this.searchString);
 		},
 		onSubmit (event) {
 			event.preventDefault();

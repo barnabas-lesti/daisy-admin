@@ -14,7 +14,6 @@
 		<div class="columns">
 			<div class="column">
 				<FoodTable
-					autoLoad
 					bordered
 					mini
 					searchPlaceholder="Search for food..."
@@ -33,8 +32,12 @@
 </template>
 
 <script>
+import storageService from '../../services/storageService';
+
 import FoodTable from '../food/FoodTable';
 import CalculatorTable from './CalculatorTable';
+
+const CALCULATOR_MODEL_STORAGE_KEY = 'CalculatorView.calculatorModel';
 
 export default {
 	name: 'CalculatorView',
@@ -51,6 +54,12 @@ export default {
 		return {
 			calculatorModel: [],
 		};
+	},
+	created () {
+		this.calculatorModel = storageService.fetchFromLocalStorage(CALCULATOR_MODEL_STORAGE_KEY) || [];
+	},
+	beforeDestroy () {
+		storageService.saveToLocalStorage(CALCULATOR_MODEL_STORAGE_KEY, this.calculatorModel);
 	},
 };
 </script>
