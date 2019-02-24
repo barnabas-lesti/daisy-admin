@@ -5,8 +5,8 @@
 		<div class="columns">
 			<div class="column">
 				<CalculatorTable
+					v-model="calculatorModel"
 					onlySummary
-					:value="calculatorModel"
 				/>
 			</div>
 		</div>
@@ -22,8 +22,8 @@
 			</div>
 			<div class="column is-three-quarters">
 				<CalculatorTable
+					v-model="calculatorModel"
 					noSummary
-					:value="calculatorModel"
 				/>
 			</div>
 		</div>
