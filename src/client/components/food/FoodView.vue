@@ -12,9 +12,11 @@
 		</div>
 
 		<FoodTable
-			autoLoad
 			v-model="food"
+			:searchString="searchString"
+			:autoLoad="loadFood"
 			@select="onFoodSelect($event)"
+			@search="onFoodSearch($event)"
 		/>
 
 		<FoodModal
@@ -29,9 +31,13 @@
 
 <script>
 import Food from '../../models/Food';
+import storageService from '../../services/storageService';
 
 import FoodTable from './FoodTable';
 import FoodModal from './FoodModal';
+
+const FOOD_STORAGE_KEY = 'FoodView.food';
+const SEARCH_STRING_STORAGE_KEY = 'FoodView.searchString';
 
 export default {
 	components: {
@@ -52,6 +58,9 @@ export default {
 		onFoodSelect ({ selectedFood }) {
 			this.openModal(selectedFood);
 		},
+		onFoodSearch ({ searchString }) {
+			this.searchString = searchString;
+		},
 		onModalClose () {
 			this.closeModal();
 		},
@@ -68,9 +77,20 @@ export default {
 	},
 	data () {
 		return {
-			food: [],
+			food: undefined,
+			searchString: undefined,
 			modalSubject: undefined,
+			loadFood: undefined,
 		};
+	},
+	created () {
+		this.food = storageService.fetchFromLocalStorage(FOOD_STORAGE_KEY);
+		this.searchString = storageService.fetchFromLocalStorage(SEARCH_STRING_STORAGE_KEY);
+		this.loadFood = !this.food;
+	},
+	beforeDestroy () {
+		storageService.saveToLocalStorage(FOOD_STORAGE_KEY, this.food);
+		storageService.saveToLocalStorage(SEARCH_STRING_STORAGE_KEY, this.searchString);
 	},
 };
 </script>
