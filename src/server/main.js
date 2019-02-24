@@ -3,6 +3,7 @@ const restify = require('restify');
 const restifyPromise = require('restify-await-promise');
 const restifyCorsMiddleware = require('restify-cors-middleware');
 const restifyLogger = require('restify-logger');
+const serveStaticRestify = require('serve-static-restify');
 
 const config = require('./common/config');
 const logger = require('./common/logger');
@@ -11,7 +12,6 @@ const routes = require('./routes');
 const delayResponse = require('./middlewares/delayResponse');
 
 const server = restify.createServer();
-
 const corsSetup = restifyCorsMiddleware({});
 
 restifyPromise.install(server);
@@ -21,6 +21,10 @@ server.use(corsSetup.actual);
 server.use(restify.plugins.queryParser());
 server.use(restify.plugins.bodyParser({ mapParams: true }));
 
+server.pre([
+	serveStaticRestify('dist'),
+	serveStaticRestify('public'),
+]);
 server.pre(corsSetup.preflight);
 server.pre(delayResponse());
 
