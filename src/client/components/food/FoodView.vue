@@ -75,6 +75,14 @@ export default {
 			this.food = this.food.filter(item => item.id !== id);
 		},
 	},
+	watch: {
+		food (newValue) {
+			storageService.saveToLocalStorage(FOOD_STORAGE_KEY, newValue);
+		},
+		searchString (newValue) {
+			storageService.saveToLocalStorage(SEARCH_STRING_STORAGE_KEY, newValue);
+		},
+	},
 	data () {
 		return {
 			food: undefined,
@@ -87,10 +95,6 @@ export default {
 		this.food = storageService.fetchFromLocalStorage(FOOD_STORAGE_KEY);
 		this.searchString = storageService.fetchFromLocalStorage(SEARCH_STRING_STORAGE_KEY);
 		this.loadFood = !this.food;
-	},
-	beforeDestroy () {
-		storageService.saveToLocalStorage(FOOD_STORAGE_KEY, this.food);
-		storageService.saveToLocalStorage(SEARCH_STRING_STORAGE_KEY, this.searchString);
 	},
 };
 </script>

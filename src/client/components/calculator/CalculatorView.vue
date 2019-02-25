@@ -10,9 +10,11 @@
 			</div>
 			<div class="column">
 				<CalculatorFoodSelector
-					autoLoad
+					v-model="foodModel"
+					:searchString="foodSearchString"
 					class="CalculatorView_foodSelector"
 					@select="onFoodSelect($event)"
+					@search="onFoodSearch($event)"
 				/>
 			</div>
 		</div>
@@ -27,6 +29,8 @@ import CalculatorFoodSelector from './CalculatorFoodSelector';
 import CalculatorTable from './CalculatorTable';
 
 const CALCULATOR_MODEL_STORAGE_KEY = 'CalculatorView.calculatorModel';
+const FOOD_MODEL_STORAGE_KEY = 'CalculatorView.foodModel';
+const FOOD_SEARCH_STRING_STORAGE_KEY = 'CalculatorView.foodSearchString';
 
 export default {
 	name: 'CalculatorView',
@@ -38,17 +42,32 @@ export default {
 		onFoodSelect ({ selectedFood }) {
 			this.calculatorModel.push(selectedFood);
 		},
+		onFoodSearch ({ searchString }) {
+			this.foodSearchString = searchString;
+		},
+	},
+	watch: {
+		calculatorModel (newValue) {
+			storageService.saveToLocalStorage(CALCULATOR_MODEL_STORAGE_KEY, newValue);
+		},
+		foodModel (newValue) {
+			storageService.saveToLocalStorage(FOOD_MODEL_STORAGE_KEY, newValue);
+		},
+		foodSearchString (newValue) {
+			storageService.saveToLocalStorage(FOOD_SEARCH_STRING_STORAGE_KEY, newValue);
+		},
 	},
 	data () {
 		return {
 			calculatorModel: [],
+			foodModel: [],
+			foodSearchString: undefined,
 		};
 	},
 	created () {
 		this.calculatorModel = storageService.fetchFromLocalStorage(CALCULATOR_MODEL_STORAGE_KEY) || [];
-	},
-	beforeDestroy () {
-		storageService.saveToLocalStorage(CALCULATOR_MODEL_STORAGE_KEY, this.calculatorModel);
+		this.foodModel = storageService.fetchFromLocalStorage(FOOD_MODEL_STORAGE_KEY) || [];
+		this.foodSearchString = storageService.fetchFromLocalStorage(FOOD_SEARCH_STRING_STORAGE_KEY) || '';
 	},
 };
 </script>

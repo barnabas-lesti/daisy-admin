@@ -101,6 +101,9 @@ export default {
 		emitSelect (selectedFood) {
 			this.$emit('select', { selectedFood: Utils.cloneDeep(selectedFood) });
 		},
+		emitSearch (searchString) {
+			this.$emit('search', { searchString });
+		},
 		emitError (error) {
 			this.$emit('error', { error });
 		},
@@ -110,6 +113,7 @@ export default {
 		},
 		onSearch ({ searchString }) {
 			this.loadFood(searchString);
+			this.emitSearch(searchString);
 		},
 	},
 	computed: {
