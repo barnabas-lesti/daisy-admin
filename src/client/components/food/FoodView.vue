@@ -2,6 +2,16 @@
 	<div class="FoodView">
 		<h1>Food</h1>
 
+		<div class="FoodView_description">
+			<p>On this page you can <b>create/modify/delete</b> food.</p>
+			<p>To create a new item simply click on the <b>New button</b>. A <b>modal</b> will pop up where you can enter the information about the food.</p>
+			<p>
+				If you want to <b>modify or delete</b> an existing item, simply <b>click on the food</b>, the same modal will pop up that was used
+				to create a new item.
+			</p>
+			<p>Edit the fields and/or <b>click on the appropriate button</b> to save or delete the item.</p>
+		</div>
+
 		<div class="FoodView_actions">
 			<button
 				class="button is-primary"
@@ -104,6 +114,11 @@ export default {
 
 .FoodView {
 	&:extend(.page all);
+
+	&_description {
+		margin-bottom: 1.5rem;
+		font-size: .9em;
+	}
 
 	&_actions {
 		margin-bottom: 1rem;
