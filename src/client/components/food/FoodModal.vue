@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import Utils from '../../Utils';
+import Utils from '../../common/Utils';
 import foodService from '../../services/foodService';
 
 import LoadingOverlay from '../common/LoadingOverlay';

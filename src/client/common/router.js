@@ -1,24 +1,24 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import VueRouter from 'vue-router';
 
-Vue.use(Router);
+Vue.use(VueRouter);
 
-export const router = new Router({
+const router = new VueRouter({
 	base: process.env.BASE_URL,
 	mode: 'history',
 	routes: [
 		{
-			component: () => import('./components/dashboard/DashboardView'),
+			component: () => import('../components/dashboard/DashboardView'),
 			name: 'dashboard',
 			path: '/dashboard',
 		},
 		{
-			component: () => import('./components/food/FoodView'),
+			component: () => import('../components/food/FoodView'),
 			name: 'food',
 			path: '/food',
 		},
 		{
-			component: () => import('./components/calculator/CalculatorView'),
+			component: () => import('../components/calculator/CalculatorView'),
 			name: 'calculator',
 			path: '/calculator',
 		},
@@ -38,3 +38,5 @@ export const router = new Router({
 		},
 	],
 });
+
+export default router;

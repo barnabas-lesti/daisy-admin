@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Utils from '../../Utils';
+import Utils from '../../common/Utils';
 import foodService from '../../services/foodService';
 
 import Loader from '../common/Loader';

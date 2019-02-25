@@ -1,7 +1,7 @@
 <template>
 	<div class="App">
 		<Header />
-		<Sidebar :navItems="navItems" />
+		<Sidebar :navItems="menuItems" />
 		<div class="App_content">
 			<router-view/>
 		</div>
@@ -9,26 +9,10 @@
 </template>
 
 <script>
+import menuItems from '../common/menuItems';
+
 import Header from './common/Header';
 import Sidebar from './common/Sidebar';
-
-const navItems = [
-	{
-		icon: 'dashboard',
-		label: 'Dashboard',
-		routeName: 'dashboard',
-	},
-	{
-		icon: 'food',
-		label: 'Food',
-		routeName: 'food',
-	},
-	{
-		icon: 'calculator',
-		label: 'Calculator',
-		routeName: 'calculator',
-	},
-];
 
 export default {
 	components: {
@@ -37,7 +21,7 @@ export default {
 	},
 	data: () => {
 		return {
-			navItems,
+			menuItems,
 		};
 	},
 };

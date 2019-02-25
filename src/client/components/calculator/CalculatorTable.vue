@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import Utils from '../../Utils';
+import Utils from '../../common/Utils';
 
 import Icon from '../common/Icon';
 

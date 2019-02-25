@@ -13,9 +13,9 @@ const configLib = require('config');
  */
 const config = {
 	ENV: process.env.NODE_ENV,
-	MONGO_URI: process.env.MONGO_URI || configLib.get('MONGO_URI'),
-	PORT: process.env.PORT || configLib.get('PORT'),
-	RESPONSE_DELAY: process.env.RESPONSE_DELAY || configLib.get('RESPONSE_DELAY') || 0,
+	MONGO_URI: process.env.MONGO_URI || configLib.get('server.MONGO_URI'),
+	PORT: process.env.PORT || configLib.get('server.PORT'),
+	RESPONSE_DELAY: process.env.RESPONSE_DELAY || configLib.get('server.RESPONSE_DELAY') || 0,
 };
 
 module.exports = config;
