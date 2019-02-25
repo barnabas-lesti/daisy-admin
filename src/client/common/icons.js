@@ -7,6 +7,7 @@ const icons = {
 	'chevronDown': 'fas fa-chevron-down',
 	'trash': 'far fa-trash-alt',
 	'arrow-double-left': 'fas fa-angle-double-left',
+	'info': 'fas fa-info-circle',
 };
 
 export default icons;
