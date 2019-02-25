@@ -3,27 +3,16 @@
 		<h1>Calculator</h1>
 
 		<div class="columns">
-			<div class="column">
-				<CalculatorTable
-					v-model="calculatorModel"
-					onlySummary
-				/>
-			</div>
-		</div>
-
-		<div class="columns">
-			<div class="column">
-				<FoodTable
-					bordered
-					mini
-					searchPlaceholder="Search for food..."
-					@select="onFoodSelect($event)"
-				/>
-			</div>
 			<div class="column is-three-quarters">
 				<CalculatorTable
 					v-model="calculatorModel"
-					noSummary
+				/>
+			</div>
+			<div class="column">
+				<CalculatorFoodSelector
+					autoLoad
+					class="CalculatorView_foodSelector"
+					@select="onFoodSelect($event)"
 				/>
 			</div>
 		</div>
@@ -34,7 +23,7 @@
 <script>
 import storageService from '../../services/storageService';
 
-import FoodTable from '../food/FoodTable';
+import CalculatorFoodSelector from './CalculatorFoodSelector';
 import CalculatorTable from './CalculatorTable';
 
 const CALCULATOR_MODEL_STORAGE_KEY = 'CalculatorView.calculatorModel';
@@ -42,7 +31,7 @@ const CALCULATOR_MODEL_STORAGE_KEY = 'CalculatorView.calculatorModel';
 export default {
 	name: 'CalculatorView',
 	components: {
-		FoodTable,
+		CalculatorFoodSelector,
 		CalculatorTable,
 	},
 	methods: {
@@ -70,5 +59,9 @@ export default {
 
 .CalculatorView {
 	&:extend(.page all);
+
+	&_foodSelector {
+		margin-top: 6rem;
+	}
 }
 </style>
