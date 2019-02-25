@@ -8,20 +8,12 @@
 </template>
 
 <script>
-const iconMap = {
-	'dashboard': 'fas fa-chart-line',
-	'food': 'fas fa-utensils',
-	'circle': 'far fa-circle',
-	'recipes': 'fas fa-book-open',
-	'calculator': 'fas fa-calculator',
-	'chevronDown': 'fas fa-chevron-down',
-	'trash': 'far fa-trash-alt',
-};
+import icons from '../../common/icons';
 
 export default {
 	data () {
 		return {
-			iconClass: iconMap[this.type],
+			iconClass: icons[this.type],
 		};
 	},
 	name: 'Icon',

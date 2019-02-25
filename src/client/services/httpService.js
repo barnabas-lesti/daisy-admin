@@ -1,7 +1,9 @@
 import axios from 'axios';
 import urlJoin from 'url-join';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+import env from '../common/env';
+
+const { API_BASE_URL } = env;
 
 class HttpService {
 	async get (url, params) {
