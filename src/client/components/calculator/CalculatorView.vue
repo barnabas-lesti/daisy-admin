@@ -30,14 +30,10 @@
 </template>
 
 <script>
-import storageService from '../../services/storageService';
+import storageService, { StorageKeys } from '../../services/storageService';
 
 import CalculatorFoodSelector from './CalculatorFoodSelector';
 import CalculatorTable from './CalculatorTable';
-
-const CALCULATOR_MODEL_STORAGE_KEY = 'CalculatorView.calculatorModel';
-const FOOD_MODEL_STORAGE_KEY = 'CalculatorView.foodModel';
-const FOOD_SEARCH_STRING_STORAGE_KEY = 'CalculatorView.foodSearchString';
 
 export default {
 	name: 'CalculatorView',
@@ -55,13 +51,13 @@ export default {
 	},
 	watch: {
 		calculatorModel (newValue) {
-			storageService.saveToLocalStorage(CALCULATOR_MODEL_STORAGE_KEY, newValue);
+			storageService.saveToLocalStorage(StorageKeys.calculatorView.CALCULATOR_MODEL, newValue);
 		},
 		foodModel (newValue) {
-			storageService.saveToLocalStorage(FOOD_MODEL_STORAGE_KEY, newValue);
+			storageService.saveToLocalStorage(StorageKeys.calculatorView.FOOD_MODEL, newValue);
 		},
 		foodSearchString (newValue) {
-			storageService.saveToLocalStorage(FOOD_SEARCH_STRING_STORAGE_KEY, newValue);
+			storageService.saveToLocalStorage(StorageKeys.calculatorView.FOOD_SEARCH_STRING, newValue);
 		},
 	},
 	data () {
@@ -72,9 +68,9 @@ export default {
 		};
 	},
 	created () {
-		this.calculatorModel = storageService.fetchFromLocalStorage(CALCULATOR_MODEL_STORAGE_KEY) || [];
-		this.foodModel = storageService.fetchFromLocalStorage(FOOD_MODEL_STORAGE_KEY) || [];
-		this.foodSearchString = storageService.fetchFromLocalStorage(FOOD_SEARCH_STRING_STORAGE_KEY) || '';
+		this.calculatorModel = storageService.fetchFromLocalStorage(StorageKeys.calculatorView.CALCULATOR_MODEL) || [];
+		this.foodModel = storageService.fetchFromLocalStorage(StorageKeys.calculatorView.FOOD_MODEL) || [];
+		this.foodSearchString = storageService.fetchFromLocalStorage(StorageKeys.calculatorView.FOOD_SEARCH_STRING) || '';
 	},
 };
 </script>
@@ -89,10 +85,6 @@ export default {
 	&_description {
 		margin-bottom: 1.5rem;
 		font-size: .9em;
-	}
-
-	&_foodSelector {
-		margin-top: 6rem;
 	}
 }
 </style>

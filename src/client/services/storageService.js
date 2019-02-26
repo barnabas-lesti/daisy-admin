@@ -15,5 +15,21 @@ class StorageService {
 	}
 }
 
+export const StorageKeys = {
+	common: {
+		LAYOUT: 'common.Layout',
+	},
+
+	calculatorView: {
+		CALCULATOR_MODEL: 'calculatorView.calculatorModel',
+		FOOD_MODEL: 'calculatorView.foodModel',
+		FOOD_SEARCH_STRING: 'calculatorView.foodSearchString',
+	},
+	foodView: {
+		FOOD_MODEL: 'foodView.food',
+		SEARCH_STRING: 'foodView.searchString',
+	},
+};
+
 const storageService = new StorageService();
 export default storageService;

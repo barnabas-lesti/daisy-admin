@@ -1,9 +1,9 @@
 import axios from 'axios';
 import urlJoin from 'url-join';
 
-import env from '../common/env';
+import config from '../common/config';
 
-const { API_BASE_URL } = env;
+const { API_BASE_URL } = config;
 
 class HttpService {
 	async get (url, params) {

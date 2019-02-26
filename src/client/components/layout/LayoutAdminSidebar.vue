@@ -1,21 +1,21 @@
 <template>
-	<nav class="Sidebar">
+	<nav class="LayoutAdminSidebar">
 		<router-link
-			class="Sidebar_brand"
+			class="LayoutAdminSidebar_brand"
 			:to="{ name: 'home' }"
 		>
 			Daisy
 		</router-link>
-		<div class="Sidebar_links">
+		<div class="LayoutAdminSidebar_links">
 			<router-link
-				activeClass="Sidebar_link-active"
-				class="Sidebar_link"
+				activeClass="LayoutAdminSidebar_link-active"
+				class="LayoutAdminSidebar_link"
 				v-for="(navItem, index) in navItems"
 				:key="index"
 				:to="{ name: navItem.routeName }"
 			>
 				<Icon
-					class="Sidebar_linkIcon"
+					class="LayoutAdminSidebar_linkIcon"
 					v-if="navItem.icon"
 					:type="navItem.icon"
 				/>
@@ -26,13 +26,13 @@
 </template>
 
 <script>
-import Icon from './Icon';
+import Icon from '../common/Icon';
 
 export default {
 	components: {
 		Icon,
 	},
-	name: 'Sidebar',
+	name: 'LayoutAdminSidebar',
 	props: {
 		navItems: {
 			required: true,
@@ -53,7 +53,7 @@ export default {
 <style lang="less">
 @import (reference) '../../styles/variables';
 
-.Sidebar {
+.LayoutAdminSidebar {
 	@_bgColor: @colors_dark1;
 	@_bgColor-active: lighten(@colors_dark1, 5%);
 	@_bgColor-hover: lighten(@colors_dark1, 10%);

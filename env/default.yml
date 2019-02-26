@@ -1,6 +1,7 @@
 client:
   PORT: 3000
   API_BASE_URL: null
+  DEFAULT_LAYOUT: 'LayoutSimple'
 
 server:
   PORT: 8080

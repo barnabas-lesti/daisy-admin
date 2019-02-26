@@ -1,39 +1,33 @@
 <template>
 	<div class="App">
-		<Header />
-		<Sidebar :navItems="menuItems" />
-		<div class="App_content">
-			<router-view/>
-		</div>
+		<Layout>
+			<router-view />
+		</Layout>
 	</div>
 </template>
 
 <script>
-import menuItems from '../common/menuItems';
+import config from '../common/config';
+import storageService, { StorageKeys } from '../services/storageService';
 
-import Header from './common/Header';
-import Sidebar from './common/Sidebar';
+const getLayoutName = () => {
+	const url = new URL(window.location.href);
+	const forcedLayout = url.searchParams.get('layout');
+	if (forcedLayout) {
+		storageService.saveToLocalStorage(StorageKeys.common.LAYOUT, forcedLayout);
+	}
+	return forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.LAYOUT) || config.DEFAULT_LAYOUT;
+};
 
 export default {
 	components: {
-		Header,
-		Sidebar,
-	},
-	data: () => {
-		return {
-			menuItems,
-		};
+		Layout: () => import(`./layout/${getLayoutName()}`),
 	},
 };
 </script>
 
 <style lang="less">
-@import (reference) '../styles/variables';
-
 .App {
-	&_content {
-		padding-top: @layout_headerHeight;
-		padding-left: @layout_sidebarWidth;
-	}
+	height: 100%;
 }
 </style>

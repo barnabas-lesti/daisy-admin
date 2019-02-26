@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import config from './config';
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-	base: process.env.BASE_URL,
+	base: config.BASE_URL,
 	mode: 'history',
 	routes: [
 		{
