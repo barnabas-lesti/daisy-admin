@@ -21,6 +21,7 @@ module.exports = {
 
 					// Custom .env variables
 					API_BASE_URL: JSON.stringify(configLib.get('client.API_BASE_URL')),
+					DEFAULT_LAYOUT: JSON.stringify(configLib.get('client.DEFAULT_LAYOUT')),
 				};
 				return args;
 			})

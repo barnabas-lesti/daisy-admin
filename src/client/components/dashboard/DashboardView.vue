@@ -12,13 +12,9 @@
 </template>
 
 <script>
-import Tooltip from '../common/Tooltip';
-
 export default {
 	name: 'DashboardView',
-	components: {
-		Tooltip,
-	},
+	components: {},
 	data () {
 		return {};
 	},

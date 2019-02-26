@@ -1,19 +1,19 @@
 <template>
-	<header class="Header">
-		Header
+	<header class="LayoutAdminHeader">
+		LayoutAdminHeader
 	</header>
 </template>
 
 <script>
 export default {
-	name: 'Header',
+	name: 'LayoutAdminHeader',
 };
 </script>
 
 <style lang="less">
 @import (reference) '../../styles/variables';
 
-.Header {
+.LayoutAdminHeader {
 	@_boxShadow: @common_bottomBoxShadow;
 	@_height: @layout_headerHeight;
 

@@ -41,13 +41,10 @@
 
 <script>
 import Food from '../../models/Food';
-import storageService from '../../services/storageService';
+import storageService, { StorageKeys } from '../../services/storageService';
 
 import FoodTable from './FoodTable';
 import FoodModal from './FoodModal';
-
-const FOOD_STORAGE_KEY = 'FoodView.food';
-const SEARCH_STRING_STORAGE_KEY = 'FoodView.searchString';
 
 export default {
 	components: {
@@ -87,10 +84,10 @@ export default {
 	},
 	watch: {
 		food (newValue) {
-			storageService.saveToLocalStorage(FOOD_STORAGE_KEY, newValue);
+			storageService.saveToLocalStorage(StorageKeys.foodView.FOOD_MODEL, newValue);
 		},
 		searchString (newValue) {
-			storageService.saveToLocalStorage(SEARCH_STRING_STORAGE_KEY, newValue);
+			storageService.saveToLocalStorage(StorageKeys.foodView.SEARCH_STRING, newValue);
 		},
 	},
 	data () {
@@ -102,8 +99,8 @@ export default {
 		};
 	},
 	created () {
-		this.food = storageService.fetchFromLocalStorage(FOOD_STORAGE_KEY);
-		this.searchString = storageService.fetchFromLocalStorage(SEARCH_STRING_STORAGE_KEY);
+		this.food = storageService.fetchFromLocalStorage(StorageKeys.foodView.FOOD_MODEL);
+		this.searchString = storageService.fetchFromLocalStorage(StorageKeys.foodView.SEARCH_STRING);
 		this.loadFood = !this.food;
 	},
 };
