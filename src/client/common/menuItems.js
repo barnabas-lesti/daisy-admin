@@ -14,6 +14,12 @@ const menuItems = [
 		label: 'Calculator',
 		routeName: 'calculator',
 	},
+
+	{
+		icon: 'registration',
+		label: 'Register',
+		routeName: 'registration',
+	},
 ];
 
 export default menuItems;

@@ -26,6 +26,12 @@ const router = new VueRouter({
 		},
 
 		{
+			component: () => import('../components/profile/ProfileRegistrationView'),
+			name: 'registration',
+			path: '/register',
+		},
+
+		{
 			name: 'home',
 			path: '/',
 			redirect: {

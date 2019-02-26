@@ -16,7 +16,9 @@ const getLayoutName = () => {
 	if (forcedLayout) {
 		storageService.saveToLocalStorage(StorageKeys.common.LAYOUT, forcedLayout);
 	}
-	return forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.LAYOUT) || config.DEFAULT_LAYOUT;
+	const layout = forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.LAYOUT) || config.DEFAULT_LAYOUT;
+	console.log(`[Daisy] Using layout: "${layout}".`);
+	return layout;
 };
 
 export default {
