@@ -1,6 +1,9 @@
 import Vue from 'vue';
 
 import App from './components/App';
+
+import store from './store';
+
 import router from './common/router';
 import config from './common/config';
 import logger from './common/logger';
@@ -16,4 +19,5 @@ Vue.config.productionTip = false;
 new Vue({
 	render: h => h(App),
 	router,
+	store,
 }).$mount('#app');

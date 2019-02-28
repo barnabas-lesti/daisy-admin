@@ -1,7 +1,6 @@
 <template>
 	<div class="FoodTable">
 		<SearchInput
-			autoSearch
 			class="FoodTable_search"
 			:initialValue="searchString"
 			:placeholder="searchPlaceholder"
@@ -19,7 +18,7 @@
 			class="FoodTable_content"
 		>
 			<table
-				v-if="items && items.length > 0"
+				v-if="value && value.length > 0"
 				:class="[
 					'table',
 					'is-fullwidth',
@@ -53,11 +52,11 @@
 				</tbody>
 			</table>
 
-			<p v-if="items && items.length > maxNumberOfItems">
-				More than {{ maxNumberOfItems }} items were found, {{ items.length - maxNumberOfItems }} items are not visible.
+			<p v-if="value && value.length > maxNumberOfItems">
+				More than {{ maxNumberOfItems }} items were found, {{ value.length - maxNumberOfItems }} items are not visible.
 			</p>
 
-			<p v-if="loadOccurred && items && items.length === 0">
+			<p v-if="loadOccurred && value && value.length === 0">
 				No items found.
 			</p>
 		</div>
@@ -106,8 +105,7 @@ export default {
 				});
 		},
 		setFood (food) {
-			this.items = food;
-			this.emitInput(this.items);
+			this.emitInput(food);
 		},
 
 		emitInput (value) {
@@ -133,7 +131,7 @@ export default {
 	},
 	computed: {
 		computedItems () {
-			return this.items
+			return this.value
 				.slice(0)
 				.sort((a, b) => {
 					const aName = a.name.toLowerCase();
@@ -145,19 +143,13 @@ export default {
 				.slice(0, this.maxNumberOfItems);
 		},
 	},
-	watch: {
-		value (newValue) {
-			this.setFood(newValue);
-		},
-	},
 	created () {
 		if (this.autoLoad) {
-			this.loadFood();
+			this.loadFood(this.searchString);
 		}
 	},
 	data () {
 		return {
-			items: this.value,
 			isLoading: false,
 			loadOccurred: false,
 		};

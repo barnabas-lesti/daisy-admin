@@ -3385,7 +3385,6 @@ from2@^2.1.0:
 fs-extra@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
-  integrity sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
@@ -6500,7 +6499,6 @@ serve-index@^1.7.2:
 serve-static-restify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/serve-static-restify/-/serve-static-restify-3.0.0.tgz#bd5813076634877b84b1f6387cf6d8b962f1ae9c"
-  integrity sha512-8bAWseTq8K1qcW/Pp8kCa1P1c0+wzOdSp1j5FAv3ZC/vcz+G8JPOyRni9hHgXjQqBQyx6+nleshZigHVKBScww==
   dependencies:
     encodeurl "~1.0.2"
     escape-html "~1.0.3"
@@ -7491,6 +7489,10 @@ vue-template-es2015-compiler@^1.8.2:
 vue@^2.5.22:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.4.tgz#8a5a44e5740d8b8423a420c8655c97663421fb4d"
+
+vuex@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.0.tgz#634b81515cf0cfe976bd1ffe9601755e51f843b9"
 
 watchpack@^1.5.0:
   version "1.6.0"

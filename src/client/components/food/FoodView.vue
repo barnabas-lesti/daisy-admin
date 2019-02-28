@@ -23,8 +23,8 @@
 
 		<FoodTable
 			v-model="food"
+			:autoLoad="!food || food.length === 0"
 			:searchString="searchString"
-			:autoLoad="loadFood"
 			@select="onFoodSelect($event)"
 			@search="onFoodSearch($event)"
 		/>
@@ -41,7 +41,8 @@
 
 <script>
 import Food from '../../models/Food';
-import storageService, { StorageKeys } from '../../services/storageService';
+
+import MutationTypes from '../../store/MutationTypes';
 
 import FoodTable from './FoodTable';
 import FoodModal from './FoodModal';
@@ -53,10 +54,10 @@ export default {
 	},
 	methods: {
 		openModal (modalSubject = new Food()) {
-			this.modalSubject = modalSubject;
+			this.$store.commit(MutationTypes.foodView.SHOW_MODAL, modalSubject);
 		},
 		closeModal () {
-			this.modalSubject = undefined;
+			this.$store.commit(MutationTypes.foodView.HIDE_MODAL);
 		},
 
 		onNewButtonClick () {
@@ -65,43 +66,38 @@ export default {
 		onFoodSelect ({ selectedFood }) {
 			this.openModal(selectedFood);
 		},
-		onFoodSearch ({ searchString }) {
-			this.searchString = searchString;
-		},
 		onModalClose () {
 			this.closeModal();
 		},
+		onFoodSearch ({ searchString }) {
+			this.$store.commit(MutationTypes.foodView.SET_SEARCH_STRING, searchString);
+		},
 		onModalSave ({ initialValue, subject }) {
 			if (initialValue._id) {
-				this.food = this.food.map(item => item._id === initialValue._id ? subject : item);
+				this.$store.commit(MutationTypes.foodView.UPDATE_ITEM_IN_FOOD, subject);
 			} else {
-				this.food.push(subject);
+				this.$store.commit(MutationTypes.foodView.ADD_FOOD, subject);
 			}
 		},
 		onModalDelete ({ _id }) {
-			this.food = this.food.filter(item => item._id !== _id);
+			this.$store.commit(MutationTypes.foodView.REMOVE_FOOD, _id);
 		},
 	},
-	watch: {
-		food (newValue) {
-			storageService.saveToLocalStorage(StorageKeys.foodView.FOOD_MODEL, newValue);
+	computed: {
+		food: {
+			get () {
+				return this.$store.state.foodView.food;
+			},
+			set (value) {
+				this.$store.commit(MutationTypes.foodView.SET_FOOD, value);
+			},
 		},
-		searchString (newValue) {
-			storageService.saveToLocalStorage(StorageKeys.foodView.SEARCH_STRING, newValue);
+		searchString () {
+			return this.$store.state.foodView.searchString;
 		},
-	},
-	data () {
-		return {
-			food: undefined,
-			searchString: undefined,
-			modalSubject: undefined,
-			loadFood: undefined,
-		};
-	},
-	created () {
-		this.food = storageService.fetchFromLocalStorage(StorageKeys.foodView.FOOD_MODEL);
-		this.searchString = storageService.fetchFromLocalStorage(StorageKeys.foodView.SEARCH_STRING);
-		this.loadFood = !this.food;
+		modalSubject () {
+			return this.$store.state.foodView.modalSubject;
+		},
 	},
 };
 </script>
