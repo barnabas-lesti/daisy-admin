@@ -42,21 +42,21 @@
 					class="CalculatorTable_tableRow"
 					:key="index"
 				>
-					<td>{{ item.name }}</td>
+					<td>{{ item.food.name }}</td>
 					<td>
 						<div class="CalculatorTable_serving">
 							<input
+								v-model="item.serving.value"
 								class="CalculatorTable_servingInput input"
 								type="number"
-								v-model="item.serving.value"
 							/>
-							<span>{{ item.serving.unit }}</span>
+							<span>{{ item.food.serving.unit }}</span>
 						</div>
 					</td>
-					<td>{{ macroCalculatedItems[index].macros.calories.value.toFixed(2) }} kcal</td>
-					<td>{{ macroCalculatedItems[index].macros.protein.value.toFixed(2) }} g</td>
-					<td>{{ macroCalculatedItems[index].macros.fat.value.toFixed(2) }} g</td>
-					<td>{{ macroCalculatedItems[index].macros.carbs.value.toFixed(2) }} g</td>
+					<td>{{ macroCalculatedItems[index].food.macros.calories.value.toFixed(2) }} kcal</td>
+					<td>{{ macroCalculatedItems[index].food.macros.protein.value.toFixed(2) }} g</td>
+					<td>{{ macroCalculatedItems[index].food.macros.fat.value.toFixed(2) }} g</td>
+					<td>{{ macroCalculatedItems[index].food.macros.carbs.value.toFixed(2) }} g</td>
 					<td>
 						<div class="CalculatorTable_rowActions">
 							<div
@@ -92,7 +92,7 @@ export default {
 		noSummary: Boolean,
 	},
 	methods: {
-		calculateMacroValue: (macro, serving) => macro.servingMultiplier * serving.value,
+		calculateMacroValue: (macro, serving) => macro.servingMultiplier * (serving.value || 0),
 		setItems (items) {
 			this.items = items;
 			this.emitInput();
@@ -114,8 +114,8 @@ export default {
 			return this.items
 				.slice(0)
 				.sort((a, b) => {
-					const aName = a.name.toLowerCase();
-					const bName = b.name.toLowerCase();
+					const aName = a.food.name.toLowerCase();
+					const bName = b.food.name.toLowerCase();
 					if (aName < bName) return -1;
 					if (aName > bName) return 1;
 					return 0;
@@ -123,19 +123,19 @@ export default {
 		},
 		macroCalculatedItems () {
 			return this.sortedItems.map(item => {
-				item.macros.calories.value = this.calculateMacroValue(item.macros.calories, item.serving);
-				item.macros.protein.value = this.calculateMacroValue(item.macros.protein, item.serving);
-				item.macros.fat.value = this.calculateMacroValue(item.macros.fat, item.serving);
-				item.macros.carbs.value = this.calculateMacroValue(item.macros.carbs, item.serving);
+				item.food.macros.calories.value = this.calculateMacroValue(item.food.macros.calories, item.serving);
+				item.food.macros.protein.value = this.calculateMacroValue(item.food.macros.protein, item.serving);
+				item.food.macros.fat.value = this.calculateMacroValue(item.food.macros.fat, item.serving);
+				item.food.macros.carbs.value = this.calculateMacroValue(item.food.macros.carbs, item.serving);
 				return item;
 			});
 		},
 		summaryValues () {
 			return {
-				calories: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.calories.value)),
-				protein: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.protein.value)),
-				fat: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.fat.value)),
-				carbs: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.macros.carbs.value)),
+				calories: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.calories.value)),
+				protein: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.protein.value)),
+				fat: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.fat.value)),
+				carbs: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.carbs.value)),
 			};
 		},
 		summaryPercentages () {

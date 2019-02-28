@@ -3,10 +3,6 @@ const mongoose = require('mongoose');
 const calculateServingMultiplier = (serving, macro) => serving === 0 ? 0 : macro / serving;
 
 const foodSchema = new mongoose.Schema({
-	keywords: {
-		default: [],
-		type: Array,
-	},
 	macros: {
 		calories: {
 			value: {
@@ -33,10 +29,7 @@ const foodSchema = new mongoose.Schema({
 			},
 		},
 	},
-	name: {
-		required: true,
-		type: String,
-	},
+	name: String,
 	serving: {
 		unit: {
 			default: 'g',
@@ -48,6 +41,7 @@ const foodSchema = new mongoose.Schema({
 		},
 	},
 }, {
+	id: false,
 	toJSON: {
 		versionKey: false,
 		virtuals: true,

@@ -73,7 +73,7 @@
 				<button
 					class="button is-danger"
 					@click="deleteItem()"
-					:disabled="!subject.id"
+					:disabled="!subject._id"
 				>
 					Delete
 				</button>
@@ -101,8 +101,8 @@ export default {
 		},
 		deleteItem () {
 			this.isLoading = true;
-			foodService.delete(this.subject.id)
-				.then(() => this.emitDelete(this.subject.id))
+			foodService.delete(this.subject._id)
+				.then(() => this.emitDelete(this.subject._id))
 				.catch(error => this.emitError(error))
 				.finally(() => {
 					this.isLoading = false;
@@ -111,10 +111,10 @@ export default {
 		},
 		saveItem () {
 			this.isLoading = true;
-			const operationPromise = this.initialValue.id ? foodService.update(this.initialValue.id, this.subject) : foodService.save(this.subject);
+			const operationPromise = this.initialValue._id ? foodService.update(this.initialValue._id, this.subject) : foodService.save(this.subject);
 			operationPromise
 				.then(food => {
-					this.subject = this.subject.id ? this.subject : food;
+					this.subject = this.subject._id ? this.subject : food;
 					this.emitSave();
 				})
 				.catch(error => this.emitError(error))
@@ -127,8 +127,8 @@ export default {
 		emitClose () {
 			this.$emit('close');
 		},
-		emitDelete (id) {
-			this.$emit('delete', { id });
+		emitDelete (_id) {
+			this.$emit('delete', { _id });
 		},
 		emitSave () {
 			const {

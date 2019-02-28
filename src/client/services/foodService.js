@@ -2,11 +2,11 @@ import httpService from './httpService';
 
 class FoodService {
 	async save (food) {
-		const result = await httpService.post('/food', food);
+		const result = await httpService.put('/food', food);
 		return result;
 	}
 
-	// getOne (id) {}
+	// getOne (_id) {}
 
 	async getMany ({ searchString = '' }) {
 		const searchQuery = searchString;
@@ -14,13 +14,13 @@ class FoodService {
 		return food;
 	}
 
-	async update (id, update) {
-		const result = await httpService.put(`/food/${id}`, update);
+	async update (_id, update) {
+		const result = await httpService.patch(`/food/${_id}`, update);
 		return result;
 	}
 
-	async delete (id) {
-		const result = await httpService.delete(`/food/${id}`);
+	async delete (_id) {
+		const result = await httpService.delete(`/food/${_id}`);
 		return result;
 	}
 }

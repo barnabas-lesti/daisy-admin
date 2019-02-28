@@ -39,8 +39,8 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="item of computedItems"
-						:key="item.id"
+						v-for="(item, index) of computedItems"
+						:key="index"
 						@click="onTableRowClick(item)"
 					>
 						<td>{{ item.name }}</td>
