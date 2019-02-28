@@ -1,6 +1,9 @@
 <template>
-	<div class="LoadingOverlay">
-		<Spinner />
+	<div :class="[
+		'LoadingOverlay',
+		{ 'LoadingOverlay-light': light },
+	]">
+		<Spinner :dark="light"/>
 	</div>
 </template>
 
@@ -11,6 +14,9 @@ export default {
 	name: 'LoadingOverlay',
 	components: {
 		Spinner,
+	},
+	props: {
+		light: Boolean,
 	},
 };
 </script>
@@ -29,5 +35,9 @@ export default {
 	top: 0;
 	width: 100%;
 	z-index: 200;
+
+	&-light {
+		background-color: @colors_overlay2;
+	}
 }
 </style>

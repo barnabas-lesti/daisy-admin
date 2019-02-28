@@ -11,7 +11,7 @@
 			@input="onInput()"
 		/>
 		<input
-			v-if="!autoSearch"
+			v-if="searchWithButton"
 			class="SearchInput_input button is-info"
 			type="submit"
 			value="Search"
@@ -30,6 +30,7 @@ export default {
 		disabled: Boolean,
 		initialValue: String,
 		placeholder: String,
+		searchWithButton: Boolean,
 	},
 	methods: {
 		clearThrottle () {
@@ -38,7 +39,7 @@ export default {
 			}
 		},
 
-		emitSearch (searchString) {
+		emitSearch (searchString = '') {
 			this.$emit('search', { searchString });
 		},
 		emitInput (searchString) {
@@ -63,6 +64,11 @@ export default {
 		return {
 			searchString: this.initialValue,
 		};
+	},
+	created () {
+		if (this.autoSearch) {
+			this.emitSearch();
+		}
 	},
 };
 </script>

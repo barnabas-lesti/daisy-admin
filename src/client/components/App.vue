@@ -8,6 +8,7 @@
 
 <script>
 import config from '../common/config';
+import logger from '../common/logger';
 import storageService, { StorageKeys } from '../services/storageService';
 
 const getLayoutName = () => {
@@ -16,7 +17,9 @@ const getLayoutName = () => {
 	if (forcedLayout) {
 		storageService.saveToLocalStorage(StorageKeys.common.LAYOUT, forcedLayout);
 	}
-	return forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.LAYOUT) || config.DEFAULT_LAYOUT;
+	const layoutName = forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.LAYOUT) || config.DEFAULT_LAYOUT;
+	logger.info(`Using layout: "${layoutName}"`);
+	return layoutName;
 };
 
 export default {

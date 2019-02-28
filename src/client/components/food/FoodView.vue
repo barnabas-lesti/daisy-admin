@@ -72,14 +72,14 @@ export default {
 			this.closeModal();
 		},
 		onModalSave ({ initialValue, subject }) {
-			if (initialValue.id) {
-				this.food = this.food.map(item => item.id === initialValue.id ? subject : item);
+			if (initialValue._id) {
+				this.food = this.food.map(item => item._id === initialValue._id ? subject : item);
 			} else {
 				this.food.push(subject);
 			}
 		},
-		onModalDelete ({ id }) {
-			this.food = this.food.filter(item => item.id !== id);
+		onModalDelete ({ _id }) {
+			this.food = this.food.filter(item => item._id !== _id);
 		},
 	},
 	watch: {

@@ -21,6 +21,11 @@ class HttpService {
 		return response.data;
 	}
 
+	async patch (url, data) {
+		const response = await axios.patch(urlJoin(API_BASE_URL, url), data);
+		return response.data;
+	}
+
 	async delete (url) {
 		const response = await axios.delete(urlJoin(API_BASE_URL, url));
 		return response.data;

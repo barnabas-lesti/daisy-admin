@@ -1,7 +1,6 @@
 <template>
 	<div class="CalculatorFoodSelector">
 		<SearchInput
-			autoSearch
 			class="CalculatorFoodSelector_search"
 			placeholder="Search for food"
 			:initialValue="searchString"
@@ -24,8 +23,8 @@
 			>
 				<tbody>
 					<tr
-						v-for="item of computedItems"
-						:key="item.id"
+						v-for="(item, index) of computedItems"
+						:key="index"
 						@click="onTableRowClick(item)"
 					>
 						<td class="CalculatorFoodSelector_nameTd">
