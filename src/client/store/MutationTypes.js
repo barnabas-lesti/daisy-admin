@@ -1,16 +1,16 @@
 const MutationTypes = {
 	dashboardView: {
-		INCREMENT: 'dashboardView.increment',
+		INCREMENT: 'dv.INCREMENT',
 	},
 
 	foodView: {
-		SET_SEARCH_STRING: 'foodView.SET_SEARCH_STRING',
-		SHOW_MODAL: 'foodView.SHOW_MODAL',
-		HIDE_MODAL: 'foodView.HIDE_MODAL',
-		SET_FOOD: 'foodView.SET_FOOD',
-		ADD_FOOD: 'foodView.ADD_FOOD',
-		REMOVE_FOOD: 'foodView.REMOVE_FOOD',
-		UPDATE_ITEM_IN_FOOD: 'foodView.UPDATE_ITEM_IN_FOOD',
+		SET_SEARCH_STRING: 'fv.SET_SEARCH_STRING',
+		SHOW_MODAL: 'fv.SHOW_MODAL',
+		HIDE_MODAL: 'fv.HIDE_MODAL',
+		SET_FOOD: 'fv.SET_FOOD',
+		ADD_FOOD: 'fv.ADD_FOOD',
+		REMOVE_FOOD: 'fv.REMOVE_FOOD',
+		UPDATE_ITEM_IN_FOOD: 'fv.UPDATE_ITEM_IN_FOOD',
 	},
 };
 

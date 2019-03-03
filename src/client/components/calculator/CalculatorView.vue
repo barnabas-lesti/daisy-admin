@@ -9,7 +9,11 @@
 			<p>A <b>trash icon</b> will appear on items when hoovered, click on this icon to remove an item from the table.</p>
 		</div>
 
-		<CalculatorMain />
+		<CalculatorMain
+			:value="calculatorModel"
+			:foodModel="foodModel"
+			:foodSearchString="foodSearchString"
+		/>
 	</div>
 </template>
 
@@ -20,6 +24,23 @@ export default {
 	name: 'CalculatorView',
 	components: {
 		CalculatorMain,
+	},
+	methods: {
+		
+	},
+	computed: {
+		calculatorModel () {
+			return this.$store.state.calculatorView.calculatorModel;
+		},
+		foodSearchString () {
+			return this.$store.state.calculatorView.foodSearchString;
+		},
+		foodModel () {
+			return this.$store.state.calculatorView.foodModel;
+		},
+	},
+	data () {
+		return {};
 	},
 };
 </script>

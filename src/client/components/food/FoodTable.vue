@@ -159,6 +159,8 @@ export default {
 
 <style lang="less">
 .FoodTable {
+	min-height: 25rem;
+
 	&_search {
 		margin-bottom: 1rem;
 	}

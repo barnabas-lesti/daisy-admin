@@ -31,8 +31,7 @@
 </template>
 
 <script>
-import ActionTypes from '../../store/ActionTypes';
-import MutationTypes from '../../store/MutationTypes';
+import { ActionTypes, MutationTypes } from '../../store';
 
 export default {
 	name: 'DashboardView',

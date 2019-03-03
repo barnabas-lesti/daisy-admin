@@ -1,7 +1,5 @@
-const ActionTypes = {
+export default {
 	dashboardView: {
-		INCREMENT_ASYNC: 'dashboardView.incrementAsync',
+		INCREMENT_ASYNC: 'dv.INCREMENT_ASYNC',
 	},
 };
-
-export default ActionTypes;

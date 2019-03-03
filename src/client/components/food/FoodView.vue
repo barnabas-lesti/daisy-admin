@@ -31,7 +31,7 @@
 
 		<FoodModal
 			v-if="modalSubject"
-			:initialValue="modalSubject"
+			:value="modalSubject"
 			@close="onModalClose()"
 			@save="onModalSave($event)"
 			@delete="onModalDelete($event)"
@@ -42,7 +42,7 @@
 <script>
 import Food from '../../models/Food';
 
-import MutationTypes from '../../store/MutationTypes';
+import { MutationTypes } from '../../store';
 
 import FoodTable from './FoodTable';
 import FoodModal from './FoodModal';

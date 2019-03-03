@@ -1,7 +1,7 @@
-import ActionTypes from './ActionTypes';
-import MutationTypes from './MutationTypes';
+import ActionTypes from '../ActionTypes';
+import MutationTypes from '../MutationTypes';
 
-const actions = {
+export default {
 	[ActionTypes.dashboardView.INCREMENT_ASYNC]: store => {
 		return new Promise(resolve => {
 			window.setTimeout(() => {
@@ -11,5 +11,3 @@ const actions = {
 		});
 	},
 };
-
-export default actions;

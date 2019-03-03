@@ -111,7 +111,7 @@ export default {
 		},
 		saveItem () {
 			this.isLoading = true;
-			const operationPromise = this.initialValue._id ? foodService.update(this.initialValue._id, this.subject) : foodService.save(this.subject);
+			const operationPromise = this.value._id ? foodService.update(this.value._id, this.subject) : foodService.save(this.subject);
 			operationPromise
 				.then(food => {
 					this.subject = this.subject._id ? this.subject : food;
@@ -133,11 +133,11 @@ export default {
 		emitSave () {
 			const {
 				subject,
-				initialValue,
+				value,
 			} = this;
 			this.$emit('save', {
 				subject,
-				initialValue,
+				initialValue: value,
 			});
 		},
 		emitError (error) {
@@ -145,14 +145,14 @@ export default {
 		},
 	},
 	props: {
-		initialValue: {
-			required: true,
+		value: {
+			default: () => { return {}; },
 			type: Object,
 		},
 	},
 	data () {
 		return {
-			subject: Utils.cloneDeep(this.initialValue),
+			subject: Utils.cloneDeep(this.value),
 			isLoading: false,
 		};
 	},
