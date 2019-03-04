@@ -1,47 +1,37 @@
 <template>
-	<div
-		:class="[
-			'LayoutSimpleNotification',
-			{ 'LayoutSimpleNotification-error': type === 'error' },
-			{ 'LayoutSimpleNotification-success': type === 'success' },
-		]"
-	>
-		<div
-			v-if="title"
-			class="LayoutSimpleNotification_header"
+	<div class="LayoutSimpleNotification">
+		<LayoutSimpleNotificationItem
+			v-for="(notification, index) of notifications"
+			class="LayoutSimpleNotification_item"
+			:key="index"
+			:type="notification.type"
+			:title="notification.title"
+			@close="removeNotification(index)"
 		>
-			{{ title }}
-		</div>
-		<div class="LayoutSimpleNotification_content">
-			<slot />
-		</div>
-		<Icon
-			class="LayoutSimpleNotification_closeIcon"
-			type="close"
-			@click.native="close()"
-		/>
+			{{ notification.content }}
+		</LayoutSimpleNotificationItem>
 	</div>
 </template>
 
 <script>
-import Icon from '../common/Icon';
+import notificationService from '../../services/notificationService';
+
+import LayoutSimpleNotificationItem from './LayoutSimpleNotificationItem';
 
 export default {
 	name: 'LayoutSimpleNotification',
 	components: {
-		Icon,
-	},
-	props: {
-		type: String,
-		title: String,
+		LayoutSimpleNotificationItem,
 	},
 	methods: {
-		close () {
-			this.$emit('close');
+		removeNotification (index) {
+			notificationService.removeNotificationByIndex(index);
 		},
 	},
 	data () {
-		return {};
+		return {
+			notifications: notificationService.getNotifications(),
+		};
 	},
 };
 </script>
@@ -50,42 +40,17 @@ export default {
 @import (reference) '../../styles/variables';
 
 .LayoutSimpleNotification {
-	@_infoBgColor: @colors_info0;
-	@_successBgColor: @colors_success0;
-	@_errorBgColor: @colors_error0;
-	@_itemBoxShadow: @common_aroundBoxShadow;
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+	width: 20rem;
+	font-size: 1rem;
 
-	background-color: @_infoBgColor;
-	padding: .5rem 1.5rem .5rem .5rem;
-	border-radius: 4px;
-	box-shadow: @_itemBoxShadow;
-	position: relative;
+	&_item {
+		margin-bottom: 1rem;
 
-	&-success {
-		background-color: @_successBgColor;
-	}
-
-	&-error {
-		background-color: @_errorBgColor;
-	}
-
-	&_header {
-		font-size: .9em;
-		font-weight: 500;
-		margin-bottom: .25rem;
-	}
-
-	&_content {
-		font-size: .8em;
-	}
-
-	&_closeIcon {
-		position: absolute;
-		top: .5rem;
-		right: .5rem;
-
-		&:hover {
-			cursor: pointer;
+		&:last-child {
+			margin-bottom: 0rem;
 		}
 	}
 }

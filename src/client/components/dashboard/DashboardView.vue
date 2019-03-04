@@ -23,19 +23,13 @@ export default {
 	components: {},
 	methods: {
 		addInfo () {
-			notificationService.info({
-				content: 'Lorem ipsum dolor sit amet.',
-			});
+			notificationService.info('info Lorem ipsum dolor sit amet. ');
 		},
 		addSuccess () {
-			notificationService.success({
-				content: 'Lorem ipsum dolor sit amet.',
-			});
+			notificationService.success('success Lorem ipsum dolor sit amet.');
 		},
 		addError () {
-			notificationService.error({
-				content: 'Lorem ipsum dolor sit amet.',
-			});
+			notificationService.error('error Lorem ipsum dolor sit amet.');
 		},
 	},
 	data () {

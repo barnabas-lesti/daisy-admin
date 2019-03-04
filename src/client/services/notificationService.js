@@ -1,6 +1,5 @@
 import Notification from '../models/Notification';
 
-const INTERVAL_STEP = 1000;
 const DEFAULT_NOTIFICATION_LIFESPAN = 3000;
 
 class NotificationService {
@@ -9,27 +8,23 @@ class NotificationService {
 	}
 
 	info (content) {
-		this.addNotification({
+		this._addNotification({
 			content,
 		});
 	}
 
 	success (content) {
-		this.addNotification({
+		this._addNotification({
 			type: 'success',
 			content,
 		});
 	}
 
 	error (content) {
-		this.addNotification({
+		this._addNotification({
 			type: 'error',
 			content,
 		});
-	}
-
-	addNotification (skeleton) {
-		this._notifications.push(new Notification(skeleton));
 	}
 
 	removeNotificationByIndex (index) {
@@ -40,23 +35,18 @@ class NotificationService {
 		return this._notifications;
 	}
 
-	starCleanupInterval () {
-		this._cleanupIntervalId = window.setInterval(() => {
-			if (this._notifications.length) {
-				const timePoint = (new Date()).getTime() - DEFAULT_NOTIFICATION_LIFESPAN;
-				const filtered = this._notifications.filter(item => {
-					return item.createdAt > timePoint;
-				});
-				this._notifications.splice(0, this._notifications.length);
-				this._notifications.push(...filtered);
-			}
-		}, INTERVAL_STEP);
-	}
-
-	stopCleanupInterval () {
-		if (this._cleanupIntervalId) {
-			window.clearInterval(this._cleanupIntervalId);
-		}
+	_addNotification (skeleton) {
+		const timeoutId = window.setTimeout(() => {
+			const filtered = this._notifications.filter(item => {
+				return item.timeoutId !== timeoutId;
+			});
+			this._notifications.splice(0, this._notifications.length);
+			this._notifications.push(...filtered);
+		}, DEFAULT_NOTIFICATION_LIFESPAN);
+		this._notifications.push(new Notification({
+			timeoutId,
+			...skeleton,
+		}));
 	}
 }
 
