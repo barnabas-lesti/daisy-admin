@@ -1,7 +1,6 @@
 <template>
 	<div class="FoodTable">
 		<SearchInput
-			autoSearch
 			class="FoodTable_search"
 			:initialValue="searchString"
 			:placeholder="searchPlaceholder"
@@ -95,7 +94,7 @@ export default {
 		},
 	},
 	methods: {
-		loadFood (searchString = '') {
+		loadFood (searchString) {
 			this.isLoading = true;
 			foodService.getMany({ searchString })
 				.then(food => this.setFood(food))
@@ -136,8 +135,8 @@ export default {
 			return this.items
 				.slice(0)
 				.sort((a, b) => {
-					const aName = a.name.toLowerCase();
-					const bName = b.name.toLowerCase();
+					const aName = (a.name || '').toLowerCase();
+					const bName = (b.name || '').toLowerCase();
 					if (aName < bName) return -1;
 					if (aName > bName) return 1;
 					return 0;
@@ -152,6 +151,7 @@ export default {
 	},
 	created () {
 		if (this.autoLoad) {
+			console.log('anyad');
 			this.loadFood();
 		}
 	},

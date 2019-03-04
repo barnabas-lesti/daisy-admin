@@ -35,6 +35,7 @@
 			@close="onModalClose()"
 			@save="onModalSave($event)"
 			@delete="onModalDelete($event)"
+			@error="onModalError()"
 		/>
 	</div>
 </template>
@@ -42,6 +43,7 @@
 <script>
 import Food from '../../models/Food';
 import storageService, { StorageKeys } from '../../services/storageService';
+import notificationService from '../../services/notificationService';
 
 import FoodTable from './FoodTable';
 import FoodModal from './FoodModal';
@@ -77,9 +79,14 @@ export default {
 			} else {
 				this.food.push(subject);
 			}
+			notificationService.success('Food successfully saved.');
 		},
 		onModalDelete ({ _id }) {
 			this.food = this.food.filter(item => item._id !== _id);
+			notificationService.success('Food successfully deleted.');
+		},
+		onModalError () {
+			notificationService.error('Unknown error occured.');
 		},
 	},
 	watch: {
@@ -101,7 +108,7 @@ export default {
 	created () {
 		this.food = storageService.fetchFromLocalStorage(StorageKeys.foodView.FOOD_MODEL);
 		this.searchString = storageService.fetchFromLocalStorage(StorageKeys.foodView.SEARCH_STRING);
-		this.loadFood = !this.food;
+		this.loadFood = (!this.food || this.food.length === 0);
 	},
 };
 </script>

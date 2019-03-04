@@ -7,15 +7,18 @@ const convertDocumentToResponse = doc => doc;
 
 const food = server => {
 	server.get('/api/food', async (req, res, next) => {
-		const { searchQuery = '' } = req.query;
-		const nameRegex = new RegExp(
-			searchQuery
-				.split(',')
-				.map(fragment => fragment.trim())
-				.join('|'),
-			'i'
-		);
-		const foodDocs = await Food.find({ name: nameRegex });
+		const { searchQuery } = req.query;
+		const findConditions = {};
+		if (searchQuery) {
+			findConditions.name = new RegExp(
+				searchQuery
+					.split(',')
+					.map(fragment => fragment.trim())
+					.join('|'),
+				'i'
+			);
+		}
+		const foodDocs = await Food.find(findConditions);
 		res.send(foodDocs.map(doc => convertDocumentToResponse(doc)));
 		return next();
 	});

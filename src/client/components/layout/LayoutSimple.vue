@@ -7,20 +7,23 @@
 			</div>
 		</div>
 		<LayoutSimpleFooter :menuItems="menuItems" />
+		<LayoutSimpleNotifications />
 	</div>
 </template>
 
 <script>
 import menuItems from '../../common/menuItems';
 
-import LayoutSimpleHeader from './LayoutSimpleHeader';
 import LayoutSimpleFooter from './LayoutSimpleFooter';
+import LayoutSimpleHeader from './LayoutSimpleHeader';
+import LayoutSimpleNotifications from './LayoutSimpleNotifications';
 
 export default {
 	name: 'LayoutSimple',
 	components: {
-		LayoutSimpleHeader,
 		LayoutSimpleFooter,
+		LayoutSimpleHeader,
+		LayoutSimpleNotifications,
 	},
 	data () {
 		return {

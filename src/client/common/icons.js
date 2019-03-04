@@ -8,6 +8,7 @@ const icons = {
 	'trash': 'far fa-trash-alt',
 	'arrow-double-left': 'fas fa-angle-double-left',
 	'info': 'fas fa-info-circle',
+	'close': 'fas fa-times',
 };
 
 export default icons;
