@@ -57,6 +57,7 @@
 <script>
 import Recipe from '../../models/Recipe';
 import recipesService from '../../services/recipesService';
+import notificationService from '../../services/notificationService';
 
 import LoadingOverlay from '../common/LoadingOverlay';
 import CalculatorMain from '../calculator/CalculatorMain';
@@ -90,9 +91,11 @@ export default {
 							},
 						});
 					}
+					notificationService.success('Recipe successfully saved.');
 				})
 				.catch(error => {
 					console.error(error);
+					notificationService.error('Unknown error occured.');
 				})
 				.finally(() => this.isLoading = false);
 		},
@@ -101,9 +104,11 @@ export default {
 			recipesService.delete(this.recipe._id)
 				.then(() => {
 					this.$router.push({ name: 'recipes' });
+					notificationService.success('Recipe successfully deleted.');
 				})
 				.catch(error => {
 					console.error(error);
+					notificationService.error('Unknown error occured.');
 					this.isLoading = false;
 				});
 		},

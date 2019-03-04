@@ -8,8 +8,8 @@ class FoodService {
 
 	// getOne (_id) {}
 
-	async getMany ({ searchString = '' }) {
-		const searchQuery = searchString;
+	async getMany ({ searchString }) {
+		const searchQuery = searchString || undefined;
 		const food = await httpService.get(`/food`, { searchQuery });
 		return food;
 	}
