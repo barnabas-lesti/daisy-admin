@@ -12,6 +12,10 @@ const MutationTypes = {
 		REMOVE_FOOD: 'fv.REMOVE_FOOD',
 		UPDATE_ITEM_IN_FOOD: 'fv.UPDATE_ITEM_IN_FOOD',
 	},
+
+	calculatorView: {
+		SET_CALCULATOR_MODEL: 'cv.SET_CALCULATOR_MODEL',
+	},
 };
 
 export default MutationTypes;

@@ -2,7 +2,7 @@
 	<div class="CalculatorMain">
 		<div class="columns">
 			<div class="column is-three-quarters">
-				<CalculatorTable v-model="value" />
+				<CalculatorTable v-model="calculatorModel" />
 			</div>
 			<div class="column">
 				<CalculatorFoodSelector
@@ -32,7 +32,6 @@ export default {
 	methods: {
 		onFoodSelect ({ selectedFood }) {
 			this.calculatorModel.push(new RecipeItem(selectedFood));
-			this.emitInput(newValue);
 		},
 		onFoodSearch ({ searchString }) {
 			this.emitFoodSearch(searchString);
@@ -41,8 +40,8 @@ export default {
 		emitInput (value) {
 			this.$emit('input', value);
 		},
-		emitFoodSearch (searchString) {
-			this.$emit('foodSearch', searchString);
+		emitFoodSearch ({ searchString, food }) {
+			this.$emit('foodSearch', { searchString, food });
 		},
 	},
 	props: {

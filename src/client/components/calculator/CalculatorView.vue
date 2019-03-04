@@ -10,14 +10,17 @@
 		</div>
 
 		<CalculatorMain
-			:value="calculatorModel"
+			v-model="calculatorModel"
 			:foodModel="foodModel"
 			:foodSearchString="foodSearchString"
+			@foodSearch="onFoodSearch($event)"
 		/>
 	</div>
 </template>
 
 <script>
+import { MutationTypes } from '../../store';
+
 import CalculatorMain from './CalculatorMain';
 
 export default {
@@ -26,11 +29,18 @@ export default {
 		CalculatorMain,
 	},
 	methods: {
-		
+		onFoodSearch (args) {
+			console.log(args);
+		},
 	},
 	computed: {
-		calculatorModel () {
-			return this.$store.state.calculatorView.calculatorModel;
+		calculatorModel: {
+			set (newValue) {
+				this.$store.commit(MutationTypes.calculatorView.SHOW_MODAL, 'modalSubject');
+			},
+			get () {
+				return this.$store.state.calculatorView.calculatorModel;
+			},
 		},
 		foodSearchString () {
 			return this.$store.state.calculatorView.foodSearchString;
