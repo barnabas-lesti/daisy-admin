@@ -7,7 +7,7 @@
 			</div>
 		</div>
 		<LayoutSimpleFooter :menuItems="menuItems" />
-		<LayoutSimpleNotifications />
+		<LayoutSimpleNotification />
 	</div>
 </template>
 
@@ -16,14 +16,14 @@ import menuItems from '../../common/menuItems';
 
 import LayoutSimpleFooter from './LayoutSimpleFooter';
 import LayoutSimpleHeader from './LayoutSimpleHeader';
-import LayoutSimpleNotifications from './LayoutSimpleNotifications';
+import LayoutSimpleNotification from './LayoutSimpleNotification';
 
 export default {
 	name: 'LayoutSimple',
 	components: {
 		LayoutSimpleFooter,
 		LayoutSimpleHeader,
-		LayoutSimpleNotifications,
+		LayoutSimpleNotification,
 	},
 	data () {
 		return {
