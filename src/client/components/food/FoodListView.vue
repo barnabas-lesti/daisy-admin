@@ -1,20 +1,20 @@
 <template>
-	<div class="RecipesListView view">
-		<h1>Recipes</h1>
+	<div class="FoodListView view">
+		<h1>Food</h1>
 
 		<div class="view_section">
 			<router-link
 				class="button is-primary"
-				:to="{ name: 'recipeNew' }"
+				:to="{ name: 'foodNew' }"
 			>
-				New recipe
+				New food
 			</router-link>
 		</div>
 
 		<div class="view_section">
 			<SearchInput
 				autoSearch
-				placeholder="Search for recipes"
+				placeholder="Search for food"
 				:initialValue="searchString"
 				@search="onSearch($event)"
 			/>
@@ -26,9 +26,9 @@
 				dark
 			/>
 
-			<RecipesTable
+			<FoodTable
 				v-if="!isLoading && loadOccurred"
-				:recipes="recipes"
+				:food="food"
 			/>
 		</div>
 	</div>
@@ -36,30 +36,30 @@
 
 <script>
 import logger from '../../common/logger';
-import recipesService from '../../services/recipesService';
+import foodService from '../../services/foodService';
 import notificationService from '../../services/notificationService';
 
 import Loader from '../common/Loader';
 import SearchInput from '../common/SearchInput';
-import RecipesTable from './RecipesTable';
+import FoodTable from './FoodTable';
 
 export default {
-	name: 'RecipesListView',
+	name: 'FoodListView',
 	components: {
 		Loader,
 		SearchInput,
-		RecipesTable,
+		FoodTable,
 	},
 	methods: {
 		onSearch ({ searchString }) {
-			this.loadRecipes(searchString);
+			this.loadFood(searchString);
 		},
 
-		loadRecipes (searchString) {
+		loadFood (searchString) {
 			this.isLoading = true;
 			this.loadOccurred = true;
-			recipesService.getMany({ searchString })
-				.then(recipes => this.recipes = recipes)
+			foodService.getMany({ searchString })
+				.then(food => this.food = food)
 				.catch(error => {
 					notificationService.error('Sorry, but an error occured.');
 					logger.error(error);
@@ -72,7 +72,7 @@ export default {
 			isLoading: false,
 			loadOccurred: false,
 			searchString: '',
-			recipes: [],
+			food: [],
 		};
 	},
 };

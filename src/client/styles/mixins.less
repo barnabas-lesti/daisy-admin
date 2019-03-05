@@ -1,3 +1,5 @@
-.transition(@prop) {
-	transition: @prop ease .2s;
+.transition(...) {
+	transition-property: @arguments;
+	transition-duration: .2s;
+	transition-timing-function: ease;
 }

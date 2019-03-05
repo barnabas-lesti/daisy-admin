@@ -5,14 +5,14 @@ const menuItems = [
 		routeName: 'dashboard',
 	},
 	{
-		icon: 'food',
-		label: 'Food',
-		routeName: 'food',
-	},
-	{
 		icon: 'calculator',
 		label: 'Calculator',
 		routeName: 'calculator',
+	},
+	{
+		icon: 'food',
+		label: 'Food',
+		routeName: 'food',
 	},
 	{
 		icon: 'recipe',

@@ -9,14 +9,14 @@
 
 		<div class="view_section">
 			<button
-				class="RecipesSingleView_action button is-primary"
+				class="view_action button is-primary"
 				@click="onSaveButtonClick()"
 			>
 				Save recipe
 			</button>
 			<button
 				v-if="recipe._id"
-				class="RecipesSingleView_action button is-danger"
+				class="view_action button is-danger"
 				@click="onDeleteButtonClick()"
 			>
 				Delete recipe
@@ -144,15 +144,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="less">
-.RecipesSingleView {
-	&_action {
-		margin-right: 1rem;
-
-		&:last-child {
-			margin-right: 0;
-		}
-	}
-}
-</style>

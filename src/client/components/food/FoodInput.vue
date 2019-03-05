@@ -1,5 +1,5 @@
 <template>
-	<div class="FoodModalInput field">
+	<div class="FoodInput field">
 		<div class="control">
 			<label
 				v-if="label"
@@ -13,8 +13,8 @@
 				:value="value"
 				:class="[
 					'input',
-					'FoodModalInput_input',
-					{ 'FoodModalInput_input-hasPostfix': postfix },
+					'FoodInput_input',
+					{ 'FoodInput_input-hasPostfix': postfix },
 				]"
 				@input="onInput($event)"
 			/>
@@ -32,7 +32,7 @@
 			</div>
 			<span
 				v-if="postfix"
-				class="FoodModalInput_postfix"
+				class="FoodInput_postfix"
 			>
 				{{ postfix }}
 			</span>
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-	name: 'FoodModalInput',
+	name: 'FoodInput',
 	methods: {
 		onInput ({ target }) {
 			this.$emit('input', target.value);
@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style lang="less">
-.FoodModalInput {
+.FoodInput {
 	&_postfix {
 			display: inline-block;
 			margin-top: 0.5rem;
