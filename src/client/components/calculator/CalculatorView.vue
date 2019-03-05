@@ -10,18 +10,23 @@
 		</div>
 
 		<div class="view_section">
-			<CalculatorMain />
+			<Calculator v-model="calculatorData" />
 		</div>
 	</div>
 </template>
 
 <script>
-import CalculatorMain from './CalculatorMain';
+import Calculator from './Calculator';
 
 export default {
 	name: 'CalculatorView',
 	components: {
-		CalculatorMain,
+		Calculator,
+	},
+	data () {
+		return {
+			calculatorData: [],
+		};
 	},
 };
 </script>

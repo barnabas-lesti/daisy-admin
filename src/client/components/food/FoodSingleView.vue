@@ -85,18 +85,19 @@ export default {
 	},
 	methods: {
 		onSaveButtonClick () {
-			this.saveFood(this.food);
+			this.saveFood();
 		},
 		onDeleteButtonClick () {
-			this.deleteFood(this.food._id);
+			this.deleteFood();
 		},
 
-		saveFood (food) {
+		saveFood () {
 			this.isLoading = true;
-			const operationPromise = food._id ? foodService.update(food._id, food) : foodService.save(food);
+			const operationPromise = this.food._id
+				? foodService.update(this.food._id, this.food) : foodService.save(this.food);
 			operationPromise
 				.then(food => {
-					if (food._id) {
+					if (!this.food._id) {
 						this.food = food;
 						this.$router.push({
 							name: 'foodEdit',
@@ -114,7 +115,7 @@ export default {
 				})
 				.finally(() => this.isLoading = false);
 		},
-		deleteFood (_id) {
+		deleteFood () {
 			this.isLoading = true;
 			foodService.delete(this.food._id)
 				.then(() => {

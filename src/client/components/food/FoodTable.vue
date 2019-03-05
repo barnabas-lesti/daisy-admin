@@ -4,11 +4,6 @@
 			No food found.
 		</p>
 
-		<p v-else-if="food.length > maxNumberOfItems">
-			More than {{ maxNumberOfItems }} food were found, {{ food.length - maxNumberOfItems }}
-			{{ (food.length - maxNumberOfItems) > 1 ? 'food are' : 'food is' }} not visible.
-		</p>
-
 		<div
 			v-else
 			class="table table-fullWidth table-hoverable"
@@ -25,7 +20,7 @@
 			</div>
 			<div class="table_body">
 				<router-link
-					v-for="(food, index) of computedFood"
+					v-for="(food, index) of food"
 					class="table_row"
 					:key="index"
 					:to="{
@@ -49,28 +44,12 @@
 </template>
 
 <script>
-import Utils from '../../common/Utils';
-
-const DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
-
 export default {
 	name: 'FoodTable',
 	props: {
 		food: {
 			default: () => [],
 			type: Array,
-		},
-		maxNumberOfItems: {
-			default: () => DEFAULT_MAX_NUMBER_OF_ITEMS,
-			type: Number,
-		},
-	},
-	computed: {
-		computedFood () {
-			return this.food
-				.slice(0)
-				.sort(Utils.sortByName)
-				.slice(0, this.maxNumberOfItems);
 		},
 	},
 };

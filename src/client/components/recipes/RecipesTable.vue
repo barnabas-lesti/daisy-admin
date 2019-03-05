@@ -4,11 +4,6 @@
 			No recipes found.
 		</p>
 
-		<p v-else-if="recipes.length > maxNumberOfItems">
-			More than {{ maxNumberOfItems }} recipes were found, {{ recipes.length - maxNumberOfItems }}
-			{{ (recipes.length - maxNumberOfItems) > 1 ? 'recipes are' : 'recipe is' }} not visible.
-		</p>
-
 		<div
 			v-else
 			class="table table-fullWidth table-hoverable"
@@ -47,10 +42,7 @@
 </template>
 
 <script>
-import Utils from '../../common/Utils';
 import calculatorService from '../../services/calculatorService';
-
-const DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
 
 export default {
 	name: 'RecipesTable',
@@ -59,20 +51,14 @@ export default {
 			default: () => [],
 			type: Array,
 		},
-		maxNumberOfItems: {
-			default: () => DEFAULT_MAX_NUMBER_OF_ITEMS,
-			type: Number,
-		},
 	},
 	computed: {
 		computedRecipes () {
 			return this.recipes
 				.map(recipe => {
-					recipe.nutritionSummary = calculatorService.getNutritionSummaryForRecipe(recipe);
+					recipe.nutritionSummary = calculatorService.getNutritionSummaryFromRecipe(recipe);
 					return recipe;
-				})
-				.sort(Utils.sortByName)
-				.slice(0, this.maxNumberOfItems);
+				});
 		},
 	},
 };

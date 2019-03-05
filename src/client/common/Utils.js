@@ -7,12 +7,15 @@ const Utils = {
 		const divider = Math.pow(10, decimals);
 		return Math.round(number * divider) / divider;
 	},
-	sortByName: (a, b) => {
-		const aName = (a.name || '').toLowerCase();
-		const bName = (b.name || '').toLowerCase();
-		if (aName < bName) return -1;
-		if (aName > bName) return 1;
-		return 0;
+	sortByName: (order = 'asc') => {
+		const isAscending = order === 'asc';
+		return (a, b) => {
+			const aName = (a.name || '').toLowerCase();
+			const bName = (b.name || '').toLowerCase();
+			if (aName < bName) return isAscending ? -1 : 1;
+			if (aName > bName) return isAscending ? 1 : -1;
+			return 0;
+		};
 	},
 };
 

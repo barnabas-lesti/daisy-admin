@@ -1,5 +1,8 @@
 import httpService from './httpService';
 
+const DEFAULT_COUNT = 20;
+const DEFAULT_SORT_ORDER = 'asc';
+
 class FoodService {
 	async save (food) {
 		const result = await httpService.put('/food', food);
@@ -11,9 +14,17 @@ class FoodService {
 		return food;
 	}
 
-	async getMany ({ searchString }) {
+	async getMany ({
+		count = DEFAULT_COUNT,
+		sortOrder = DEFAULT_SORT_ORDER,
+		searchString,
+	}) {
 		const searchQuery = searchString || undefined;
-		const food = await httpService.get(`/food`, { searchQuery });
+		const food = await httpService.get(`/food`, {
+			count,
+			sortOrder,
+			searchQuery,
+		});
 		return food;
 	}
 
