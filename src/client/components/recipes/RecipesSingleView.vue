@@ -2,54 +2,53 @@
 	<div class="RecipesSingleView view">
 		<h1>{{ recipe.name || 'New Recipe' }}</h1>
 
-		<div class="RecipesSingleView_content">
-			<LoadingOverlay
-				v-if="isLoading"
-				light
-			/>
-			<div class="view_section">
-				<button
-					class="RecipesSingleView_action button is-primary"
-					@click="onSaveButtonClick()"
-				>
-					Save recipe
-				</button>
-				<button
-					v-if="recipe._id"
-					class="RecipesSingleView_action button is-danger"
-					@click="onDeleteButtonClick()"
-				>
-					Delete recipe
-				</button>
-			</div>
+		<LoadingOverlay
+			v-if="isLoading"
+			light
+		/>
 
-			<div class="view_section">
-				<div class="control">
-					<label class="label">Name</label>
-					<input
-						v-model="recipe.name"
-						class="input"
-						type="text"
-					/>
-				</div>
-			</div>
+		<div class="view_section">
+			<button
+				class="RecipesSingleView_action button is-primary"
+				@click="onSaveButtonClick()"
+			>
+				Save recipe
+			</button>
+			<button
+				v-if="recipe._id"
+				class="RecipesSingleView_action button is-danger"
+				@click="onDeleteButtonClick()"
+			>
+				Delete recipe
+			</button>
+		</div>
 
-			<div class="view_section">
-				<div class="control">
-					<label class="label">Description</label>
-					<textarea
-						v-model="recipe.description"
-						class="textarea"
-					></textarea>
-				</div>
-			</div>
-
-			<div class="view_section">
-				<CalculatorMain
-					v-if="recipe.items"
-					v-model="recipe.items"
+		<div class="view_section">
+			<div class="control">
+				<label class="label">Name</label>
+				<input
+					v-model="recipe.name"
+					class="input"
+					type="text"
 				/>
 			</div>
+		</div>
+
+		<div class="view_section">
+			<div class="control">
+				<label class="label">Description</label>
+				<textarea
+					v-model="recipe.description"
+					class="textarea"
+				></textarea>
+			</div>
+		</div>
+
+		<div class="view_section">
+			<CalculatorMain
+				v-if="recipe.items"
+				v-model="recipe.items"
+			/>
 		</div>
 	</div>
 </template>
