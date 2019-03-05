@@ -1,60 +1,60 @@
 <template>
-	<div class="RecipesSingleView">
+	<div class="RecipesSingleView view">
 		<h1>{{ recipe.name || 'New Recipe' }}</h1>
 
-		<div class="RecipesSingleView_content">
-			<LoadingOverlay
-				v-if="isLoading"
-				light
-			/>
-			<div class="field">
-				<button
-					class="RecipesSingleView_action button is-primary"
-					@click="onSaveButtonClick()"
-				>
-					Save recipe
-				</button>
-				<button
-					v-if="recipe._id"
-					class="RecipesSingleView_action button is-danger"
-					@click="onDeleteButtonClick()"
-				>
-					Delete recipe
-				</button>
-			</div>
+		<LoadingOverlay
+			v-if="isLoading"
+			light
+		/>
 
-			<div class="field">
-				<div class="control">
-					<label class="label">Name</label>
-					<input
-						v-model="recipe.name"
-						class="input"
-						type="text"
-					/>
-				</div>
-			</div>
+		<div class="view_section">
+			<button
+				class="RecipesSingleView_action button is-primary"
+				@click="onSaveButtonClick()"
+			>
+				Save recipe
+			</button>
+			<button
+				v-if="recipe._id"
+				class="RecipesSingleView_action button is-danger"
+				@click="onDeleteButtonClick()"
+			>
+				Delete recipe
+			</button>
+		</div>
 
-			<div class="field">
-				<div class="control">
-					<label class="label">Description</label>
-					<textarea
-						v-model="recipe.description"
-						class="textarea"
-					></textarea>
-				</div>
-			</div>
-
-			<div class="field">
-				<CalculatorMain
-					v-if="recipe.items"
-					v-model="recipe.items"
+		<div class="view_section">
+			<div class="control">
+				<label class="label">Name</label>
+				<input
+					v-model="recipe.name"
+					class="input"
+					type="text"
 				/>
 			</div>
+		</div>
+
+		<div class="view_section">
+			<div class="control">
+				<label class="label">Description</label>
+				<textarea
+					v-model="recipe.description"
+					class="textarea"
+				></textarea>
+			</div>
+		</div>
+
+		<div class="view_section">
+			<CalculatorMain
+				v-if="recipe.items"
+				v-model="recipe.items"
+			/>
 		</div>
 	</div>
 </template>
 
 <script>
+import logger from '../../common/logger';
 import Recipe from '../../models/Recipe';
 import recipesService from '../../services/recipesService';
 import notificationService from '../../services/notificationService';
@@ -94,8 +94,8 @@ export default {
 					notificationService.success('Recipe successfully saved.');
 				})
 				.catch(error => {
-					console.error(error);
-					notificationService.error('Unknown error occured.');
+					logger.error(error);
+					notificationService.error('Sorry, but an error occured.');
 				})
 				.finally(() => this.isLoading = false);
 		},
@@ -107,8 +107,8 @@ export default {
 					notificationService.success('Recipe successfully deleted.');
 				})
 				.catch(error => {
-					console.error(error);
-					notificationService.error('Unknown error occured.');
+					logger.error(error);
+					notificationService.error('Sorry, but an error occured.');
 					this.isLoading = false;
 				});
 		},
@@ -119,7 +119,8 @@ export default {
 					this.recipe = recipe;
 				})
 				.catch(error => {
-					console.error(error);
+					logger.error(error);
+					notificationService.error('Sorry, but an error occured.');
 				})
 				.finally(() => this.isLoading = false);
 		},
@@ -145,11 +146,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/partials';
-
 .RecipesSingleView {
-	&:extend(.page all);
-
 	&_action {
 		margin-right: 1rem;
 

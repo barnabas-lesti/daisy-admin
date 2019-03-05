@@ -1,8 +1,8 @@
 <template>
-	<div class="RecipesListView">
+	<div class="RecipesListView view">
 		<h1>Recipes</h1>
 
-		<div class="field">
+		<div class="view_section">
 			<button
 				class="button is-primary"
 				@click="onNewButtonClick()"
@@ -11,7 +11,7 @@
 			</button>
 		</div>
 
-		<div class="field">
+		<div class="view_section">
 			<SearchInput
 				autoSearch
 				placeholder="Search for recipes"
@@ -20,55 +20,39 @@
 			/>
 		</div>
 
-		<Loader
-			v-if="isLoading"
-			dark
-		/>
-
-		<div class="field">
-			<RecipesCardList
-				v-if="!isLoading && recipes && recipes.length"
-				:items="recipes"
-				@select="onRecipeSelect($event)"
+		<div class="RecipesListView_content view_section">
+			<Loader
+				v-if="isLoading"
+				dark
 			/>
 
-			<p v-if="recipes && recipes.length > maxNumberOfRecipes">
-				More than {{ maxNumberOfRecipes }} recipes were found, {{ recipes.length - maxNumberOfRecipes }}
-				{{ (recipes.length - maxNumberOfRecipes) > 1 ? 'recipes are' : 'recipe is' }} not visible.
-			</p>
-
-			<p v-if="loadOccurred && recipes && recipes.length === 0">
-				No recipes found.
-			</p>
+			<RecipesTable
+				v-if="!isLoading && loadOccurred"
+				:recipes="recipes"
+			/>
 		</div>
 	</div>
 </template>
 
 <script>
+import logger from '../../common/logger';
 import recipesService from '../../services/recipesService';
+import notificationService from '../../services/notificationService';
 
 import Loader from '../common/Loader';
 import SearchInput from '../common/SearchInput';
-import RecipesCardList from './RecipesCardList';
-
-const MAX_NUMBER_OF_RECIPES = 20;
+import RecipesTable from './RecipesTable';
 
 export default {
 	name: 'RecipesListView',
 	components: {
-		RecipesCardList,
 		Loader,
 		SearchInput,
+		RecipesTable,
 	},
 	methods: {
 		onSearch ({ searchString }) {
 			this.loadRecipes(searchString);
-		},
-		onRecipeSelect ({ selectedItem }) {
-			this.navigateToRecipe(selectedItem);
-		},
-		onNewButtonClick () {
-			this.navigateToRecipe();
 		},
 
 		loadRecipes (searchString) {
@@ -76,44 +60,20 @@ export default {
 			this.loadOccurred = true;
 			recipesService.getMany({ searchString })
 				.then(recipes => this.recipes = recipes)
-				.catch(error => console.log(error))
+				.catch(error => {
+					notificationService.error('Sorry, but an error occured.');
+					logger.error(error);
+				})
 				.finally(() => this.isLoading = false);
-		},
-		navigateToRecipe (recipe) {
-			if (recipe) {
-				this.$router.push({
-					name: 'recipeEdit',
-					params: {
-						_id: recipe._id,
-						recipe,
-					},
-				});
-			} else {
-				this.$router.push({ name: 'recipeNew' });
-			}
 		},
 	},
 	data () {
 		return {
 			isLoading: false,
 			loadOccurred: false,
-			searchString: undefined,
-			maxNumberOfRecipes: MAX_NUMBER_OF_RECIPES,
-			recipes: undefined,
+			searchString: '',
+			recipes: [],
 		};
 	},
 };
 </script>
-
-<style lang="less">
-@import (reference) '../../styles/partials';
-@import (reference) '../../styles/variables';
-
-.RecipesListView {
-	&:extend(.page all);
-
-	&_list {
-		margin-bottom: 1rem;
-	}
-}
-</style>
