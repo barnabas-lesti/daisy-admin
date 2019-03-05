@@ -7,6 +7,13 @@ const Utils = {
 		const divider = Math.pow(10, decimals);
 		return Math.round(number * divider) / divider;
 	},
+	sortByName: (a, b) => {
+		const aName = (a.name || '').toLowerCase();
+		const bName = (b.name || '').toLowerCase();
+		if (aName < bName) return -1;
+		if (aName > bName) return 1;
+		return 0;
+	},
 };
 
 export default Utils;

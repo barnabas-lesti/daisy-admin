@@ -3,6 +3,9 @@
 
 @import (css) url('https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css');
 
+@import './common/table';
+@import './common/view';
+
 html,
 body {
 	height: 100%;
@@ -15,36 +18,11 @@ a {
 h1 {
 	font-size: 2em;
 	font-weight: 500;
+	margin-bottom: 1rem;
 }
 
 h2 {
 	font-size: 1.5em;
 	font-weight: 500;
-}
-
-.table {
-	&.is-hoverable {
-		tbody {
-			tr {
-				.transition(background-color);
-				background-color: @colors_light0;
-
-				&:hover {
-					cursor: pointer;
-				}
-			}
-		}
-	}
-
-	td {
-		vertical-align: middle;
-	}
-}
-
-.field {
-	margin-bottom: 1rem !important;
-
-	&:last-child {
-		margin-bottom: 0 !important;
-	}
+	margin-bottom: .8rem;
 }

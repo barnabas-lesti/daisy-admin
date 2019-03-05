@@ -1,8 +1,8 @@
 <template>
-	<div class="FoodView">
+	<div class="FoodView view">
 		<h1>Food</h1>
 
-		<div class="FoodView_description">
+		<div class="view_section view_section-description">
 			<p>On this page you can <b>create/modify/delete</b> food.</p>
 			<p>To create a new item simply click on the <b>New button</b>. A <b>modal</b> will pop up where you can enter the information about the food.</p>
 			<p>
@@ -12,7 +12,7 @@
 			<p>Edit the fields and/or <b>click on the appropriate button</b> to save or delete the item.</p>
 		</div>
 
-		<div class="FoodView_actions">
+		<div class="view_section">
 			<button
 				class="button is-primary"
 				@click="onNewButtonClick()"
@@ -112,20 +112,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="less">
-@import (reference) '../../styles/partials';
-
-.FoodView {
-	&:extend(.page all);
-
-	&_description {
-		margin-bottom: 1.5rem;
-		font-size: .9em;
-	}
-
-	&_actions {
-		margin-bottom: 1rem;
-	}
-}
-</style>
