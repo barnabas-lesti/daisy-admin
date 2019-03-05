@@ -45,7 +45,7 @@
 		</div>
 
 		<div class="view_section">
-			<CalculatorMain
+			<Calculator
 				v-if="recipe.items"
 				v-model="recipe.items"
 			/>
@@ -60,28 +60,29 @@ import recipesService from '../../services/recipesService';
 import notificationService from '../../services/notificationService';
 
 import LoadingOverlay from '../common/LoadingOverlay';
-import CalculatorMain from '../calculator/CalculatorMain';
+import Calculator from '../calculator/Calculator';
 
 export default {
 	name: 'RecipesSingleView',
 	components: {
 		LoadingOverlay,
-		CalculatorMain,
+		Calculator,
 	},
 	methods: {
 		onSaveButtonClick () {
-			this.saveRecipe(this.recipe);
+			this.saveRecipe();
 		},
 		onDeleteButtonClick () {
-			this.deleteRecipe(this.recipe._id);
+			this.deleteRecipe();
 		},
 
-		saveRecipe (recipe) {
+		saveRecipe () {
 			this.isLoading = true;
-			const operationPromise = recipe._id ? recipesService.update(recipe._id, recipe) : recipesService.save(recipe);
+			const operationPromise = this.recipe._id
+				? recipesService.update(this.recipe._id, this.recipe) : recipesService.save(this.recipe);
 			operationPromise
 				.then(recipe => {
-					if (recipe._id) {
+					if (!this.recipe._id) {
 						this.recipe = recipe;
 						this.$router.push({
 							name: 'recipeEdit',
@@ -99,7 +100,7 @@ export default {
 				})
 				.finally(() => this.isLoading = false);
 		},
-		deleteRecipe (_id) {
+		deleteRecipe () {
 			this.isLoading = true;
 			recipesService.delete(this.recipe._id)
 				.then(() => {

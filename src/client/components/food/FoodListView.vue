@@ -52,13 +52,14 @@ export default {
 	},
 	methods: {
 		onSearch ({ searchString }) {
-			this.loadFood(searchString);
+			this.searchString = searchString;
+			this.loadFood();
 		},
 
-		loadFood (searchString) {
+		loadFood () {
 			this.isLoading = true;
 			this.loadOccurred = true;
-			foodService.getMany({ searchString })
+			foodService.getMany({ searchString: this.searchString })
 				.then(food => this.food = food)
 				.catch(error => {
 					notificationService.error('Sorry, but an error occured.');

@@ -1,7 +1,7 @@
 import NutritionSummary from '../models/NutritionSummary';
 
 class CalculatorService {
-	getNutritionSummaryForRecipeItem (recipeItem) {
+	getNutritionSummaryFromRecipeItem (recipeItem) {
 		const nutritionSummary = new NutritionSummary();
 		const food = recipeItem.food;
 		if (food !== null) {
@@ -15,16 +15,33 @@ class CalculatorService {
 		return nutritionSummary;
 	}
 
-	getNutritionSummaryForRecipe (recipe) {
+	getNutritionSummaryFromRecipeItems (recipeItems) {
 		const nutritionSummary = new NutritionSummary();
-		for (const item of recipe.items) {
-			const itemNutritionSummary = this.getNutritionSummaryForRecipeItem(item);
+		for (const item of recipeItems) {
+			const itemNutritionSummary = this.getNutritionSummaryFromRecipeItem(item);
 			nutritionSummary.calories += itemNutritionSummary.calories;
 			nutritionSummary.carbs += itemNutritionSummary.carbs;
 			nutritionSummary.fat += itemNutritionSummary.fat;
 			nutritionSummary.protein += itemNutritionSummary.protein;
 		}
 		return nutritionSummary;
+	}
+
+	getNutritionSummaryFromRecipe (recipe) {
+		return this.getNutritionSummaryFromRecipeItems(recipe.items);
+	}
+
+	getNutritionSummaryPercentagesFromNutritionSummary (nutritionSummary) {
+		const divider = nutritionSummary.protein + nutritionSummary.fat + nutritionSummary.carbs;
+		return {
+			protein: (nutritionSummary.protein / divider * 100) || 0,
+			fat: (nutritionSummary.fat / divider * 100) || 0,
+			carbs: (nutritionSummary.carbs / divider * 100) || 0,
+		};
+	}
+
+	getServingMultipliedMacro (macro, serving) {
+		return macro.servingMultiplier * (serving.value || 0);
 	}
 }
 

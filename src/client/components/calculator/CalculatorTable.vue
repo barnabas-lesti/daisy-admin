@@ -1,49 +1,44 @@
 <template>
 	<div class="CalculatorTable">
-		<table class="table is-fullwidth">
-			<thead>
-				<tr>
-					<th v-if="!onlySummary">Name</th>
-					<th v-if="!onlySummary">Serving</th>
-					<th>Calories</th>
-					<th>Protein</th>
-					<th>Fat</th>
-					<th>Carbs</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr
-					v-if="!noSummary"
-					class="CalculatorTable_tableRow CalculatorTable_tableRow-summary"
-				>
-					<td v-if="!onlySummary">Summary</td>
-					<td v-if="!onlySummary"></td>
-					<td>{{ summaryValues.calories.toFixed(0) }} kcal</td>
-					<td>{{ summaryValues.protein.toFixed(0) }} g</td>
-					<td>{{ summaryValues.fat.toFixed(0) }} g</td>
-					<td>{{ summaryValues.carbs.toFixed(0) }} g</td>
-					<td></td>
-				</tr>
-				<tr
-					v-if="!noSummary"
-					class="CalculatorTable_tableRow CalculatorTable_tableRow-summary CalculatorTable_tableRow-summaryPercent"
-				>
-					<td v-if="!onlySummary"></td>
-					<td v-if="!onlySummary"></td>
-					<td></td>
-					<td>{{ summaryPercentages.protein.toFixed(0) }} %</td>
-					<td>{{ summaryPercentages.fat.toFixed(0) }} %</td>
-					<td>{{ summaryPercentages.carbs.toFixed(0) }} %</td>
-					<td></td>
-				</tr>
-				<tr
-					v-for="(item, index) in (onlySummary ? [] : sortedItems)"
-					class="CalculatorTable_tableRow"
-					:key="index"
-				>
-					<td>{{ item.food.name }}</td>
-					<td>
+		<div class="table table-fullWidth">
+			<div class="table_header">
+				<div class="table_row">
+					<div class="table_cell">Name</div>
+					<div class="table_cell">Serving</div>
+					<div class="table_cell">Calories</div>
+					<div class="table_cell">Protein</div>
+					<div class="table_cell">Fat</div>
+					<div class="table_cell">Carbs</div>
+					<div class="table_cell"></div>
+				</div>
+			</div>
+			<div class="table_body">
+				<div class="CalculatorTable_tableRow CalculatorTable_tableRow-summary table_row">
+					<div class="table_cell">Summary</div>
+					<div class="table_cell"></div>
+					<div class="table_cell">{{ nutritionSummary.calories.toFixed(0) }} kcal</div>
+					<div class="table_cell">{{ nutritionSummary.protein.toFixed(0) }} g</div>
+					<div class="table_cell">{{ nutritionSummary.fat.toFixed(0) }} g</div>
+					<div class="table_cell">{{ nutritionSummary.carbs.toFixed(0) }} g</div>
+					<div class="table_cell"></div>
+				</div>
+				<div class="CalculatorTable_tableRow CalculatorTable_tableRow-summary
+					CalculatorTable_tableRow-summaryPercent table_row">
+					<div class="table_cell"></div>
+					<div class="table_cell"></div>
+					<div class="table_cell"></div>
+					<div class="table_cell">{{ nutritionSummaryPercentages.protein.toFixed(0) }} %</div>
+					<div class="table_cell">{{ nutritionSummaryPercentages.fat.toFixed(0) }} %</div>
+					<div class="table_cell">{{ nutritionSummaryPercentages.carbs.toFixed(0) }} %</div>
+					<div class="table_cell"></div>
+				</div>
+
+				<div
+					v-for="(item, index) of value"
+					class="CalculatorTable_tableRow table_row"
+					:key="index">
+					<div class="table_cell">{{ item.food.name }}</div>
+					<div class="table_cell">
 						<div class="CalculatorTable_serving">
 							<input
 								v-model="item.serving.value"
@@ -52,12 +47,12 @@
 							/>
 							<span>{{ item.food.serving.unit }}</span>
 						</div>
-					</td>
-					<td>{{ macroCalculatedItems[index].food.macros.calories.value.toFixed(2) }} kcal</td>
-					<td>{{ macroCalculatedItems[index].food.macros.protein.value.toFixed(2) }} g</td>
-					<td>{{ macroCalculatedItems[index].food.macros.fat.value.toFixed(2) }} g</td>
-					<td>{{ macroCalculatedItems[index].food.macros.carbs.value.toFixed(2) }} g</td>
-					<td>
+					</div>
+					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.calories, item.serving).toFixed(2) }} kcal</div>
+					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.protein, item.serving).toFixed(2) }} g</div>
+					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.fat, item.serving).toFixed(2) }} g</div>
+					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.carbs, item.serving).toFixed(2) }} g</div>
+					<div class="table_cell">
 						<div class="CalculatorTable_rowActions">
 							<div
 								class="CalculatorTable_action"
@@ -66,15 +61,15 @@
 								<Icon type="trash" />
 							</div>
 						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-import Utils from '../../common/Utils';
+import calculatorService from '../../services/calculatorService';
 
 import Icon from '../common/Icon';
 
@@ -88,74 +83,28 @@ export default {
 			default: () => [],
 			type: Array,
 		},
-		onlySummary: Boolean,
-		noSummary: Boolean,
 	},
 	methods: {
-		calculateMacroValue: (macro, serving) => macro.servingMultiplier * (serving.value || 0),
-		setItems (items) {
-			this.items = items;
-			this.emitInput();
-		},
+		getServingMultipliedMacro: (macro, serving) => calculatorService.getServingMultipliedMacro(macro, serving),
 		removeItem (toRemoveIndex) {
-			this.setItems(this.items.filter((item, index) => index !== toRemoveIndex));
-		},
-
-		emitInput () {
-			this.$emit('input', this.items);
+			this.emitInput(this.value.splice(0).filter((item, index) => index !== toRemoveIndex));
 		},
 
 		onDeleteClick (index) {
 			this.removeItem(index);
 		},
+
+		emitInput (newValue) {
+			this.$emit('input', newValue);
+		},
 	},
 	computed: {
-		sortedItems () {
-			return this.items
-				.slice(0)
-				.sort((a, b) => {
-					const aName = a.food.name.toLowerCase();
-					const bName = b.food.name.toLowerCase();
-					if (aName < bName) return -1;
-					if (aName > bName) return 1;
-					return 0;
-				});
+		nutritionSummary () {
+			return calculatorService.getNutritionSummaryFromRecipeItems(this.value);
 		},
-		macroCalculatedItems () {
-			return this.sortedItems.map(item => {
-				item.food.macros.calories.value = this.calculateMacroValue(item.food.macros.calories, item.serving);
-				item.food.macros.protein.value = this.calculateMacroValue(item.food.macros.protein, item.serving);
-				item.food.macros.fat.value = this.calculateMacroValue(item.food.macros.fat, item.serving);
-				item.food.macros.carbs.value = this.calculateMacroValue(item.food.macros.carbs, item.serving);
-				return item;
-			});
+		nutritionSummaryPercentages () {
+			return calculatorService.getNutritionSummaryPercentagesFromNutritionSummary(this.nutritionSummary);
 		},
-		summaryValues () {
-			return {
-				calories: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.calories.value)),
-				protein: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.protein.value)),
-				fat: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.fat.value)),
-				carbs: Utils.sumArrayValues(this.macroCalculatedItems.map(item => item.food.macros.carbs.value)),
-			};
-		},
-		summaryPercentages () {
-			const divider = this.summaryValues.protein + this.summaryValues.fat + this.summaryValues.carbs;
-			return {
-				protein: (this.summaryValues.protein / divider * 100) || 0,
-				fat: (this.summaryValues.fat / divider * 100) || 0,
-				carbs: (this.summaryValues.carbs / divider * 100) || 0,
-			};
-		},
-	},
-	watch: {
-		value (newValue) {
-			this.items = newValue;
-		},
-	},
-	data () {
-		return {
-			items: this.value,
-		};
 	},
 };
 </script>

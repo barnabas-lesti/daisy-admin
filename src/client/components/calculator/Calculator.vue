@@ -2,15 +2,12 @@
 	<div class="CalculatorMain">
 		<div class="columns">
 			<div class="column is-three-quarters">
-				<CalculatorTable v-model="calculatorModel" />
+				<CalculatorTable v-model="computedValue" />
 			</div>
 			<div class="column">
 				<CalculatorFoodSelector
-					v-model="foodModel"
 					class="CalculatorView_foodSelector"
-					:searchString="foodSearchString"
 					@select="onFoodSelect($event)"
-					@search="onFoodSearch($event)"
 				/>
 			</div>
 		</div>
@@ -24,17 +21,16 @@ import CalculatorFoodSelector from './CalculatorFoodSelector';
 import CalculatorTable from './CalculatorTable';
 
 export default {
-	name: 'CalculatorMain',
+	name: 'Calculator',
 	components: {
 		CalculatorFoodSelector,
 		CalculatorTable,
 	},
 	methods: {
 		onFoodSelect ({ selectedFood }) {
-			this.calculatorModel.push(new RecipeItem(selectedFood));
-		},
-		onFoodSearch ({ searchString }) {
-			this.foodSearchString = searchString;
+			const newValue = this.value.splice(0);
+			newValue.push(new RecipeItem(selectedFood));
+			this.emitInput(newValue);
 		},
 
 		emitInput (value) {
@@ -47,20 +43,16 @@ export default {
 			type: Array,
 		},
 	},
-	watch: {
-		calculatorModel (newValue) {
-			this.emitInput(newValue);
+	computed: {
+		computedValue: {
+			get () {
+				return this.value;
+			},
+			set (newValue) {
+				this.emitInput(newValue);
+				return newValue;
+			},
 		},
-		value (newValue) {
-			this.calculatorModel = newValue;
-		},
-	},
-	data () {
-		return {
-			calculatorModel: this.value,
-			foodModel: [],
-			foodSearchString: undefined,
-		};
 	},
 };
 </script>
