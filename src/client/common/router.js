@@ -14,16 +14,29 @@ const router = new VueRouter({
 			name: 'dashboard',
 			path: '/dashboard',
 		},
-		{
-			component: () => import('../components/food/FoodView'),
-			name: 'food',
-			path: '/food',
-		},
+
 		{
 			component: () => import('../components/calculator/CalculatorView'),
 			name: 'calculator',
 			path: '/calculator',
 		},
+
+		{
+			component: () => import('../components/food/FoodListView'),
+			name: 'food',
+			path: '/food',
+		},
+		{
+			component: () => import('../components/food/FoodSingleView'),
+			name: 'foodNew',
+			path: '/food/new',
+		},
+		{
+			component: () => import('../components/food/FoodSingleView'),
+			name: 'foodEdit',
+			path: '/food/:_id',
+		},
+
 		{
 			component: () => import('../components/recipes/RecipesListView'),
 			name: 'recipes',

@@ -6,7 +6,10 @@ class FoodService {
 		return result;
 	}
 
-	// getOne (_id) {}
+	async getOne (_id) {
+		const food = await httpService.get(`/food/${_id}`);
+		return food;
+	}
 
 	async getMany ({ searchString }) {
 		const searchQuery = searchString || undefined;

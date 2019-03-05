@@ -1,178 +1,77 @@
 <template>
 	<div class="FoodTable">
-		<SearchInput
-			class="FoodTable_search"
-			:initialValue="searchString"
-			:placeholder="searchPlaceholder"
-			@search="onSearch($event)"
-		/>
+		<p v-if="food.length === 0">
+			No food found.
+		</p>
 
-		<Loader
-			v-if="isLoading"
-			dark
-			class="FoodTable_loader"
-		/>
+		<p v-else-if="food.length > maxNumberOfItems">
+			More than {{ maxNumberOfItems }} food were found, {{ food.length - maxNumberOfItems }}
+			{{ (food.length - maxNumberOfItems) > 1 ? 'food are' : 'food is' }} not visible.
+		</p>
 
 		<div
-			v-if="!isLoading"
-			class="FoodTable_content"
+			v-else
+			class="table table-fullWidth table-hoverable"
 		>
-			<table
-				v-if="items && items.length > 0"
-				:class="[
-					'table',
-					'is-fullwidth',
-					'is-hoverable',
-					{ 'is-bordered': bordered },
-				]"
-			>
-				<thead v-if="!mini">
-					<tr>
-						<th>Name</th>
-						<th>Serving</th>
-						<th>Calories</th>
-						<th>Protein</th>
-						<th>Fat</th>
-						<th>Carbs</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr
-						v-for="(item, index) of computedItems"
-						:key="index"
-						@click="onTableRowClick(item)"
-					>
-						<td>{{ item.name }}</td>
-						<td v-if="!mini">{{ item.serving.value }} {{ item.serving.unit }}</td>
-						<td v-if="!mini">{{ item.macros.calories.value }} g</td>
-						<td v-if="!mini">{{ item.macros.protein.value }} g</td>
-						<td v-if="!mini">{{ item.macros.fat.value }} g</td>
-						<td v-if="!mini">{{ item.macros.carbs.value }} g</td>
-					</tr>
-				</tbody>
-			</table>
-
-			<p v-if="items && items.length > maxNumberOfItems">
-				More than {{ maxNumberOfItems }} items were found, {{ items.length - maxNumberOfItems }} items are not visible.
-			</p>
-
-			<p v-if="loadOccurred && items && items.length === 0">
-				No items found.
-			</p>
+			<div class="table_header">
+				<div class="table_row">
+					<div class="table_cell">Name</div>
+					<div class="table_cell">Serving</div>
+					<div class="table_cell">Calories</div>
+					<div class="table_cell">Carbs</div>
+					<div class="table_cell">Fat</div>
+					<div class="table_cell">Protein</div>
+				</div>
+			</div>
+			<div class="table_body">
+				<router-link
+					v-for="(food, index) of computedFood"
+					class="table_row"
+					:key="index"
+					:to="{
+						name: 'foodEdit',
+						params: {
+							_id: food._id,
+							food,
+						},
+					}"
+				>
+					<div class="table_cell">{{ food.name }}</div>
+					<div class="table_cell">{{ food.serving.value }} {{ food.serving.unit }}</div>
+					<div class="table_cell">{{ food.macros.calories.value.toFixed(0) }} kcal</div>
+					<div class="table_cell">{{ food.macros.carbs.value.toFixed(0) }} g</div>
+					<div class="table_cell">{{ food.macros.fat.value.toFixed(0) }} g</div>
+					<div class="table_cell">{{ food.macros.protein.value.toFixed(0) }} g</div>
+				</router-link>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 import Utils from '../../common/Utils';
-import foodService from '../../services/foodService';
-
-import Loader from '../common/Loader';
-import SearchInput from '../common/SearchInput';
 
 const DEFAULT_MAX_NUMBER_OF_ITEMS = 20;
 
 export default {
 	name: 'FoodTable',
-	components: {
-		Loader,
-		SearchInput,
-	},
 	props: {
-		autoLoad: Boolean,
-		mini: Boolean,
-		bordered: Boolean,
-		searchPlaceholder: String,
-		searchString: String,
-		maxNumberOfItems: {
-			default: DEFAULT_MAX_NUMBER_OF_ITEMS,
-			type: Number,
-		},
-		value: {
+		food: {
 			default: () => [],
 			type: Array,
 		},
-	},
-	methods: {
-		loadFood (searchString) {
-			this.isLoading = true;
-			foodService.getMany({ searchString })
-				.then(food => this.setFood(food))
-				.catch(error => this.emitError(error))
-				.finally(() => {
-					this.isLoading = false;
-					this.loadOccurred = true;
-				});
-		},
-		setFood (food) {
-			this.items = food;
-			this.emitInput(this.items);
-		},
-
-		emitInput (value) {
-			this.$emit('input', value);
-		},
-		emitError (error) {
-			this.$emit('error', { error });
-		},
-		emitSelect (selectedFood) {
-			this.$emit('select', { selectedFood: Utils.cloneDeep(selectedFood) });
-		},
-		emitSearch (searchString) {
-			this.$emit('search', { searchString });
-		},
-
-		onTableRowClick (item) {
-			this.emitSelect(item);
-		},
-		onSearch ({ searchString }) {
-			this.loadFood(searchString);
-			this.emitSearch(searchString);
+		maxNumberOfItems: {
+			default: () => DEFAULT_MAX_NUMBER_OF_ITEMS,
+			type: Number,
 		},
 	},
 	computed: {
-		computedItems () {
-			return this.items
+		computedFood () {
+			return this.food
 				.slice(0)
-				.sort((a, b) => {
-					const aName = (a.name || '').toLowerCase();
-					const bName = (b.name || '').toLowerCase();
-					if (aName < bName) return -1;
-					if (aName > bName) return 1;
-					return 0;
-				})
+				.sort(Utils.sortByName)
 				.slice(0, this.maxNumberOfItems);
 		},
 	},
-	watch: {
-		value (newValue) {
-			this.setFood(newValue);
-		},
-	},
-	created () {
-		if (this.autoLoad) {
-			console.log('anyad');
-			this.loadFood();
-		}
-	},
-	data () {
-		return {
-			items: this.value,
-			isLoading: false,
-			loadOccurred: false,
-		};
-	},
 };
 </script>
-
-<style lang="less">
-.FoodTable {
-	&_search {
-		margin-bottom: 1rem;
-	}
-
-	&_loader {
-		margin-top: 2rem;
-	}
-}
-</style>

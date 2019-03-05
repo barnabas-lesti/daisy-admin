@@ -8,6 +8,22 @@
 			<p>In the future some useful <b>widgets</b> might be available here, <b>settings</b>, etc.</p>
 			<p>Or I’ll just delete this view, who knows…</p>
 		</div>
+
+		<div class="view_section">
+			<div class="view_action button">Simple</div>
+			<div class="view_action button is-primary">Primary</div>
+			<div class="view_action button is-info">Info</div>
+			<div class="view_action button is-success">Success</div>
+			<div class="view_action button is-danger">Danger</div>
+		</div>
+
+		<div class="view_section">
+			<div class="view_action mbutton">Simple</div>
+			<div class="view_action mbutton mbutton-primary">Primary</div>
+			<div class="view_action mbutton mbutton-info">Info</div>
+			<div class="view_action mbutton mbutton-success">Success</div>
+			<div class="view_action mbutton mbutton-danger">Danger</div>
+		</div>
 	</div>
 </template>
 
