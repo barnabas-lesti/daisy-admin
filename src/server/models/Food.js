@@ -68,6 +68,4 @@ foodSchema.virtual('macros.protein.servingMultiplier').get(function () {
 	return calculateServingMultiplier(this.serving.value, this.macros.protein.value);
 });
 
-const Food = mongoose.model('Food', foodSchema);
-
-module.exports = Food;
+module.exports = mongoose.model('Food', foodSchema);

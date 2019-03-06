@@ -15,7 +15,7 @@ const convertParamsToDocument = params => {
 
 const convertDocumentToResponse = doc => doc;
 
-const recipes = server => {
+module.exports = server => {
 	server.get('/api/recipes', async (req, res, next) => {
 		const { searchQuery = '' } = req.query;
 		const nameRegex = new RegExp(
@@ -25,26 +25,26 @@ const recipes = server => {
 				.join('|'),
 			'i'
 		);
-		const recipeDoc = await Recipe
+		const docs = await Recipe
 			.find({ name: nameRegex })
 			.populate('items.food')
 			.exec();
-		res.send(recipeDoc.map(doc => convertDocumentToResponse(doc)));
+		res.send(docs.map(doc => convertDocumentToResponse(doc)));
 		return next();
 	});
 
 	server.get('/api/recipes/:_id', async (req, res, next) => {
-		const recipeDoc = await Recipe
+		const doc = await Recipe
 			.findById(req.params._id)
 			.populate('items.food')
 			.exec();
-		res.send(recipeDoc !== null ? convertDocumentToResponse(recipeDoc) : new restifyErrors.NotFoundError());
+		res.send(doc !== null ? convertDocumentToResponse(doc) : new restifyErrors.NotFoundError());
 		return next();
 	});
 
 	server.put('/api/recipes', async (req, res, next) => {
-		const recipeDoc = await Recipe.create(convertParamsToDocument(req.params));
-		res.send(convertDocumentToResponse(recipeDoc));
+		const doc = await Recipe.create(convertParamsToDocument(req.params));
+		res.send(convertDocumentToResponse(doc));
 		return next();
 	});
 
@@ -62,5 +62,3 @@ const recipes = server => {
 		return next();
 	});
 };
-
-module.exports = recipes;

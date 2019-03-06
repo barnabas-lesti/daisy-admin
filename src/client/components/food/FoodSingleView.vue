@@ -24,42 +24,42 @@
 		</div>
 
 		<div class="view_section">
-			<FoodInput
+			<Input
 					v-model="food.name"
 					label="Name"
 					type="text"
 				/>
 				<div class="columns">
 					<div class="column">
-						<FoodInput
+						<Input
 							v-model="food.serving.value"
 							label="Serving"
 						/>
 					</div>
 					<div class="column">
-						<FoodInput
+						<Input
 							v-model="food.serving.unit"
 							label="Unit"
 							type="select"
 						/>
 					</div>
 				</div>
-				<FoodInput
+				<Input
 					v-model="food.macros.calories.value"
 					label="Calories"
 					postfix="kcal"
 				/>
-				<FoodInput
+				<Input
 					v-model="food.macros.protein.value"
 					label="Protein"
 					postfix="g"
 				/>
-				<FoodInput
+				<Input
 					v-model="food.macros.fat.value"
 					label="Fat"
 					postfix="g"
 				/>
-				<FoodInput
+				<Input
 					v-model="food.macros.carbs.value"
 					label="Carbs"
 					postfix="g"
@@ -75,13 +75,13 @@ import foodService from '../../services/foodService';
 import notificationService from '../../services/notificationService';
 
 import LoadingOverlay from '../common/LoadingOverlay';
-import FoodInput from './FoodInput';
+import Input from '../common/Input';
 
 export default {
 	name: 'RecipesSingleView',
 	components: {
 		LoadingOverlay,
-		FoodInput,
+		Input,
 	},
 	methods: {
 		onSaveButtonClick () {

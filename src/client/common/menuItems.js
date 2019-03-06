@@ -1,8 +1,8 @@
 const menuItems = [
 	{
-		icon: 'dashboard',
-		label: 'Dashboard',
-		routeName: 'dashboard',
+		icon: 'home',
+		label: 'Home',
+		routeName: 'home',
 	},
 	{
 		icon: 'calculator',
@@ -18,6 +18,11 @@ const menuItems = [
 		icon: 'recipe',
 		label: 'Recipes',
 		routeName: 'recipes',
+	},
+	{
+		icon: 'exercise',
+		label: 'Exercises',
+		routeName: 'exercises',
 	},
 ];
 

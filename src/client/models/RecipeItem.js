@@ -1,6 +1,6 @@
 import Food from './Food';
 
-class RecipeItem {
+export default class RecipeItem {
 	constructor (food = new Food()) {
 		this.serving = {
 			value: food.serving.value,
@@ -8,5 +8,3 @@ class RecipeItem {
 		this.food = food;
 	}
 }
-
-export default RecipeItem;

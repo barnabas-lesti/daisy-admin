@@ -2,7 +2,7 @@ const appRootPath = require('app-root-path').path;
 const fsExtra = require('fs-extra');
 const path = require('path');
 
-const client = server => {
+module.exports = server => {
 	server.get('*', async (req, res) => {
 		const indexHtmlContent = await fsExtra.readFile(path.join(appRootPath, 'dist/index.html'), 'utf-8');
 		res.writeHead(200, {
@@ -13,5 +13,3 @@ const client = server => {
 		res.end();
 	});
 };
-
-module.exports = client;

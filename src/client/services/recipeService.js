@@ -1,6 +1,6 @@
 import httpService from './httpService';
 
-class RecipesService {
+class RecipeService {
 	async save (recipe) {
 		const result = await httpService.put('/recipes', recipe);
 		return result;
@@ -28,4 +28,4 @@ class RecipesService {
 	}
 }
 
-export default new RecipesService();
+export default new RecipeService();

@@ -1,12 +1,7 @@
-const client = require('./client');
-const food = require('./food');
-const recipes = require('./recipes');
+module.exports = [
+	require('./exercises'),
+	require('./food'),
+	require('./recipes'),
 
-const routes = [
-	food,
-	recipes,
-
-	client,
+	require('./client'),
 ];
-
-module.exports = routes;

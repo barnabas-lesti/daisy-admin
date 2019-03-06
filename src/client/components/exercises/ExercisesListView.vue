@@ -1,20 +1,20 @@
 <template>
-	<div class="RecipesListView view">
-		<h1>Recipes</h1>
+	<div class="ExercisesListView view">
+		<h1>Exercises</h1>
 
 		<div class="view_section">
 			<router-link
 				class="button is-primary"
-				:to="{ name: 'recipeNew' }"
+				:to="{ name: 'exerciseNew' }"
 			>
-				New recipe
+				New exercise
 			</router-link>
 		</div>
 
 		<div class="view_section">
 			<SearchInput
 				autoSearch
-				placeholder="Search for recipes"
+				placeholder="Search for exercises"
 				:initialValue="searchString"
 				@search="onSearch($event)"
 			/>
@@ -26,9 +26,9 @@
 				dark
 			/>
 
-			<RecipesTable
+			<ExercisesTable
 				v-if="!isLoading && loadOccurred"
-				:recipes="recipes"
+				:exercises="exercises"
 			/>
 		</div>
 	</div>
@@ -36,30 +36,31 @@
 
 <script>
 import logger from '../../common/logger';
-import recipeService from '../../services/recipeService';
+import exerciseService from '../../services/exerciseService';
 import notificationService from '../../services/notificationService';
 
 import Loader from '../common/Loader';
 import SearchInput from '../common/SearchInput';
-import RecipesTable from './RecipesTable';
+import ExercisesTable from './ExercisesTable';
 
 export default {
-	name: 'RecipesListView',
+	name: 'ExercisesListView',
 	components: {
 		Loader,
 		SearchInput,
-		RecipesTable,
+		ExercisesTable,
 	},
 	methods: {
 		onSearch ({ searchString }) {
-			this.loadRecipes(searchString);
+			this.searchString = searchString;
+			this.loadExercises();
 		},
 
-		loadRecipes (searchString) {
+		loadExercises () {
 			this.isLoading = true;
 			this.loadOccurred = true;
-			recipeService.getMany({ searchString })
-				.then(recipes => this.recipes = recipes)
+			exerciseService.getMany({ searchString: this.searchString })
+				.then(exercises => this.exercises = exercises)
 				.catch(error => {
 					notificationService.error('Sorry, but an error occured.');
 					logger.error(error);
@@ -72,7 +73,7 @@ export default {
 			isLoading: false,
 			loadOccurred: false,
 			searchString: '',
-			recipes: [],
+			exercises: [],
 		};
 	},
 };
