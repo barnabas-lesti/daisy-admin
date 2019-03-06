@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
+import router from './router';
 import App from './components/App';
-import router from './common/router';
 import config from './common/config';
 import logger from './common/logger';
 

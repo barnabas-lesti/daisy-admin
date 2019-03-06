@@ -1,6 +1,6 @@
 <template>
-	<div class="DashboardView view">
-		<h1>Dashboard</h1>
+	<div class="HomeView view">
+		<h1>Home</h1>
 
 		<div class="view_section view_section-description">
 			<p>Nothing here yet, but I guess you’ve noticed it without me writing this down… <b>haha</b>.</p>
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-	name: 'DashboardView',
+	name: 'HomeView',
 	components: {},
 	methods: {},
 	data () {
@@ -39,11 +39,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/partials';
-
-.DashboardView {
-	&:extend(.page all);
-
+.HomeView {
 	&_description {
 		margin-bottom: 1.5rem;
 		font-size: .9em;

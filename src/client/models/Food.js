@@ -1,4 +1,4 @@
-class Food {
+export default class Food {
 	macros = {
 		calories: {},
 		carbs: {},
@@ -7,5 +7,3 @@ class Food {
 	};
 	serving = {};
 }
-
-export default Food;
