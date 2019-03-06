@@ -21,7 +21,7 @@
 				</select>
 			</div>
 			<textarea
-				v-if="type === 'textarea'"
+				v-else-if="type === 'textarea'"
 				class="textarea"
 				:value="value"
 				@input="onInput($event)"
