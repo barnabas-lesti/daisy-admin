@@ -56,7 +56,7 @@
 <script>
 import logger from '../../common/logger';
 import Recipe from '../../models/Recipe';
-import recipesService from '../../services/recipesService';
+import recipeService from '../../services/recipeService';
 import notificationService from '../../services/notificationService';
 
 import LoadingOverlay from '../common/LoadingOverlay';
@@ -79,7 +79,7 @@ export default {
 		saveRecipe () {
 			this.isLoading = true;
 			const operationPromise = this.recipe._id
-				? recipesService.update(this.recipe._id, this.recipe) : recipesService.save(this.recipe);
+				? recipeService.update(this.recipe._id, this.recipe) : recipeService.save(this.recipe);
 			operationPromise
 				.then(recipe => {
 					if (!this.recipe._id) {
@@ -102,7 +102,7 @@ export default {
 		},
 		deleteRecipe () {
 			this.isLoading = true;
-			recipesService.delete(this.recipe._id)
+			recipeService.delete(this.recipe._id)
 				.then(() => {
 					this.$router.push({ name: 'recipes' });
 					notificationService.success('Recipe successfully deleted.');
@@ -115,7 +115,7 @@ export default {
 		},
 		loadRecipe (_id) {
 			this.isLoading = true;
-			recipesService.getOne(_id)
+			recipeService.getOne(_id)
 				.then(recipe => {
 					this.recipe = recipe;
 				})

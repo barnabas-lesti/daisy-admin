@@ -36,7 +36,7 @@
 
 <script>
 import logger from '../../common/logger';
-import recipesService from '../../services/recipesService';
+import recipeService from '../../services/recipeService';
 import notificationService from '../../services/notificationService';
 
 import Loader from '../common/Loader';
@@ -58,7 +58,7 @@ export default {
 		loadRecipes (searchString) {
 			this.isLoading = true;
 			this.loadOccurred = true;
-			recipesService.getMany({ searchString })
+			recipeService.getMany({ searchString })
 				.then(recipes => this.recipes = recipes)
 				.catch(error => {
 					notificationService.error('Sorry, but an error occured.');
