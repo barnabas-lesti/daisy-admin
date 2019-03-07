@@ -1,6 +1,6 @@
 export default class Food {
+	calories = {};
 	macros = {
-		calories: {},
 		carbs: {},
 		fat: {},
 		protein: {},

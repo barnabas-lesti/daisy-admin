@@ -6,8 +6,8 @@ class CalculatorService {
 		const food = recipeItem.food;
 		if (food !== null) {
 			const servingValue = recipeItem.serving.value;
-			const macros = recipeItem.food.macros;
-			nutritionSummary.calories = macros.calories.servingMultiplier * servingValue;
+			const macros = food.macros;
+			nutritionSummary.calories = food.calories.servingMultiplier * servingValue;
 			nutritionSummary.carbs = macros.carbs.servingMultiplier * servingValue;
 			nutritionSummary.fat = macros.fat.servingMultiplier * servingValue;
 			nutritionSummary.protein = macros.protein.servingMultiplier * servingValue;

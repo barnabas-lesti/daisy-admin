@@ -45,7 +45,7 @@
 					</div>
 				</div>
 				<Input
-					v-model="food.macros.calories.value"
+					v-model="food.calories.value"
 					label="Calories"
 					postfix="kcal"
 				/>

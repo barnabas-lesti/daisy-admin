@@ -1,14 +1,10 @@
 <template>
 	<div class="Calculator">
-		<div class="columns">
-			<div class="columns_column">
-				<CalculatorTable v-model="computedValue" />
-			</div>
-			<div class="columns_column columns_column-oneFifths">
-				<CalculatorFoodSelector
-					@select="onFoodSelect($event)"
-				/>
-			</div>
+		<div class="field">
+			<CalculatorFoodSelector @select="onFoodSelect($event)" />
+		</div>
+		<div class="field">
+			<CalculatorTable v-model="computedValue" />
 		</div>
 	</div>
 </template>

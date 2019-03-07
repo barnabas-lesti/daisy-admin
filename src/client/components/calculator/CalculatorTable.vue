@@ -48,7 +48,7 @@
 							<span>{{ item.food.serving.unit }}</span>
 						</div>
 					</div>
-					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.calories, item.serving).toFixed(2) }} kcal</div>
+					<div class="table_cell">{{ getServingMultipliedMacro(item.food.calories, item.serving).toFixed(2) }} kcal</div>
 					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.protein, item.serving).toFixed(2) }} g</div>
 					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.fat, item.serving).toFixed(2) }} g</div>
 					<div class="table_cell">{{ getServingMultipliedMacro(item.food.macros.carbs, item.serving).toFixed(2) }} g</div>
@@ -115,6 +115,8 @@ export default {
 .CalculatorTable {
 	@_summaryBgColor: #a8d6f5;
 	@_summaryBorderColor: #91cbf2;
+
+	min-height: 15rem;
 
 	&_tableRow {
 		&-summary {
