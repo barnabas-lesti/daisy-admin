@@ -9,21 +9,19 @@
 
 		<div class="view_section">
 			<button
-				class="view_action button is-primary"
+				class="view_action button button-primary"
 				@click="onSaveButtonClick()"
 			>
 				Save exercise
 			</button>
 			<button
 				v-if="exercise._id"
-				class="view_action button is-danger"
+				class="view_action button button-danger"
 				@click="onDeleteButtonClick()"
 			>
 				Delete exercise
 			</button>
 		</div>
-
-
 
 		<div class="view_section">
 			<Input

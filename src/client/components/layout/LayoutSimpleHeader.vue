@@ -3,9 +3,10 @@
 		<div class="container">
 			<div class="LayoutSimpleHeader_links">
 				<router-link
-					activeClass="LayoutSimpleHeader_link-active"
-					class="LayoutSimpleHeader_link"
 					v-for="(item, index) in menuItems"
+					class="LayoutSimpleHeader_link"
+					:activeClass="!item.exact ? 'LayoutSimpleHeader_link-active' : ''"
+					:exactActiveClass="item.exact ? 'LayoutSimpleHeader_link-active' : ''"
 					:key="index"
 					:to="{ name: item.routeName }"
 				>
@@ -29,24 +30,17 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-
 .LayoutSimpleHeader {
-	@_linkColor: @colors_dark3;
-	@_linkColor-active: darken(@_linkColor, 20%);
-	@_linkColor-hover: darken(@_linkColor, 10%);
+	@_linkColor: #4f90bb;
+	@_linkColor-active: #396685;
+	@_linkColor-hover: #457fa5;
 
-	box-shadow: @common_bottomBoxShadow;
+	box-shadow: 0 2px 4px 0 rgba(43, 43, 43, .1);
 
 	&_link {
 		padding: 1rem;
 		display: inline-block;
-		font-weight: 500;
-		color: @_linkColor;
-
-		&:hover {
-			color: @_linkColor-hover;
-		}
+		font-weight: 600;
 
 		&-active {
 			color: @_linkColor-active;

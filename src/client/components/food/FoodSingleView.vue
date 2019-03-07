@@ -9,14 +9,14 @@
 
 		<div class="view_section">
 			<button
-				class="view_action button is-success"
+				class="view_action button button-primary"
 				@click="onSaveButtonClick()"
 			>
 				Save food
 			</button>
 			<button
 				v-if="food._id"
-				class="view_action button is-danger"
+				class="view_action button button-danger"
 				@click="onDeleteButtonClick()"
 			>
 				Delete food
@@ -30,13 +30,13 @@
 					type="text"
 				/>
 				<div class="columns">
-					<div class="column">
+					<div class="columns_column">
 						<Input
 							v-model="food.serving.value"
 							label="Serving"
 						/>
 					</div>
-					<div class="column">
+					<div class="columns_column">
 						<Input
 							v-model="food.serving.unit"
 							label="Unit"

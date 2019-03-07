@@ -29,12 +29,12 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
+@import (reference) '../../styles/variables.less';
 
 .LayoutAdmin {
 	&_content {
-		padding-top: @layout_headerHeight;
-		padding-left: @layout_sidebarWidth;
+		padding-top: @layout_adminHeaderHeight;
+		padding-left: @layout_adminSidebarWidth;
 	}
 }
 </style>

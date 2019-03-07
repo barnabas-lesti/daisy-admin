@@ -1,7 +1,5 @@
 <template>
-	<header class="LayoutAdminHeader">
-		LayoutAdminHeader
-	</header>
+	<header class="LayoutAdminHeader"></header>
 </template>
 
 <script>
@@ -11,11 +9,11 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
+@import (reference) '../../styles/variables.less';
 
 .LayoutAdminHeader {
-	@_boxShadow: @common_bottomBoxShadow;
-	@_height: @layout_headerHeight;
+	@_boxShadow: 0 2px 4px 0 rgba(43, 43, 43, .1);
+	@_height: @layout_adminHeaderHeight;
 
 	box-shadow: @_boxShadow;
 	height: @_height;

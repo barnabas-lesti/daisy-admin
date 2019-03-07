@@ -1,12 +1,11 @@
 <template>
-	<div class="CalculatorMain">
+	<div class="Calculator">
 		<div class="columns">
-			<div class="column is-three-quarters">
+			<div class="columns_column">
 				<CalculatorTable v-model="computedValue" />
 			</div>
-			<div class="column">
+			<div class="columns_column columns_column-oneFifths">
 				<CalculatorFoodSelector
-					class="CalculatorView_foodSelector"
 					@select="onFoodSelect($event)"
 				/>
 			</div>

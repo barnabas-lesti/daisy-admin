@@ -21,15 +21,16 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-
 .Spinner {
+	@_color: #ffffff;
+	@_color-dark: #263544;
+
 	font-size: 3rem;
 	display: inline-block;
 
 	&::after {
 		animation: spinAround .5s infinite linear;
-		border: 2px solid @colors_light0;
+		border: 2px solid @_color;
 		border-radius: 10rem;
 		border-right-color: transparent;
 		border-top-color: transparent;
@@ -42,8 +43,8 @@ export default {
 
 	&-dark {
 		&::after {
-			border-left-color: @colors_dark1;
-			border-bottom-color: @colors_dark1;
+			border-left-color: @_color-dark;
+			border-bottom-color: @_color-dark;
 		}
 	}
 

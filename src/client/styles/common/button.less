@@ -1,6 +1,6 @@
-@import (reference) '../mixins';
+@import (reference) '../mixins.less';
 
-.mbutton {
+.button {
 	@_borderRadius: 4px;
 
 	@_borderColor0: #dbdbdb;
@@ -51,6 +51,7 @@
 		&:hover {
 			background-color: @_bgColor3-hover;
 			border-color: @_borderColor1-hover;
+			color: @_textColor0;
 		}
 	}
 
@@ -62,6 +63,7 @@
 		&:hover {
 			background-color: @_bgColor4-hover;
 			border-color: @_borderColor1-hover;
+			color: @_textColor1;
 		}
 	}
 
@@ -73,6 +75,7 @@
 		&:hover {
 			background-color: @_bgColor1-hover;
 			border-color: @_borderColor1-hover;
+			color: @_textColor1;
 		}
 	}
 
@@ -84,6 +87,7 @@
 		&:hover {
 			background-color: @_bgColor2-hover;
 			border-color: @_borderColor1-hover;
+			color: @_textColor1;
 		}
 	}
 }

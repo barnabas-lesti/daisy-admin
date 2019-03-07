@@ -22,11 +22,12 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-
 .LoadingOverlay {
+	@_bgColor: rgba(10, 10, 10, .2);
+	@_bgColor-light: rgba(255, 255, 255, .6);
+
 	align-items: center;
-	background-color: @colors_overlay1;
+	background-color: @_bgColor;
 	display: flex;
 	height: 100%;
 	justify-content: center;
@@ -37,7 +38,7 @@ export default {
 	z-index: 200;
 
 	&-light {
-		background-color: @colors_overlay2;
+		background-color: @_bgColor-light;
 	}
 }
 </style>

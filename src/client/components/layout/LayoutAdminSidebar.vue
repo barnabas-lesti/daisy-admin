@@ -8,15 +8,16 @@
 		</router-link>
 		<div class="LayoutAdminSidebar_links">
 			<router-link
-				activeClass="LayoutAdminSidebar_link-active"
-				class="LayoutAdminSidebar_link"
 				v-for="(navItem, index) in navItems"
+				class="LayoutAdminSidebar_link"
+				:activeClass="!navItem.exact ? 'LayoutAdminSidebar_link-active' : ''"
+				:exactActiveClass="navItem.exact ? 'LayoutAdminSidebar_link-active' : ''"
 				:key="index"
 				:to="{ name: navItem.routeName }"
 			>
 				<Icon
-					class="LayoutAdminSidebar_linkIcon"
 					v-if="navItem.icon"
+					class="LayoutAdminSidebar_linkIcon"
 					:type="navItem.icon"
 				/>
 				{{ navItem.label }}
@@ -51,18 +52,18 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
+@import (reference) '../../styles/variables.less';
 
 .LayoutAdminSidebar {
-	@_bgColor: @colors_dark1;
-	@_bgColor-active: lighten(@colors_dark1, 5%);
-	@_bgColor-hover: lighten(@colors_dark1, 10%);
-	@_brandBoxShadow: @common_bottomBoxShadow;
-	@_brandHeight: @layout_headerHeight;
+	@_bgColor: #263544;
+	@_bgColor-active: #324558;
+	@_bgColor-hover: #3f5163;
+	@_brandBoxShadow: 0 2px 4px 0 rgba(43, 43, 43, .1);
+	@_brandHeight: @layout_adminHeaderHeight;
 	@_gutter: 1rem;
-	@_textColor: @colors_light1;
-	@_textColor-hover: lighten(@colors_light1, 10%);
-	@_width: @layout_sidebarWidth;
+	@_textColor: #ececec;
+	@_textColor-hover: #ffffff;
+	@_width: @layout_adminSidebarWidth;
 
 	background-color: @_bgColor;
 	height: 100%;

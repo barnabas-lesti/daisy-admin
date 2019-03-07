@@ -26,6 +26,13 @@ module.exports = {
 				return args;
 			})
 	},
+	css: {
+		loaderOptions: {
+			less: {
+				javascriptEnabled: true,
+			},
+		},
+	},
 	devServer: {
 		port: configLib.get('client.PORT'),
 	}

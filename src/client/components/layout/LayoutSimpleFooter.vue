@@ -3,9 +3,10 @@
 		<div class="LayoutSimpleFooter_content container">
 			<div class="LayoutSimpleFooter_links">
 				<router-link
-					activeClass="LayoutSimpleFooter_link-active"
-					class="LayoutSimpleFooter_link"
 					v-for="(item, index) in menuItems"
+					class="LayoutSimpleFooter_link"
+					:activeClass="!item.exact ? 'LayoutSimpleFooter_link-active' : ''"
+					:exactActiveClass="item.exact ? 'LayoutSimpleFooter_link-active' : ''"
 					:key="index"
 					:to="{ name: item.routeName }"
 				>
@@ -32,13 +33,11 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-
 .LayoutSimpleFooter {
-	@_linkColor: lighten(@colors_dark1, 20%);
-	@_linkColor-active: darken(@_linkColor, 20%);
-	@_linkColor-hover: darken(@_linkColor, 10%);
-	@_boxShadow: @common_topBoxShadow;
+	@_linkColor: #607080;
+	@_linkColor-active: #242f3a;
+	@_linkColor-hover: #2a3844;
+	@_boxShadow: 0 -2px 4px 0 rgba(43, 43, 43, .1);
 
 	flex-shrink: 0;
 	box-shadow: @_boxShadow;
@@ -53,7 +52,7 @@ export default {
 	&_link {
 		padding: .5rem;
 		display: inline-block;
-		font-weight: 500;
+		font-weight: 600;
 		color: @_linkColor;
 
 		&:hover {

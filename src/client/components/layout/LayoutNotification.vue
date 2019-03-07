@@ -1,27 +1,27 @@
 <template>
-	<div class="LayoutSimpleNotification">
-		<LayoutSimpleNotificationItem
+	<div class="LayoutNotification">
+		<LayoutNotificationItem
 			v-for="(notification, index) of notifications"
-			class="LayoutSimpleNotification_item"
+			class="LayoutNotification_item"
 			:key="index"
 			:type="notification.type"
 			:title="notification.title"
 			@close="removeNotification(index)"
 		>
 			{{ notification.content }}
-		</LayoutSimpleNotificationItem>
+		</LayoutNotificationItem>
 	</div>
 </template>
 
 <script>
 import notificationService from '../../services/notificationService';
 
-import LayoutSimpleNotificationItem from './LayoutSimpleNotificationItem';
+import LayoutNotificationItem from './LayoutNotificationItem';
 
 export default {
 	name: 'LayoutSimpleNotification',
 	components: {
-		LayoutSimpleNotificationItem,
+		LayoutNotificationItem,
 	},
 	methods: {
 		removeNotification (index) {
@@ -37,9 +37,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-
-.LayoutSimpleNotification {
+.LayoutNotification {
 	position: fixed;
 	bottom: 1rem;
 	right: 1rem;

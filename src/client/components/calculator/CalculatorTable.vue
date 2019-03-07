@@ -1,7 +1,7 @@
 <template>
 	<div class="CalculatorTable">
 		<div class="table table-fullWidth">
-			<div class="table_header">
+			<div class="CalculatorTable_tableHeader table_header">
 				<div class="table_row">
 					<div class="table_cell">Name</div>
 					<div class="table_cell">Serving</div>
@@ -110,22 +110,18 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/mixins';
-@import (reference) '../../styles/variables';
+@import (reference) '../../styles/mixins.less';
 
 .CalculatorTable {
-	@_summaryBgColor: @colors_light3;
-	@_summaryBorderColor: darken(@colors_light3, 5%);
+	@_summaryBgColor: #a8d6f5;
+	@_summaryBorderColor: #91cbf2;
 
 	&_tableRow {
 		&-summary {
-			font-weight: 500;
+			font-weight: 600;
 			font-size: 1.2rem;
-			background-color: @_summaryBgColor !important;
-
-			td {
-				border-color: @_summaryBorderColor;
-			}
+			background-color: @_summaryBgColor;
+			border-color: @_summaryBorderColor;
 		}
 
 		&-summaryPercent {
@@ -137,6 +133,10 @@ export default {
 				opacity: 1;
 			}
 		}
+	}
+
+	&_tableHeader {
+		border-color: @_summaryBorderColor;
 	}
 
 	&_serving {

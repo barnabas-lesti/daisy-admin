@@ -10,27 +10,19 @@
 		</div>
 
 		<div class="view_section">
-			<div class="view_action button">Simple</div>
-			<div class="view_action button is-primary">Primary</div>
-			<div class="view_action button is-info">Info</div>
-			<div class="view_action button is-success">Success</div>
-			<div class="view_action button is-danger">Danger</div>
-		</div>
-
-		<div class="view_section">
-			<div class="view_action mbutton">Simple</div>
-			<div class="view_action mbutton mbutton-primary">Primary</div>
-			<div class="view_action mbutton mbutton-info">Info</div>
-			<div class="view_action mbutton mbutton-success">Success</div>
-			<div class="view_action mbutton mbutton-danger">Danger</div>
+			<Spinner dark />
 		</div>
 	</div>
 </template>
 
 <script>
+import Spinner from '../common/Spinner';
+
 export default {
 	name: 'HomeView',
-	components: {},
+	components: {
+		Spinner,
+	},
 	methods: {},
 	data () {
 		return {};
@@ -39,10 +31,5 @@ export default {
 </script>
 
 <style lang="less">
-.HomeView {
-	&_description {
-		margin-bottom: 1.5rem;
-		font-size: .9em;
-	}
-}
+.HomeView {}
 </style>
