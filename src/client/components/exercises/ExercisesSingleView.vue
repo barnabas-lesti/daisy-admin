@@ -30,11 +30,6 @@
 				type="text"
 			/>
 			<Input
-				v-model="exercise.description"
-				label="Description"
-				type="textarea"
-			/>
-			<Input
 				v-model="exercise.calorieBurn.value"
 				label="Calorie burn"
 				postfix="kcal"
@@ -48,6 +43,11 @@
 				v-model="exercise.activity.reps.value"
 				label="Repetitions"
 				:postfix="exercise.activity.reps.value > 1 ? 'reps': 'rep'"
+			/>
+			<Input
+				v-model="exercise.description"
+				label="Description"
+				type="textarea"
 			/>
 		</div>
 

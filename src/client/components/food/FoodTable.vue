@@ -33,7 +33,7 @@
 				>
 					<div class="table_cell">{{ food.name }}</div>
 					<div class="table_cell">{{ food.serving.value }} {{ food.serving.unit }}</div>
-					<div class="table_cell">{{ food.macros.calories.value.toFixed(0) }} kcal</div>
+					<div class="table_cell">{{ food.calories.value.toFixed(0) }} kcal</div>
 					<div class="table_cell">{{ food.macros.carbs.value.toFixed(0) }} g</div>
 					<div class="table_cell">{{ food.macros.fat.value.toFixed(0) }} g</div>
 					<div class="table_cell">{{ food.macros.protein.value.toFixed(0) }} g</div>

@@ -8,39 +8,40 @@
 			/>
 		</div>
 
-		<Loader
-			v-if="isLoading"
-			dark
-		/>
+		<div class="CalculatorFoodSelector_searchResults field">
+			<Loader
+				v-if="isLoading"
+				dark
+			/>
 
-		<div v-else>
-			<p v-if="loadOccurred && food.length === 0">
-				No food found.
-			</p>
+			<div v-else>
+				<p v-if="loadOccurred && food.length === 0">
+					No food found.
+				</p>
 
-			<div
-				v-else
-				class="table table-fullWidth table-hoverable table-bordered"
-			>
-				<div class="table_body">
-					<div
-						v-for="(item, index) of food"
-						class="table_row"
-						:key="index"
-						@click="onTableRowClick(item)"
-					>
+				<div
+					v-else
+					class="table table-fullWidth table-hoverable table-bordered"
+				>
+					<div class="table_body">
 						<div
-							class="CalculatorFoodSelector_nameCell table_cell">
-							<span>{{ item.name }}</span>
-							<Icon
-								class="CalculatorFoodSelector_arrow"
-								type="arrowDoubleLeft"
-							/>
+							v-for="(item, index) of food"
+							class="table_row"
+							:key="index"
+							@click="onTableRowClick(item)"
+						>
+							<div class="table_cell">
+								<div>
+									<span>{{ item.name }}</span>
+									<span class="CalculatorFoodSelector_foodCalories">{{ item.calories.value }} kcal</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </template>
 
@@ -50,14 +51,12 @@ import logger from '../../common/logger';
 import foodService from '../../services/foodService';
 import notificationService from '../../services/notificationService';
 
-import Icon from '../common/Icon';
 import Loader from '../common/Loader';
 import SearchInput from '../common/SearchInput';
 
 export default {
 	name: 'CalculatorFoodSelector',
 	components: {
-		Icon,
 		Loader,
 		SearchInput,
 	},
@@ -112,31 +111,13 @@ export default {
 @import (reference) '../../styles/variables.less';
 
 .CalculatorFoodSelector {
-	&_arrow {
-		display: none;
+	&_foodCalories {
+		float: right;
 	}
 
-	@media screen and (min-width: @breakpoint_tabletMinWidth) {
-		&_nameCell {
-			position: relative;
-			padding-left: 2rem;
-
-			&:hover {
-				.CalculatorFoodSelector_arrow {
-					opacity: .8;
-				}
-			}
-		}
-
-		&_arrow {
-			.transition(opacity);
-			position: absolute;
-			top: 50%;
-			left: .5rem;
-			transform: translateY(-50%);
-			opacity: .1;
-			display: block;
-		}
+	&_searchResults {
+		height: 10rem;
+		overflow-y: auto;
 	}
 }
 </style>

@@ -35,6 +35,13 @@
 		</div>
 
 		<div class="view_section">
+			<Calculator
+				v-if="recipe.items"
+				v-model="recipe.items"
+			/>
+		</div>
+
+		<div class="view_section">
 			<div class="control">
 				<label class="label">Description</label>
 				<textarea
@@ -42,13 +49,6 @@
 					class="input input-textarea"
 				></textarea>
 			</div>
-		</div>
-
-		<div class="view_section">
-			<Calculator
-				v-if="recipe.items"
-				v-model="recipe.items"
-			/>
 		</div>
 	</div>
 </template>
