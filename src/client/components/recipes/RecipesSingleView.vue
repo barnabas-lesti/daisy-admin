@@ -9,14 +9,14 @@
 
 		<div class="view_section">
 			<button
-				class="view_action button is-primary"
+				class="view_action button button-primary"
 				@click="onSaveButtonClick()"
 			>
 				Save recipe
 			</button>
 			<button
 				v-if="recipe._id"
-				class="view_action button is-danger"
+				class="view_action button button-danger"
 				@click="onDeleteButtonClick()"
 			>
 				Delete recipe
@@ -39,7 +39,7 @@
 				<label class="label">Description</label>
 				<textarea
 					v-model="recipe.description"
-					class="textarea"
+					class="input input-textarea"
 				></textarea>
 			</div>
 		</div>

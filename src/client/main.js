@@ -5,7 +5,7 @@ import App from './components/App';
 import config from './common/config';
 import logger from './common/logger';
 
-import './styles/settings.less';
+import './styles/main.less';
 
 if (config.NODE_ENV !== 'production') {
 	logger.info(`Node environment: "${config.NODE_ENV}".`);

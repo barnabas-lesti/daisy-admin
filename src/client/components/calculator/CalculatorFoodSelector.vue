@@ -1,21 +1,19 @@
 <template>
 	<div class="CalculatorFoodSelector">
-		<SearchInput
-			class="CalculatorFoodSelector_search"
-			placeholder="Search for food"
-			:initialValue="searchString"
-			@search="onSearch($event)"
-		/>
+		<div class="field">
+			<SearchInput
+				placeholder="Search for food"
+				:initialValue="searchString"
+				@search="onSearch($event)"
+			/>
+		</div>
 
 		<Loader
 			v-if="isLoading"
 			dark
 		/>
 
-		<div
-			v-else
-			class="CalculatorFoodSelector_content"
-		>
+		<div v-else>
 			<p v-if="loadOccurred && food.length === 0">
 				No food found.
 			</p>
@@ -110,14 +108,10 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/mixins';
-@import (reference) '../../styles/variables';
+@import (reference) '../../styles/mixins.less';
+@import (reference) '../../styles/variables.less';
 
 .CalculatorFoodSelector {
-	&_search {
-		margin-bottom: 1rem;
-	}
-
 	&_arrow {
 		display: none;
 	}

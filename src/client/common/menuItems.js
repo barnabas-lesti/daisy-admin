@@ -3,6 +3,7 @@ const menuItems = [
 		icon: 'home',
 		label: 'Home',
 		routeName: 'home',
+		exact: true,
 	},
 	{
 		icon: 'calculator',
@@ -15,7 +16,7 @@ const menuItems = [
 		routeName: 'food',
 	},
 	{
-		icon: 'recipe',
+		icon: 'recipes',
 		label: 'Recipes',
 		routeName: 'recipes',
 	},

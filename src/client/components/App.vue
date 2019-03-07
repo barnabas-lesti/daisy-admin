@@ -17,7 +17,7 @@ const getLayoutName = () => {
 	if (forcedLayout) {
 		storageService.saveToLocalStorage(StorageKeys.common.LAYOUT, forcedLayout);
 	}
-	const layoutName = forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.LAYOUT) || config.DEFAULT_LAYOUT;
+	const layoutName = forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.common.LAYOUT) || config.DEFAULT_LAYOUT;
 	logger.info(`Using layout: "${layoutName}"`);
 	return layoutName;
 };

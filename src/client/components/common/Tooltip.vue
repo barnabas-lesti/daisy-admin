@@ -57,12 +57,12 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-@import (reference) '../../styles/mixins';
+@import (reference) '../../styles/mixins.less';
 
 .Tooltip {
-	@_contentBgColor: @colors_light0;
-	@_borderColor: @colors_light2;
+	@_contentBgColor: #ffffff;
+	@_borderColor: #d8d8d8;
+	@_borderRadius: 4px;
 
 	position: relative;
 	font-size: 0;
@@ -71,7 +71,7 @@ export default {
 		.transition(opacity);
 		background-color: @_contentBgColor;
 		border: 1px solid @_borderColor;
-		border-radius: 4px;
+		border-radius: @_borderRadius;
 		font-size: .8rem;
 		padding: .5rem;
 		position: absolute;

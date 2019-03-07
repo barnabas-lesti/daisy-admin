@@ -4,7 +4,7 @@
 
 		<div class="view_section">
 			<router-link
-				class="button is-primary"
+				class="button button-primary"
 				:to="{ name: 'recipeNew' }"
 			>
 				New recipe

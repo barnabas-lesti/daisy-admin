@@ -52,6 +52,6 @@ export default {
 		renderActivityValue (value, singularPostfix, pluralPostfix) {
 			return value ? `${value} ${value > 1 ? pluralPostfix : singularPostfix}` : '';
 		},
-	}
+	},
 };
 </script>

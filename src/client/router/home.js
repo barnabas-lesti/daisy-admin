@@ -3,6 +3,7 @@ export default [
 		component: () => import('../components/home/HomeView'),
 		name: 'home',
 		path: '/',
+		exact: true,
 	},
 	{
 		path: '**',

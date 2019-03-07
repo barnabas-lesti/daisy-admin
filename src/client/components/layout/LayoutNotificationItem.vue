@@ -1,16 +1,16 @@
 <template>
 	<div
 		:class="[
-			'LayoutSimpleNotificationItem',
-			{ 'LayoutSimpleNotificationItem-error': type === 'error' },
-			{ 'LayoutSimpleNotificationItem-success': type === 'success' },
+			'LayoutNotificationItem',
+			{ 'LayoutNotificationItem-error': type === 'error' },
+			{ 'LayoutNotificationItem-success': type === 'success' },
 		]"
 	>
-		<div class="LayoutSimpleNotificationItem_content">
+		<div class="LayoutNotificationItem_content">
 			<slot />
 		</div>
 		<Icon
-			class="LayoutSimpleNotificationItem_closeIcon"
+			class="LayoutNotificationItem_closeIcon"
 			type="close"
 			@click.native="close()"
 		/>
@@ -21,7 +21,7 @@
 import Icon from '../common/Icon';
 
 export default {
-	name: 'LayoutSimpleNotificationItem',
+	name: 'LayoutNotificationItem',
 	components: {
 		Icon,
 	},
@@ -37,13 +37,11 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-
-.LayoutSimpleNotificationItem {
-	@_infoBgColor: @colors_info0;
-	@_successBgColor: @colors_success0;
-	@_errorBgColor: @colors_error0;
-	@_itemBoxShadow: @common_aroundBoxShadow;
+.LayoutNotificationItem {
+	@_infoBgColor: #7ebae2;
+	@_successBgColor: #c8e4bb;
+	@_errorBgColor: #f09494;
+	@_itemBoxShadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
 
 	background-color: @_infoBgColor;
 	padding: .5rem 1.5rem .5rem .5rem;
@@ -61,7 +59,7 @@ export default {
 
 	&_header {
 		font-size: .9em;
-		font-weight: 500;
+		font-weight: 600;
 		margin-bottom: .25rem;
 	}
 

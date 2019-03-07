@@ -12,7 +12,7 @@
 		/>
 		<input
 			v-if="searchWithButton"
-			class="SearchInput_input button is-info"
+			class="SearchInput_input button button-info"
 			type="submit"
 			value="Search"
 			:disabled="disabled"

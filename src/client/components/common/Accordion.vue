@@ -45,16 +45,15 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/variables';
-
 .Accordion {
 	@_borderColor: @colors_light1;
 
 	border: 1px solid @_borderColor;
+	font-size: 1rem;
 
 	&_header {
-		font-weight: 500;
-		font-size: 1.2rem;
+		font-weight: 600;
+		font-size: 1.2em;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;

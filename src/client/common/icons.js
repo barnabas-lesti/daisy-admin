@@ -9,6 +9,8 @@ const icons = {
 	'arrowDoubleLeft': 'fas fa-angle-double-left',
 	'info': 'fas fa-info-circle',
 	'close': 'fas fa-times',
+	'home': 'fas fa-home',
+	'exercise': 'fas fa-running',
 };
 
 export default icons;

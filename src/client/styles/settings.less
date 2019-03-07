@@ -1,29 +1,56 @@
-@import (reference) './mixins';
-@import (reference) './variables';
+@_textColor: #4a4a4a;
+@_linkColor: #4f90bb;
+@_linkColor-hover: #3c759b;
+@_bgColor: #ffffff;
 
-@import (css) url('https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css');
+html {
+	height: 100%;
+	background-color: @_bgColor;
+	font-size: 16px;
+	margin: 0;
+	padding: 0;
+}
 
-@import './common/button';
-@import './common/table';
-@import './common/view';
-
-html,
 body {
 	height: 100%;
+	color: @_textColor;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	margin: 0;
+	padding: 0;
+	font-family: @common_fontFamily;
 }
 
 a {
-	transition: background-color ease .2s, color ease .2s;
+	.transition(background-color, color);
+	color: @_linkColor;
+	text-decoration: none;
+
+	&:hover {
+		cursor: pointer;
+		color: @_linkColor-hover;
+	}
 }
 
 h1 {
 	font-size: 2em;
-	font-weight: 500;
-	margin-bottom: 1rem;
+	font-weight: 600;
+	margin: 0 0 1rem;
 }
 
 h2 {
 	font-size: 1.5em;
-	font-weight: 500;
-	margin-bottom: .8rem;
+	font-weight: 600;
+	margin: 0 0 .8rem;
+}
+
+p {
+	margin: 0;
+}
+
+label {
+	font-weight: 700;
+	margin-bottom: .25em;
+	display: block;
 }

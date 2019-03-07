@@ -1,50 +1,49 @@
 <template>
-	<div class="Input field">
-		<div class="control">
-			<label
-				v-if="label"
-				class="label"
-			>
-				{{ label }}
-			</label>
+	<div
+		:class="[
+			'Input',
+			{ 'field': !noField }
+		]"
+	>
+		<label
+			v-if="label"
+		>
+			{{ label }}
+		</label>
 
-			<div
-				v-if="type === 'select'"
-				class="select"
-			>
-				<select
-					:value="value"
-					@input="onInput($event)"
-				>
-					<option value="g">g</option>
-					<option value="ml">ml</option>
-				</select>
-			</div>
-			<textarea
-				v-else-if="type === 'textarea'"
-				class="textarea"
-				:value="value"
-				@input="onInput($event)"
-			></textarea>
-			<input
-				v-else
-				:type="type"
-				:value="value"
-				:class="[
-					'input',
-					'Input_inputElement',
-					{ 'Input_inputElement-hasPostfix': postfix },
-				]"
-				@input="onInput($event)"
-			/>
+		<select
+			v-if="type === 'select'"
+			class="input input-select"
+			:value="value"
+			@input="onInput($event)"
+		>
+			<option value="g">g</option>
+			<option value="ml">ml</option>
+		</select>
+		<textarea
+			v-else-if="type === 'textarea'"
+			class="input input-textarea"
+			:value="value"
+			@input="onInput($event)"
+		></textarea>
+		<input
+			v-else
+			:type="type"
+			:value="value"
+			:class="[
+				'input',
+				'Input_inputElement',
+				{ 'Input_inputElement-hasPostfix': postfix },
+			]"
+			@input="onInput($event)"
+		/>
 
-			<span
-				v-if="postfix"
-				class="Input_postfix"
-			>
-				{{ postfix }}
-			</span>
-		</div>
+		<span
+			v-if="postfix"
+			class="Input_postfix"
+		>
+			{{ postfix }}
+		</span>
 	</div>
 </template>
 
@@ -67,6 +66,7 @@ export default {
 			default: 'number',
 		},
 		postfix: String,
+		noField: Boolean,
 	},
 };
 </script>
