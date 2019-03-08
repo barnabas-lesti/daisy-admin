@@ -1,9 +1,14 @@
 export default class Food {
-	calories = {};
-	macros = {
+	nutrients = {
+		calories: {},
 		carbs: {},
+		energy: {},
 		fat: {},
+		fiber: {},
 		protein: {},
+		salt: {},
+		saturatedFat: {},
+		sugar: {},
 	};
 	serving = {};
 }

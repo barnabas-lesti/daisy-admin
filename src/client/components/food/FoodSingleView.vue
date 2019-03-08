@@ -25,45 +25,92 @@
 
 		<div class="view_section">
 			<Input
-					v-model="food.name"
-					label="Name"
-					type="text"
-				/>
-				<div class="columns">
-					<div class="columns_column">
-						<Input
-							v-model="food.serving.value"
-							label="Serving"
-						/>
-					</div>
-					<div class="columns_column">
-						<Input
-							v-model="food.serving.unit"
-							label="Unit"
-							type="select"
-						/>
-					</div>
+				v-model="food.name"
+				label="Name"
+				type="text"
+			/>
+			<div class="columns">
+				<div class="columns_column">
+					<Input
+						v-model="food.serving.value"
+						label="Serving"
+						notField
+					/>
 				</div>
-				<Input
-					v-model="food.calories.value"
-					label="Calories"
-					postfix="kcal"
-				/>
-				<Input
-					v-model="food.macros.protein.value"
-					label="Protein"
-					postfix="g"
-				/>
-				<Input
-					v-model="food.macros.fat.value"
-					label="Fat"
-					postfix="g"
-				/>
-				<Input
-					v-model="food.macros.carbs.value"
-					label="Carbs"
-					postfix="g"
-				/>
+				<div class="columns_column">
+					<Input
+						v-model="food.serving.unit"
+						label="Unit"
+						type="select"
+						notField
+					/>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+
+		<div class="view_section">
+			<Input
+				v-model="food.nutrients.calories.value"
+				label="Calories"
+				postfix="kcal"
+			/>
+			<Input
+				v-model="food.nutrients.carbs.value"
+				label="Carbs"
+				postfix="g"
+			/>
+			<Input
+				v-model="food.nutrients.protein.value"
+				label="Protein"
+				postfix="g"
+			/>
+			<Input
+				v-model="food.nutrients.fat.value"
+				label="Fat"
+				postfix="g"
+			/>
+		</div>
+
+		<hr />
+
+		<div class="view_section">
+			<Input
+				v-model="food.nutrients.energy.value"
+				label="Energy"
+				postfix="KJ"
+			/>
+			<Input
+				v-model="food.nutrients.saturatedFat.value"
+				label="Saturated fat"
+				postfix="g"
+			/>
+			<Input
+				v-model="food.nutrients.sugar.value"
+				label="Sugar"
+				postfix="g"
+			/>
+			<Input
+				v-model="food.nutrients.fiber.value"
+				label="Fiber"
+				postfix="g"
+			/>
+			<Input
+				v-model="food.nutrients.salt.value"
+				label="Salt"
+				postfix="g"
+			/>
+		</div>
+
+		<hr />
+
+		<div class="view_section">
+			<Input
+				v-model="food.description"
+				label="Description"
+				type="textarea"
+			/>
 		</div>
 	</div>
 </template>

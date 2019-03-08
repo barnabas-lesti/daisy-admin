@@ -33,7 +33,7 @@
 							<div class="table_cell">
 								<div>
 									<span>{{ item.name }}</span>
-									<span class="CalculatorFoodSelector_foodCalories">{{ item.calories.value }} kcal</span>
+									<span class="CalculatorFoodSelector_foodCalories">{{ item.nutrients.calories.value }} kcal</span>
 								</div>
 							</div>
 						</div>

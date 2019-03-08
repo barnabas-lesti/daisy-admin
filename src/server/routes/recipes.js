@@ -43,7 +43,11 @@ module.exports = server => {
 	});
 
 	server.put('/api/recipes', async (req, res, next) => {
-		const doc = await Recipe.create(convertParamsToDocument(req.params));
+		const { _id } = await Recipe.create(convertParamsToDocument(req.params));
+		const doc = await Recipe
+			.findById(_id)
+			.populate('items.food')
+			.exec();
 		res.send(convertDocumentToResponse(doc));
 		return next();
 	});
