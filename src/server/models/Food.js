@@ -1,16 +1,28 @@
 const mongoose = require('mongoose');
 
-const calculateServingMultiplier = (serving, macro) => serving === 0 ? 0 : macro / serving;
-
 const foodSchema = new mongoose.Schema({
-	calories: {
-		value: {
-			default: 0,
-			type: Number,
-		},
+	description: {
+		trim: true,
+		type: String,
 	},
-	macros: {
+	name: {
+		trim: true,
+		type: String,
+	},
+	nutrients: {
+		calories: {
+			value: {
+				default: 0,
+				type: Number,
+			},
+		},
 		carbs: {
+			value: {
+				default: 0,
+				type: Number,
+			},
+		},
+		energy: {
 			value: {
 				default: 0,
 				type: Number,
@@ -22,16 +34,36 @@ const foodSchema = new mongoose.Schema({
 				type: Number,
 			},
 		},
+		fiber: {
+			value: {
+				default: 0,
+				type: Number,
+			},
+		},
 		protein: {
 			value: {
 				default: 0,
 				type: Number,
 			},
 		},
-	},
-	name: {
-		trim: true,
-		type: String,
+		salt: {
+			value: {
+				default: 0,
+				type: Number,
+			},
+		},
+		saturatedFat: {
+			value: {
+				default: 0,
+				type: Number,
+			},
+		},
+		sugar: {
+			value: {
+				default: 0,
+				type: Number,
+			},
+		},
 	},
 	serving: {
 		unit: {
@@ -55,20 +87,11 @@ const foodSchema = new mongoose.Schema({
 	},
 });
 
-foodSchema.virtual('calories.servingMultiplier').get(function () {
-	return calculateServingMultiplier(this.serving.value, this.calories.value);
-});
-
-foodSchema.virtual('macros.carbs.servingMultiplier').get(function () {
-	return calculateServingMultiplier(this.serving.value, this.macros.carbs.value);
-});
-
-foodSchema.virtual('macros.fat.servingMultiplier').get(function () {
-	return calculateServingMultiplier(this.serving.value, this.macros.fat.value);
-});
-
-foodSchema.virtual('macros.protein.servingMultiplier').get(function () {
-	return calculateServingMultiplier(this.serving.value, this.macros.protein.value);
-});
+for (const nutrientKey of Object.keys(foodSchema.obj.nutrients)) {
+	foodSchema.virtual(`nutrients.${ nutrientKey }.servingMultiplier`).get(function () {
+		const servingValue = this.serving.value;
+		return servingValue === 0 ? 0 : this.nutrients[nutrientKey].value / servingValue;
+	});
+}
 
 module.exports = mongoose.model('Food', foodSchema);
