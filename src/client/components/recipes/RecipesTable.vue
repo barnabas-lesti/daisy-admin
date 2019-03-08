@@ -13,8 +13,8 @@
 					<div class="table_cell">Name</div>
 					<div class="table_cell">Calories</div>
 					<div class="table_cell">Carbs</div>
-					<div class="table_cell">Fat</div>
 					<div class="table_cell">Protein</div>
+					<div class="table_cell">Fat</div>
 				</div>
 			</div>
 			<div class="table_body">
@@ -33,8 +33,8 @@
 					<div class="table_cell">{{ recipe.name }}</div>
 					<div class="table_cell">{{ recipe.nutritionSummary.calories.toFixed(0) }} kcal</div>
 					<div class="table_cell">{{ recipe.nutritionSummary.carbs.toFixed(0) }} g</div>
-					<div class="table_cell">{{ recipe.nutritionSummary.fat.toFixed(0) }} g</div>
 					<div class="table_cell">{{ recipe.nutritionSummary.protein.toFixed(0) }} g</div>
+					<div class="table_cell">{{ recipe.nutritionSummary.fat.toFixed(0) }} g</div>
 				</router-link>
 			</div>
 		</div>

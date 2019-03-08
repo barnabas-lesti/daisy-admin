@@ -2,7 +2,7 @@
 	<div
 		:class="[
 			'Input',
-			{ 'field': !noField }
+			{ 'field': !notField }
 		]"
 	>
 		<label
@@ -66,7 +66,7 @@ export default {
 			default: 'number',
 		},
 		postfix: String,
-		noField: Boolean,
+		notField: Boolean,
 	},
 };
 </script>
