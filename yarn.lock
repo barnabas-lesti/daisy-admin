@@ -3385,7 +3385,6 @@ from2@^2.1.0:
 fs-extra@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
-  integrity sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"
@@ -4271,6 +4270,13 @@ js-tokens@^3.0.2:
 js-yaml@^3.12.0, js-yaml@^3.9.0, js-yaml@^3.9.1:
   version "3.12.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.1.tgz#295c8632a18a23e054cf5c9d3cecafe678167600"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
+js-yaml@^3.12.2:
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.12.2.tgz#ef1d067c5a9d9cb65bd72f285b5d8105c77f14fc"
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -6500,7 +6506,6 @@ serve-index@^1.7.2:
 serve-static-restify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/serve-static-restify/-/serve-static-restify-3.0.0.tgz#bd5813076634877b84b1f6387cf6d8b962f1ae9c"
-  integrity sha512-8bAWseTq8K1qcW/Pp8kCa1P1c0+wzOdSp1j5FAv3ZC/vcz+G8JPOyRni9hHgXjQqBQyx6+nleshZigHVKBScww==
   dependencies:
     encodeurl "~1.0.2"
     escape-html "~1.0.3"
@@ -7455,6 +7460,10 @@ vue-eslint-parser@^4.0.2:
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.1.tgz#b2d3d95402a811602380783ea4f566eb875569a2"
+
+vue-i18n@^8.8.2:
+  version "8.8.2"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.8.2.tgz#57baa73dc8f215d68e4b8f2743724657cbb77591"
 
 vue-loader@^15.6.2:
   version "15.6.2"

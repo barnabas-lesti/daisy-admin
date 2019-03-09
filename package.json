@@ -13,6 +13,7 @@
 		"axios": "^0.18.0",
 		"config": "^3.0.1",
 		"fs-extra": "^7.0.1",
+		"js-yaml": "^3.12.2",
 		"lodash": "^4.17.11",
 		"mongoose": "^5.4.11",
 		"restify": "^7.7.0",
@@ -23,6 +24,7 @@
 		"serve-static-restify": "^3.0.0",
 		"url-join": "^4.0.0",
 		"vue": "^2.5.22",
+		"vue-i18n": "^8.8.2",
 		"vue-router": "^3.0.1",
 		"yargs": "^12.0.5"
 	},

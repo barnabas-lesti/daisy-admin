@@ -4,6 +4,8 @@ client:
   DEFAULT_LAYOUT: 'LayoutSimple'
 
 server:
-  PORT: 8080
+  BUCKET_PATH: null
+  DEFAULT_LOCALE: 'en'
   MONGO_URI: null
   RESPONSE_DELAY: null
+  PORT: 8080
