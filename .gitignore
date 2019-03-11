@@ -1,7 +1,7 @@
 # Common
 /node_modules
 /dist
-/bucket
+/daisy-bucket
 
 # Environment files
 /env/local.yml
