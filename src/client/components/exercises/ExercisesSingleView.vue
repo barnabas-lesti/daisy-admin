@@ -1,6 +1,6 @@
 <template>
 	<div class="ExercisesSingleView view">
-		<h1>{{ exercise.name || $t('views.exercises.newExerciseDefaultTitle') }}</h1>
+		<h1>{{ exercise.name || $t('exercises.view.newExerciseDefaultTitle') }}</h1>
 
 		<LoadingOverlay
 			v-if="isLoading"
@@ -12,14 +12,14 @@
 				class="view_action button button-primary"
 				@click="onSaveButtonClick()"
 			>
-				{{ $t('views.exercises.saveButton') }}
+				{{ $t('exercises.view.saveButton') }}
 			</button>
 			<button
 				v-if="exercise._id"
 				class="view_action button button-danger"
 				@click="onDeleteButtonClick()"
 			>
-				{{ $t('views.exercises.deleteButton') }}
+				{{ $t('exercises.view.deleteButton') }}
 			</button>
 		</div>
 
@@ -27,27 +27,27 @@
 			<Input
 				v-model="exercise.name"
 				type="text"
-				:label="$t('views.exercises.form.name')"
+				:label="$t('exercises.view.form.name')"
 			/>
 			<Input
 				v-model="exercise.calorieBurn.value"
-				:label="$t('views.exercises.form.calorieBurn')"
-				:postfix="$t('units.calories')"
+				:label="$t('exercises.view.form.calorieBurn')"
+				:postfix="$t('common.units.calories')"
 			/>
 			<Input
 				v-model="exercise.activity.duration.value"
-				:label="$t('views.exercises.form.duration')"
-				:postfix="$t('units.minutes', exercise.activity.duration.value)"
+				:label="$t('exercises.view.form.duration')"
+				:postfix="$tc('common.units.minutes', exercise.activity.duration.value)"
 			/>
 			<Input
 				v-model="exercise.activity.reps.value"
-				:label="$t('views.exercises.form.repetitions')"
-				:postfix="$t('units.repetitions', exercise.activity.reps.value)"
+				:label="$t('exercises.view.form.repetitions')"
+				:postfix="$tc('common.units.repetitions', exercise.activity.reps.value)"
 			/>
 			<Input
 				v-model="exercise.description"
 				type="textarea"
-				:label="$t('views.exercises.form.description')"
+				:label="$t('exercises.view.form.description')"
 			/>
 		</div>
 
@@ -93,11 +93,11 @@ export default {
 							},
 						});
 					}
-					notificationService.success('views.exercises.notifications.saved');
+					notificationService.success('exercises.view.notifications.saved');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('notifications.unknownErrorOccurred');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},
@@ -106,11 +106,11 @@ export default {
 			exerciseService.delete(this.exercise._id)
 				.then(() => {
 					this.$router.push({ name: 'exercises' });
-					notificationService.success('views.exercises.notifications.deleted');
+					notificationService.success('exercises.view.notifications.deleted');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('notifications.unknownErrorOccurred');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 					this.isLoading = false;
 				});
 		},
@@ -122,7 +122,7 @@ export default {
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('notifications.unknownErrorOccurred');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},

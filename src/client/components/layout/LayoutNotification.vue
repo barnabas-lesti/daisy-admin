@@ -8,7 +8,7 @@
 			:title="notification.title"
 			@close="removeNotification(index)"
 		>
-			{{ notification.content }}
+			{{ $t(notification.content) }}
 		</LayoutNotificationItem>
 	</div>
 </template>

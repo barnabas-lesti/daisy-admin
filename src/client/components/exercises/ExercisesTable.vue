@@ -1,7 +1,7 @@
 <template>
 	<div class="ExercisesTable">
 		<p v-if="exercises.length === 0">
-			No exercises found.
+			{{ $t('exercises.table.noExerciseFound') }}
 		</p>
 
 		<div
@@ -10,10 +10,10 @@
 		>
 			<div class="table_header">
 				<div class="table_row">
-					<div class="table_cell">Name</div>
-					<div class="table_cell">Calorie burn</div>
-					<div class="table_cell">Duration</div>
-					<div class="table_cell">Reps</div>
+					<div class="table_cell">{{ $t('exercises.table.header.name') }}</div>
+					<div class="table_cell">{{ $t('exercises.table.header.calorieBurn') }}</div>
+					<div class="table_cell">{{ $t('exercises.table.header.duration') }}</div>
+					<div class="table_cell">{{ $t('exercises.table.header.repetitions') }}</div>
 				</div>
 			</div>
 			<div class="table_body">
@@ -31,8 +31,8 @@
 				>
 					<div class="table_cell">{{ exercise.name }}</div>
 					<div class="table_cell">{{ exercise.calorieBurn.value }} kcal</div>
-					<div class="table_cell">{{ renderActivityValue(exercise.activity.duration.value, 'min', 'mins') }}</div>
-					<div class="table_cell">{{ renderActivityValue(exercise.activity.reps.value, 'rep', 'reps') }}</div>
+					<div class="table_cell">{{ exercise.activity.duration.value ? `${exercise.activity.duration.value} ${$tc('common.units.minutes', exercise.activity.duration.value)}` : '' }}  </div>
+					<div class="table_cell">{{ exercise.activity.reps.value ? `${exercise.activity.reps.value} ${$tc('common.units.repetitions', exercise.activity.reps.value)}` : '' }}</div>
 				</router-link>
 			</div>
 		</div>
@@ -46,11 +46,6 @@ export default {
 		exercises: {
 			default: () => [],
 			type: Array,
-		},
-	},
-	methods: {
-		renderActivityValue (value, singularPostfix, pluralPostfix) {
-			return value ? `${value} ${value > 1 ? pluralPostfix : singularPostfix}` : '';
 		},
 	},
 };

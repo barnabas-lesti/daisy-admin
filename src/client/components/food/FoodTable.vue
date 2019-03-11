@@ -1,7 +1,7 @@
 <template>
 	<div class="FoodTable">
 		<p v-if="food.length === 0">
-			No food found.
+			{{ $t('food.table.noFoodFound') }}
 		</p>
 
 		<div
@@ -10,12 +10,12 @@
 		>
 			<div class="table_header">
 				<div class="table_row">
-					<div class="table_cell">Name</div>
-					<div class="table_cell">Serving</div>
-					<div class="table_cell">Calories</div>
-					<div class="table_cell">Carbs</div>
-					<div class="table_cell">Protein</div>
-					<div class="table_cell">Fat</div>
+					<div class="table_cell">{{ $t('food.table.header.name') }}</div>
+					<div class="table_cell">{{ $t('food.table.header.serving') }}</div>
+					<div class="table_cell">{{ $t('food.table.header.calories') }}</div>
+					<div class="table_cell">{{ $t('food.table.header.carbs') }}</div>
+					<div class="table_cell">{{ $t('food.table.header.protein') }}</div>
+					<div class="table_cell">{{ $t('food.table.header.fat') }}</div>
 				</div>
 			</div>
 			<div class="table_body">
@@ -33,10 +33,10 @@
 				>
 					<div class="table_cell">{{ food.name }}</div>
 					<div class="table_cell">{{ food.serving.value }} {{ food.serving.unit }}</div>
-					<div class="table_cell">{{ food.nutrients.calories.value.toFixed(0) }} kcal</div>
-					<div class="table_cell">{{ food.nutrients.carbs.value.toFixed(0) }} g</div>
-					<div class="table_cell">{{ food.nutrients.protein.value.toFixed(0) }} g</div>
-					<div class="table_cell">{{ food.nutrients.fat.value.toFixed(0) }} g</div>
+					<div class="table_cell">{{ food.nutrients.calories.value.toFixed(0) }} {{ $t('common.units.calories') }}</div>
+					<div class="table_cell">{{ food.nutrients.carbs.value.toFixed(0) }} {{ $t('common.units.grams') }}</div>
+					<div class="table_cell">{{ food.nutrients.protein.value.toFixed(0) }} {{ $t('common.units.grams') }}</div>
+					<div class="table_cell">{{ food.nutrients.fat.value.toFixed(0) }} {{ $t('common.units.grams') }}</div>
 				</router-link>
 			</div>
 		</div>

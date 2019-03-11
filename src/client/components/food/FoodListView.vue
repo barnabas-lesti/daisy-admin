@@ -1,20 +1,20 @@
 <template>
 	<div class="FoodListView view">
-		<h1>Food</h1>
+		<h1>{{ $t('food.view.title') }}</h1>
 
 		<div class="view_section">
 			<router-link
 				class="button button-primary"
 				:to="{ name: 'foodNew' }"
 			>
-				New food
+				{{ $t('food.view.newButton') }}
 			</router-link>
 		</div>
 
 		<div class="view_section">
 			<SearchInput
 				autoSearch
-				placeholder="Search for food"
+				:placeholder="$t('food.view.searchPlaceholder')"
 				:initialValue="searchString"
 				@search="onSearch($event)"
 			/>
@@ -62,7 +62,7 @@ export default {
 			foodService.getMany({ searchString: this.searchString })
 				.then(food => this.food = food)
 				.catch(error => {
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 					logger.error(error);
 				})
 				.finally(() => this.isLoading = false);

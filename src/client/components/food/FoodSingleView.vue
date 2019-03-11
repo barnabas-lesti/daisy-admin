@@ -1,6 +1,6 @@
 <template>
 	<div class="FoodSingleView view">
-		<h1>{{ food.name || 'New Food' }}</h1>
+		<h1>{{ food.name || $t('food.view.newFoodDefaultTitle') }}</h1>
 
 		<LoadingOverlay
 			v-if="isLoading"
@@ -12,37 +12,37 @@
 				class="view_action button button-primary"
 				@click="onSaveButtonClick()"
 			>
-				Save food
+				{{ $t('food.view.saveButton') }}
 			</button>
 			<button
 				v-if="food._id"
 				class="view_action button button-danger"
 				@click="onDeleteButtonClick()"
 			>
-				Delete food
+				{{ $t('food.view.deleteButton') }}
 			</button>
 		</div>
 
 		<div class="view_section">
 			<Input
 				v-model="food.name"
-				label="Name"
 				type="text"
+				:label="$t('food.view.form.name')"
 			/>
 			<div class="columns">
 				<div class="columns_column">
 					<Input
 						v-model="food.serving.value"
-						label="Serving"
 						notField
+						:label="$t('food.view.form.serving')"
 					/>
 				</div>
 				<div class="columns_column">
 					<Input
 						v-model="food.serving.unit"
-						label="Unit"
-						type="select"
 						notField
+						type="select"
+						:label="$t('food.view.form.unit')"
 					/>
 				</div>
 			</div>
@@ -53,23 +53,23 @@
 		<div class="view_section">
 			<Input
 				v-model="food.nutrients.calories.value"
-				label="Calories"
-				postfix="kcal"
+				:label="$t('food.view.form.calories')"
+				:postfix="$t('common.units.calories')"
 			/>
 			<Input
 				v-model="food.nutrients.carbs.value"
-				label="Carbs"
-				postfix="g"
+				:label="$t('food.view.form.carbs')"
+				:postfix="$t('common.units.grams')"
 			/>
 			<Input
 				v-model="food.nutrients.protein.value"
-				label="Protein"
-				postfix="g"
+				:label="$t('food.view.form.protein')"
+				:postfix="$t('common.units.grams')"
 			/>
 			<Input
 				v-model="food.nutrients.fat.value"
-				label="Fat"
-				postfix="g"
+				:label="$t('food.view.form.fat')"
+				:postfix="$t('common.units.grams')"
 			/>
 		</div>
 
@@ -78,28 +78,28 @@
 		<div class="view_section">
 			<Input
 				v-model="food.nutrients.energy.value"
-				label="Energy"
-				postfix="KJ"
+				:label="$t('food.view.form.energy')"
+				:postfix="$t('common.units.energy')"
 			/>
 			<Input
 				v-model="food.nutrients.saturatedFat.value"
-				label="Saturated fat"
-				postfix="g"
+				:label="$t('food.view.form.saturatedFat')"
+				:postfix="$t('common.units.grams')"
 			/>
 			<Input
 				v-model="food.nutrients.sugar.value"
-				label="Sugar"
-				postfix="g"
+				:label="$t('food.view.form.sugar')"
+				:postfix="$t('common.units.grams')"
 			/>
 			<Input
 				v-model="food.nutrients.fiber.value"
-				label="Fiber"
-				postfix="g"
+				:label="$t('food.view.form.fiber')"
+				:postfix="$t('common.units.grams')"
 			/>
 			<Input
 				v-model="food.nutrients.salt.value"
-				label="Salt"
-				postfix="g"
+				:label="$t('food.view.form.salt')"
+				:postfix="$t('common.units.grams')"
 			/>
 		</div>
 
@@ -108,8 +108,8 @@
 		<div class="view_section">
 			<Input
 				v-model="food.description"
-				label="Description"
 				type="textarea"
+				:label="$t('food.view.form.description')"
 			/>
 		</div>
 	</div>
@@ -154,11 +154,11 @@ export default {
 							},
 						});
 					}
-					notificationService.success('Food successfully saved.');
+					notificationService.success('food.view.notifications.saved');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},
@@ -167,11 +167,11 @@ export default {
 			foodService.delete(this.food._id)
 				.then(() => {
 					this.$router.push({ name: 'food' });
-					notificationService.success('Food successfully deleted.');
+					notificationService.success('food.view.notifications.deleted');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 					this.isLoading = false;
 				});
 		},
@@ -183,7 +183,7 @@ export default {
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},

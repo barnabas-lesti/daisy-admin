@@ -4,14 +4,21 @@ const path = require('path');
 
 const config = require('../common/config');
 
-const { BUCKET_PATH } = config;
+const { BUCKET_PATH, DEFAULT_LOCALE } = config;
 const I18N_MESSAGES_PATH = path.join(BUCKET_PATH, 'i18n');
 
 class ContentService {
 	async getMessagesByLocale (locale) {
-		return {
-			[locale]: await this._readFile(path.join(I18N_MESSAGES_PATH, `${ locale }.yml`), { extension: 'yml' }),
-		};
+		const messages = await this._readFile(path.join(I18N_MESSAGES_PATH, `${ locale }.yml`), { extension: 'yml' });
+		if (messages !== null) {
+			return {
+				[locale]: messages,
+			};
+		} else {
+			return {
+				[DEFAULT_LOCALE]: await this._readFile(path.join(I18N_MESSAGES_PATH, `${ DEFAULT_LOCALE }.yml`), { extension: 'yml' }),
+			};
+		}
 	}
 
 	async _readFile (path = '', options = {}) {

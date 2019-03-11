@@ -1,8 +1,10 @@
+common:
+  DEFAULT_LOCALE: 'en-US'
+
 client:
   DEV_PORT: 3000
   API_BASE_URL: null
   DEFAULT_LAYOUT: 'LayoutSimple'
-  DEFAULT_LOCALE: 'en-US'
 
 server:
   BUCKET_PATH: null

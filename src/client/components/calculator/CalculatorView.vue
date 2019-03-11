@@ -1,10 +1,10 @@
 <template>
 	<div class="CalculatorView view">
-		<h1>{{ $t('views.calculator.title') }}</h1>
+		<h1>{{ $t('calculator.view.title') }}</h1>
 
 		<div
 			class="view_section view_section-description"
-			v-html="$t('views.calculator.descriptionHtml')"
+			v-html="$t('calculator.view.descriptionHtml')"
 		></div>
 
 		<div class="view_section">
