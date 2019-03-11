@@ -10,12 +10,10 @@
 					:key="index"
 					:to="{ name: item.routeName }"
 				>
-					{{ item.label }}
+					{{ $t(item.labelKey) }}
 				</router-link>
 			</div>
-			<div class="LayoutSimpleFooter_legal">
-				<p>© 2019 Daisy, Inc.</p>
-			</div>
+			<div v-html="$t('common.copyrightHtml')"></div>
 		</div>
 	</footer>
 </template>

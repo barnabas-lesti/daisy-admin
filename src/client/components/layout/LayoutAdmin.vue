@@ -1,7 +1,7 @@
 <template>
 	<div class="LayoutAdmin">
 		<LayoutAdminHeader />
-		<LayoutAdminSidebar :navItems="menuItems" />
+		<LayoutAdminSidebar :menuItems="menuItems" />
 		<div class="LayoutAdmin_content">
 			<slot />
 		</div>

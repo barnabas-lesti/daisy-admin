@@ -49,7 +49,7 @@ class Logger {
 	 */
 	_log (type, ...[ firstArg, ...restOfTheArgs ]) {
 		const prefixedArgs = [`${PREFIX} ${firstArg}`, ...restOfTheArgs];
-		if (config.NODE_ENV !== 'production') {
+		if (!config.IS_PRODUCTION) {
 			switch (type) {
 			case 'error':
 				this.console.error(...prefixedArgs);

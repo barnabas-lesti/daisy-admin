@@ -4,30 +4,13 @@ const path = require('path');
 
 const config = require('../common/config');
 
-const { BUCKET_PATH, DEFAULT_LOCALE } = config;
+const { BUCKET_PATH } = config;
 const I18N_MESSAGES_PATH = path.join(BUCKET_PATH, 'i18n');
 
 class ContentService {
-	async getMessagesByLocale (locale = DEFAULT_LOCALE) {
+	async getMessagesByLocale (locale) {
 		return {
 			[locale]: await this._readFile(path.join(I18N_MESSAGES_PATH, `${ locale }.yml`), { extension: 'yml' }),
-		};
-	}
-
-	async getMessagesByLocales (locales = []) {
-		const messages = {};
-		const messagePromises = [];
-
-		if (locales.length === 0) {
-			locales.push(DEFAULT_LOCALE);
-		}
-
-		for (const locale of locales) {
-			messagePromises.push(this.getMessagesByLocale(locale));
-		}
-		const messageList = await Promise.all(messagePromises);
-		return {
-			...messageList,
 		};
 	}
 

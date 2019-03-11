@@ -11,7 +11,7 @@ import config from '../common/config';
 import logger from '../common/logger';
 import storageService, { StorageKeys } from '../services/storageService';
 
-const getLayoutName = () => {
+const getLayout = () => {
 	const url = new URL(window.location.href);
 	const forcedLayout = url.searchParams.get('layout');
 	if (forcedLayout) {
@@ -24,7 +24,7 @@ const getLayoutName = () => {
 
 export default {
 	components: {
-		Layout: () => import(`./layout/${getLayoutName()}`),
+		Layout: () => import(`./layout/${getLayout()}`),
 	},
 };
 </script>

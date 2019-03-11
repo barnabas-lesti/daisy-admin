@@ -10,11 +10,47 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 
 		<title>Daisy</title>
+
+		<style>
+			._spinner {
+				font-size: 6rem;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+
+			._spinner::after {
+				animation: spinAround .5s infinite linear;
+				border: 2px solid #263544;
+				border-radius: 10rem;
+				border-right-color: transparent;
+				border-top-color: transparent;
+				content: '';
+				display: block;
+				height: 1em;
+				position: relative;
+				width: 1em;
+			}
+
+			@keyframes spinAround {
+				from {
+					transform: rotate(0)
+				}
+				to {
+					transform: rotate(359deg)
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<noscript>
 			<strong>We're sorry but Daisy doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
 		</noscript>
+
+		<div class="_critical">
+			<div class="_spinner"></div>
+		</div>
 
 		<div id="app"></div>
 		<!-- built files will be auto injected -->

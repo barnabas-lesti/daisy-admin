@@ -10,7 +10,7 @@
 					:key="index"
 					:to="{ name: item.routeName }"
 				>
-					{{ item.label }}
+					{{ $t(item.labelKey) }}
 				</router-link>
 			</div>
 		</div>
