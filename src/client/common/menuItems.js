@@ -1,28 +1,28 @@
 const menuItems = [
 	{
 		icon: 'home',
-		label: 'Home',
+		labelKey: 'common.menuItems.home',
 		routeName: 'home',
 		exact: true,
 	},
 	{
 		icon: 'calculator',
-		label: 'Calculator',
+		labelKey: 'common.menuItems.calculator',
 		routeName: 'calculator',
 	},
 	{
 		icon: 'food',
-		label: 'Food',
+		labelKey: 'common.menuItems.food',
 		routeName: 'food',
 	},
 	{
 		icon: 'recipes',
-		label: 'Recipes',
+		labelKey: 'common.menuItems.recipes',
 		routeName: 'recipes',
 	},
 	{
 		icon: 'exercise',
-		label: 'Exercises',
+		labelKey: 'common.menuItems.exercises',
 		routeName: 'exercises',
 	},
 ];

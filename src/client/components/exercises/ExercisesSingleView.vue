@@ -1,6 +1,6 @@
 <template>
 	<div class="ExercisesSingleView view">
-		<h1>{{ exercise.name || 'New Exercise' }}</h1>
+		<h1>{{ exercise.name || $t('exercises.view.newExerciseDefaultTitle') }}</h1>
 
 		<LoadingOverlay
 			v-if="isLoading"
@@ -12,37 +12,42 @@
 				class="view_action button button-primary"
 				@click="onSaveButtonClick()"
 			>
-				Save exercise
+				{{ $t('exercises.view.saveButton') }}
 			</button>
 			<button
 				v-if="exercise._id"
 				class="view_action button button-danger"
 				@click="onDeleteButtonClick()"
 			>
-				Delete exercise
+				{{ $t('exercises.view.deleteButton') }}
 			</button>
 		</div>
 
 		<div class="view_section">
 			<Input
 				v-model="exercise.name"
-				label="Name"
 				type="text"
+				:label="$t('exercises.view.form.name')"
 			/>
 			<Input
 				v-model="exercise.calorieBurn.value"
-				label="Calorie burn"
-				postfix="kcal"
+				:label="$t('exercises.view.form.calorieBurn')"
+				:postfix="$t('common.units.calories')"
 			/>
 			<Input
 				v-model="exercise.activity.duration.value"
-				label="Duration"
-				:postfix="exercise.activity.duration.value > 1 ? 'mins': 'min'"
+				:label="$t('exercises.view.form.duration')"
+				:postfix="$tc('common.units.minutes', exercise.activity.duration.value)"
 			/>
 			<Input
 				v-model="exercise.activity.reps.value"
-				label="Repetitions"
-				:postfix="exercise.activity.reps.value > 1 ? 'reps': 'rep'"
+				:label="$t('exercises.view.form.repetitions')"
+				:postfix="$tc('common.units.repetitions', exercise.activity.reps.value)"
+			/>
+			<Input
+				v-model="exercise.description"
+				type="textarea"
+				:label="$t('exercises.view.form.description')"
 			/>
 			<Input
 				v-model="exercise.description"
@@ -93,11 +98,11 @@ export default {
 							},
 						});
 					}
-					notificationService.success('Exercise successfully saved.');
+					notificationService.success('exercises.view.notifications.saved');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},
@@ -106,11 +111,11 @@ export default {
 			exerciseService.delete(this.exercise._id)
 				.then(() => {
 					this.$router.push({ name: 'exercises' });
-					notificationService.success('Exercise successfully deleted.');
+					notificationService.success('exercises.view.notifications.deleted');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 					this.isLoading = false;
 				});
 		},
@@ -122,7 +127,7 @@ export default {
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},

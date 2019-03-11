@@ -1,7 +1,7 @@
 <template>
 	<div class="RecipesTable">
 		<p v-if="recipes.length === 0">
-			No recipes found.
+			{{ $t('recipes.table.noRecipeFound') }}
 		</p>
 
 		<div
@@ -10,11 +10,11 @@
 		>
 			<div class="table_header">
 				<div class="table_row">
-					<div class="table_cell">Name</div>
-					<div class="table_cell">Calories</div>
-					<div class="table_cell">Carbs</div>
-					<div class="table_cell">Protein</div>
-					<div class="table_cell">Fat</div>
+					<div class="table_cell">{{ $t('recipes.table.header.name') }}</div>
+					<div class="table_cell">{{ $t('recipes.table.header.calories') }}</div>
+					<div class="table_cell">{{ $t('recipes.table.header.carbs') }}</div>
+					<div class="table_cell">{{ $t('recipes.table.header.protein') }}</div>
+					<div class="table_cell">{{ $t('recipes.table.header.fat') }}</div>
 				</div>
 			</div>
 			<div class="table_body">
@@ -31,10 +31,10 @@
 					}"
 				>
 					<div class="table_cell">{{ recipe.name }}</div>
-					<div class="table_cell">{{ recipe.nutritionSummary.calories.toFixed(0) }} kcal</div>
-					<div class="table_cell">{{ recipe.nutritionSummary.carbs.toFixed(0) }} g</div>
-					<div class="table_cell">{{ recipe.nutritionSummary.protein.toFixed(0) }} g</div>
-					<div class="table_cell">{{ recipe.nutritionSummary.fat.toFixed(0) }} g</div>
+					<div class="table_cell">{{ recipe.nutritionSummary.calories.toFixed(0) }} {{ $t('common.units.calories') }}</div>
+					<div class="table_cell">{{ recipe.nutritionSummary.carbs.toFixed(0) }} {{ $t('common.units.grams') }}</div>
+					<div class="table_cell">{{ recipe.nutritionSummary.protein.toFixed(0) }} {{ $t('common.units.grams') }}</div>
+					<div class="table_cell">{{ recipe.nutritionSummary.fat.toFixed(0) }} {{ $t('common.units.grams') }}</div>
 				</router-link>
 			</div>
 		</div>

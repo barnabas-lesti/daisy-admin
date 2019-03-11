@@ -1,9 +1,13 @@
+common:
+  DEFAULT_LOCALE: 'en-US'
+
 client:
-  PORT: 3000
+  DEV_PORT: 3000
   API_BASE_URL: null
   DEFAULT_LAYOUT: 'LayoutSimple'
 
 server:
-  PORT: 8080
+  BUCKET_PATH: null
   MONGO_URI: null
   RESPONSE_DELAY: null
+  PORT: 8080

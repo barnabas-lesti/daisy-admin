@@ -18,6 +18,7 @@ class StorageService {
 export const StorageKeys = {
 	common: {
 		LAYOUT: 'common.Layout',
+		LOCALE: 'common.Locale',
 	},
 
 	calculatorView: {

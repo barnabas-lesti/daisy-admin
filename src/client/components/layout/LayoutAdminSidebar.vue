@@ -8,19 +8,19 @@
 		</router-link>
 		<div class="LayoutAdminSidebar_links">
 			<router-link
-				v-for="(navItem, index) in navItems"
+				v-for="(item, index) in menuItems"
 				class="LayoutAdminSidebar_link"
-				:activeClass="!navItem.exact ? 'LayoutAdminSidebar_link-active' : ''"
-				:exactActiveClass="navItem.exact ? 'LayoutAdminSidebar_link-active' : ''"
+				:activeClass="!item.exact ? 'LayoutAdminSidebar_link-active' : ''"
+				:exactActiveClass="item.exact ? 'LayoutAdminSidebar_link-active' : ''"
 				:key="index"
-				:to="{ name: navItem.routeName }"
+				:to="{ name: item.routeName }"
 			>
 				<Icon
-					v-if="navItem.icon"
+					v-if="item.icon"
 					class="LayoutAdminSidebar_linkIcon"
-					:type="navItem.icon"
+					:type="item.icon"
 				/>
-				{{ navItem.label }}
+				{{ $t(item.labelKey) }}
 			</router-link>
 		</div>
 	</nav>
@@ -35,17 +35,9 @@ export default {
 	},
 	name: 'LayoutAdminSidebar',
 	props: {
-		navItems: {
-			required: true,
+		menuItems: {
+			default: () => [],
 			type: Array,
-			validator: items => {
-				for (const item of items) {
-					if (!item.label || !item.routeName) {
-						return false;
-					}
-				}
-				return true;
-			},
 		},
 	},
 };

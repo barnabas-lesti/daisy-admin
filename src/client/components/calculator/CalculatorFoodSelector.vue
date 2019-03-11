@@ -2,8 +2,8 @@
 	<div class="CalculatorFoodSelector">
 		<div class="field">
 			<SearchInput
-				placeholder="Search for food"
 				:initialValue="searchString"
+				:placeholder="$t('calculator.foodSelector.searchPlaceholder')"
 				@search="onSearch($event)"
 			/>
 		</div>
@@ -16,7 +16,7 @@
 
 			<div v-else>
 				<p v-if="loadOccurred && food.length === 0">
-					No food found.
+					{{ $t('calculator.foodSelector.noFoodFound') }}
 				</p>
 
 				<div
@@ -33,7 +33,7 @@
 							<div class="table_cell">
 								<div>
 									<span>{{ item.name }}</span>
-									<span class="CalculatorFoodSelector_foodCalories">{{ item.nutrients.calories.value }} kcal</span>
+									<span class="CalculatorFoodSelector_foodCalories">{{ `${item.nutrients.calories.value} ${$t('common.units.calories')}` }}</span>
 								</div>
 							</div>
 						</div>
@@ -70,7 +70,7 @@ export default {
 				.then(food => this.food = food)
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => {
 					this.isLoading = false;

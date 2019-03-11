@@ -3,23 +3,23 @@
 		<div class="table table-fullWidth">
 			<div class="CalculatorTable_tableHeader table_header">
 				<div class="table_row">
-					<div class="table_cell">Name</div>
-					<div class="table_cell">Serving</div>
-					<div class="table_cell">Calories</div>
-					<div class="table_cell">Carbs</div>
-					<div class="table_cell">Protein</div>
-					<div class="table_cell">Fat</div>
+					<div class="table_cell">{{ $t('calculator.table.header.name') }}</div>
+					<div class="table_cell">{{ $t('calculator.table.header.serving') }}</div>
+					<div class="table_cell">{{ $t('calculator.table.header.calories') }}</div>
+					<div class="table_cell">{{ $t('calculator.table.header.carbs') }}</div>
+					<div class="table_cell">{{ $t('calculator.table.header.protein') }}</div>
+					<div class="table_cell">{{ $t('calculator.table.header.fat') }}</div>
 					<div class="table_cell"></div>
 				</div>
 			</div>
 			<div class="table_body">
 				<div class="CalculatorTable_tableRow CalculatorTable_tableRow-summary table_row">
-					<div class="table_cell">Summary</div>
+					<div class="table_cell">{{ $t('calculator.table.header.summary') }}</div>
 					<div class="table_cell"></div>
-					<div class="table_cell">{{ nutritionSummary.calories.toFixed(0) }} kcal</div>
-					<div class="table_cell">{{ nutritionSummary.carbs.toFixed(0) }} g</div>
-					<div class="table_cell">{{ nutritionSummary.protein.toFixed(0) }} g</div>
-					<div class="table_cell">{{ nutritionSummary.fat.toFixed(0) }} g</div>
+					<div class="table_cell">{{ `${nutritionSummary.calories.toFixed(0)} ${$t('common.units.calories')}` }}</div>
+					<div class="table_cell">{{ `${nutritionSummary.carbs.toFixed(0)} ${$t('common.units.grams')}` }}</div>
+					<div class="table_cell">{{ `${nutritionSummary.protein.toFixed(0)} ${$t('common.units.grams')}` }}</div>
+					<div class="table_cell">{{ `${nutritionSummary.fat.toFixed(0)} ${$t('common.units.grams')}` }}</div>
 					<div class="table_cell"></div>
 				</div>
 				<div class="CalculatorTable_tableRow CalculatorTable_tableRow-summary
@@ -27,9 +27,9 @@
 					<div class="table_cell"></div>
 					<div class="table_cell"></div>
 					<div class="table_cell"></div>
-					<div class="table_cell">{{ nutritionSummaryPercentages.carbs.toFixed(0) }} %</div>
-					<div class="table_cell">{{ nutritionSummaryPercentages.protein.toFixed(0) }} %</div>
-					<div class="table_cell">{{ nutritionSummaryPercentages.fat.toFixed(0) }} %</div>
+					<div class="table_cell">{{ `${nutritionSummaryPercentages.carbs.toFixed(0)} ${$t('common.units.percent')}` }}</div>
+					<div class="table_cell">{{ `${nutritionSummaryPercentages.protein.toFixed(0)} ${$t('common.units.percent')}` }}</div>
+					<div class="table_cell">{{ `${nutritionSummaryPercentages.fat.toFixed(0)} ${$t('common.units.percent')}` }}</div>
 					<div class="table_cell"></div>
 				</div>
 
@@ -48,10 +48,10 @@
 							<span>{{ item.food.serving.unit }}</span>
 						</div>
 					</div>
-					<div class="table_cell">{{ getServingMultipliedMacro(item.food.nutrients.calories, item.serving).toFixed(2) }} kcal</div>
-					<div class="table_cell">{{ getServingMultipliedMacro(item.food.nutrients.carbs, item.serving).toFixed(2) }} g</div>
-					<div class="table_cell">{{ getServingMultipliedMacro(item.food.nutrients.protein, item.serving).toFixed(2) }} g</div>
-					<div class="table_cell">{{ getServingMultipliedMacro(item.food.nutrients.fat, item.serving).toFixed(2) }} g</div>
+					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.calories, item.serving).toFixed(2)} ${$t('common.units.calories')}` }}</div>
+					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.carbs, item.serving).toFixed(2)} ${$t('common.units.grams')}` }}</div>
+					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.protein, item.serving).toFixed(2)} ${$t('common.units.grams')}` }}</div>
+					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.fat, item.serving).toFixed(2)} ${$t('common.units.grams')}` }}</div>
 					<div class="table_cell">
 						<div class="CalculatorTable_rowActions">
 							<div

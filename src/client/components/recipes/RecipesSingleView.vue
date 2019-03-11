@@ -1,6 +1,6 @@
 <template>
 	<div class="RecipesSingleView view">
-		<h1>{{ recipe.name || 'New Recipe' }}</h1>
+		<h1>{{ recipe.name || $t('recipes.view.newRecipeDefaultTitle') }}</h1>
 
 		<LoadingOverlay
 			v-if="isLoading"
@@ -12,20 +12,20 @@
 				class="view_action button button-primary"
 				@click="onSaveButtonClick()"
 			>
-				Save recipe
+				{{ $t('recipes.view.saveButton') }}
 			</button>
 			<button
 				v-if="recipe._id"
 				class="view_action button button-danger"
 				@click="onDeleteButtonClick()"
 			>
-				Delete recipe
+				{{ $t('recipes.view.deleteButton') }}
 			</button>
 		</div>
 
 		<div class="view_section">
 			<div class="control">
-				<label class="label">Name</label>
+				<label class="label">{{ $t('recipes.view.form.name') }}</label>
 				<input
 					v-model="recipe.name"
 					class="input"
@@ -43,7 +43,7 @@
 
 		<div class="view_section">
 			<div class="control">
-				<label class="label">Description</label>
+				<label class="label">{{ $t('recipes.view.form.description') }}</label>
 				<textarea
 					v-model="recipe.description"
 					class="input input-textarea"
@@ -92,11 +92,11 @@ export default {
 							},
 						});
 					}
-					notificationService.success('Recipe successfully saved.');
+					notificationService.success('recipes.view.notifications.saved');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},
@@ -105,11 +105,11 @@ export default {
 			recipeService.delete(this.recipe._id)
 				.then(() => {
 					this.$router.push({ name: 'recipes' });
-					notificationService.success('Recipe successfully deleted.');
+					notificationService.success('recipes.view.notifications.deleted');
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 					this.isLoading = false;
 				});
 		},
@@ -121,7 +121,7 @@ export default {
 				})
 				.catch(error => {
 					logger.error(error);
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
 		},

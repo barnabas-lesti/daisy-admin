@@ -1,20 +1,20 @@
 <template>
 	<div class="ExercisesListView view">
-		<h1>Exercises</h1>
+		<h1>{{ $t('exercises.view.title') }}</h1>
 
 		<div class="view_section">
 			<router-link
 				class="button button-primary"
 				:to="{ name: 'exerciseNew' }"
 			>
-				New exercise
+				{{ $t('exercises.view.newButton') }}
 			</router-link>
 		</div>
 
 		<div class="view_section">
 			<SearchInput
 				autoSearch
-				placeholder="Search for exercises"
+				:placeholder="$t('exercises.view.searchPlaceholder')"
 				:initialValue="searchString"
 				@search="onSearch($event)"
 			/>
@@ -62,7 +62,7 @@ export default {
 			exerciseService.getMany({ searchString: this.searchString })
 				.then(exercises => this.exercises = exercises)
 				.catch(error => {
-					notificationService.error('Sorry, but an error occured.');
+					notificationService.error('common.notifications.unknownErrorOccurred');
 					logger.error(error);
 				})
 				.finally(() => this.isLoading = false);

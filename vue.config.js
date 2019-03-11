@@ -20,6 +20,8 @@ module.exports = {
 					...processEnvSettings,
 
 					// Custom .env variables
+					DEFAULT_LOCALE: JSON.stringify(configLib.get('common.DEFAULT_LOCALE')),
+
 					API_BASE_URL: JSON.stringify(configLib.get('client.API_BASE_URL')),
 					DEFAULT_LAYOUT: JSON.stringify(configLib.get('client.DEFAULT_LAYOUT')),
 				};
@@ -34,6 +36,6 @@ module.exports = {
 		},
 	},
 	devServer: {
-		port: configLib.get('client.PORT'),
+		port: configLib.get('client.DEV_PORT'),
 	}
 };
