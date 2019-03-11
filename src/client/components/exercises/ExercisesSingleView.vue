@@ -49,6 +49,11 @@
 				type="textarea"
 				:label="$t('exercises.view.form.description')"
 			/>
+			<Input
+				v-model="exercise.description"
+				label="Description"
+				type="textarea"
+			/>
 		</div>
 
 	</div>
