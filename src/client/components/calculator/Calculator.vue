@@ -1,10 +1,12 @@
 <template>
 	<div class="Calculator">
 		<div class="field">
-			<CalculatorFoodSelector @select="onFoodSelect($event)" />
+			<CalculatorTable v-model="computedValue" />
 		</div>
 		<div class="field">
-			<CalculatorTable v-model="computedValue" />
+			<Accordion :label="$t('calculator.selectors.food.accordionLabel')">
+				<CalculatorFoodSelector @select="onFoodSelect($event)" />
+			</Accordion>
 		</div>
 	</div>
 </template>
@@ -12,12 +14,14 @@
 <script>
 import RecipeItem from '../../models/RecipeItem';
 
+import Accordion from '../common/Accordion';
 import CalculatorFoodSelector from './CalculatorFoodSelector';
 import CalculatorTable from './CalculatorTable';
 
 export default {
 	name: 'Calculator',
 	components: {
+		Accordion,
 		CalculatorFoodSelector,
 		CalculatorTable,
 	},

@@ -46,9 +46,9 @@ export default {
 
 <style lang="less">
 .Accordion {
-	@_borderColor: @colors_light1;
+	@_borderColor: #dbdbdb;
 
-	border: 1px solid @_borderColor;
+	border-bottom: 1px solid @_borderColor;
 	font-size: 1rem;
 
 	&_header {
@@ -57,7 +57,8 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: .5rem;
+		padding-top: .5rem;
+		padding-bottom: .5rem;
 
 		&:hover {
 			cursor: pointer;
@@ -76,7 +77,8 @@ export default {
 	&-open {
 		.Accordion_content {
 			height: auto;
-			padding: .5rem;
+			padding-top: .5rem;
+			padding-bottom: .5rem;
 		}
 
 		.Accordion_icon {

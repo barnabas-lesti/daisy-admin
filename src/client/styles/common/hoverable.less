@@ -1,0 +1,12 @@
+@import (reference) '../mixins.less';
+
+.hoverable {
+	@_bgColor-hover: #fafafa;
+
+	.transition(background-color);
+
+	&:hover {
+		cursor: pointer;
+		background-color: @_bgColor-hover;
+	}
+}

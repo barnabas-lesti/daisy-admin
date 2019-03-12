@@ -11,8 +11,7 @@
 					<div class="table_cell">{{ $t('calculator.table.header.fat') }}</div>
 					<div class="table_cell"></div>
 				</div>
-			</div>
-			<div class="table_body">
+
 				<div class="CalculatorTable_tableRow CalculatorTable_tableRow-summary table_row">
 					<div class="table_cell">{{ $t('calculator.table.header.summary') }}</div>
 					<div class="table_cell"></div>
@@ -32,7 +31,8 @@
 					<div class="table_cell">{{ `${nutritionSummaryPercentages.fat.toFixed(0)} ${$t('common.units.percent')}` }}</div>
 					<div class="table_cell"></div>
 				</div>
-
+			</div>
+			<div class="table_body">
 				<div
 					v-for="(item, index) of value"
 					class="CalculatorTable_tableRow table_row"

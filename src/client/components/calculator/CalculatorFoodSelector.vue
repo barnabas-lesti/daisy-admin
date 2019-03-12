@@ -3,41 +3,30 @@
 		<div class="field">
 			<SearchInput
 				:initialValue="searchString"
-				:placeholder="$t('calculator.foodSelector.searchPlaceholder')"
+				:placeholder="$t('calculator.selectors.food.searchPlaceholder')"
 				@search="onSearch($event)"
 			/>
 		</div>
 
-		<div class="CalculatorFoodSelector_searchResults field">
+		<div class="CalculatorFoodSelector_searchResult">
 			<Loader
 				v-if="isLoading"
 				dark
 			/>
 
-			<div v-else>
-				<p v-if="loadOccurred && food.length === 0">
-					{{ $t('calculator.foodSelector.noFoodFound') }}
-				</p>
+			<p v-else-if="loadOccurred && food.length === 0">
+				{{ $t('calculator.selectors.food.noItemsFound') }}
+			</p>
 
+			<div v-else>
 				<div
-					v-else
-					class="table table-fullWidth table-hoverable table-bordered"
+					v-for="(item, index) of food"
+					class="CalculatorFoodSelector_item hoverable"
+					:key="index"
+					@click="onTableRowClick(item)"
 				>
-					<div class="table_body">
-						<div
-							v-for="(item, index) of food"
-							class="table_row"
-							:key="index"
-							@click="onTableRowClick(item)"
-						>
-							<div class="table_cell">
-								<div>
-									<span>{{ item.name }}</span>
-									<span class="CalculatorFoodSelector_foodCalories">{{ `${item.nutrients.calories.value} ${$t('common.units.calories')}` }}</span>
-								</div>
-							</div>
-						</div>
-					</div>
+					<span>{{ item.name }}</span>
+					<span class="CalculatorFoodSelector_calories">{{ `${item.nutrients.calories.value} ${$t('common.units.calories')}` }}</span>
 				</div>
 			</div>
 		</div>
@@ -107,15 +96,18 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/mixins.less';
-@import (reference) '../../styles/variables.less';
+@import (reference) '../../styles/mixins';
 
 .CalculatorFoodSelector {
-	&_foodCalories {
+	&_calories {
 		float: right;
 	}
 
-	&_searchResults {
+	&_item {
+		padding: .5rem;
+	}
+
+	&_searchResult {
 		height: 10rem;
 		overflow-y: auto;
 	}
