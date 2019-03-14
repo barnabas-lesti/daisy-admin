@@ -1,5 +1,5 @@
 <template>
-	<div class="RecipesSingleView view">
+	<div class="RecipesViewSingle view">
 		<h1>{{ recipe.name || $t('recipes.view.newRecipeDefaultTitle') }}</h1>
 
 		<LoadingOverlay
@@ -36,8 +36,8 @@
 
 		<div class="view_section">
 			<Calculator
-				v-if="recipe.items"
-				v-model="recipe.items"
+				v-model="calculatorModel"
+				onlyFoodSelector
 			/>
 		</div>
 
@@ -57,13 +57,14 @@
 import logger from '../../common/logger';
 import Recipe from '../../models/Recipe';
 import recipeService from '../../services/recipeService';
+import calculatorService from '../../services/calculatorService';
 import notificationService from '../../services/notificationService';
 
 import LoadingOverlay from '../common/LoadingOverlay';
 import Calculator from '../calculator/Calculator';
 
 export default {
-	name: 'RecipesSingleView',
+	name: 'RecipesViewSingle',
 	components: {
 		LoadingOverlay,
 		Calculator,
@@ -124,6 +125,16 @@ export default {
 					notificationService.error('common.notifications.unknownErrorOccurred');
 				})
 				.finally(() => this.isLoading = false);
+		},
+	},
+	computed: {
+		calculatorModel: {
+			get () {
+				return this.recipe.items.map(item => calculatorService.convertRecipeItemToCalculatorItem(item));
+			},
+			set (newValue) {
+				this.recipe.items = newValue.map(item => calculatorService.convertCalculatorItemToRecipeItem(item));
+			},
 		},
 	},
 	data () {

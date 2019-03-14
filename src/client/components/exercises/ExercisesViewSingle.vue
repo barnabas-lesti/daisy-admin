@@ -1,5 +1,5 @@
 <template>
-	<div class="ExercisesSingleView view">
+	<div class="ExercisesViewSingle view">
 		<h1>{{ exercise.name || $t('exercises.view.newExerciseDefaultTitle') }}</h1>
 
 		<LoadingOverlay
@@ -69,7 +69,7 @@ import Input from '../common/Input';
 import LoadingOverlay from '../common/LoadingOverlay';
 
 export default {
-	name: 'ExercisesSingleView',
+	name: 'ExercisesViewSingle',
 	components: {
 		Input,
 		LoadingOverlay,

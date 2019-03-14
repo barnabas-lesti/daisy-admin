@@ -37,7 +37,7 @@
 					v-for="(item, index) of value"
 					class="CalculatorTable_tableRow table_row"
 					:key="index">
-					<div class="table_cell">{{ item.food.name }}</div>
+					<div class="table_cell">{{ item.name }}</div>
 					<div class="table_cell">
 						<div class="CalculatorTable_serving">
 							<input
@@ -45,13 +45,13 @@
 								class="CalculatorTable_servingInput input"
 								type="number"
 							/>
-							<span>{{ item.food.serving.unit }}</span>
+							<span>{{ item.serving.unit }}</span>
 						</div>
 					</div>
-					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.calories, item.serving).toFixed(2)} ${$t('common.units.calories')}` }}</div>
-					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.carbs, item.serving).toFixed(2)} ${$t('common.units.grams')}` }}</div>
-					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.protein, item.serving).toFixed(2)} ${$t('common.units.grams')}` }}</div>
-					<div class="table_cell">{{ `${getServingMultipliedMacro(item.food.nutrients.fat, item.serving).toFixed(2)} ${$t('common.units.grams')}` }}</div>
+					<div class="table_cell">{{ servingMultipliedMacroDisplay[index].calories }}</div>
+					<div class="table_cell">{{ servingMultipliedMacroDisplay[index].carbs }}</div>
+					<div class="table_cell">{{ servingMultipliedMacroDisplay[index].protein }}</div>
+					<div class="table_cell">{{ servingMultipliedMacroDisplay[index].fat }}</div>
 					<div class="table_cell">
 						<div class="CalculatorTable_rowActions">
 							<div
@@ -99,8 +99,22 @@ export default {
 		},
 	},
 	computed: {
+		servingMultipliedMacroDisplay () {
+			return this.value.map(({ nutrients, serving }) => {
+				const calories = this.getServingMultipliedMacro(nutrients.calories, serving);
+				const carbs = this.getServingMultipliedMacro(nutrients.carbs, serving);
+				const protein = this.getServingMultipliedMacro(nutrients.protein, serving);
+				const fat = this.getServingMultipliedMacro(nutrients.fat, serving);
+				return {
+					calories: calories ? `${calories.toFixed(2)} ${this.$t('common.units.calories')}` : '',
+					carbs: carbs ? `${carbs.toFixed(2)} ${this.$t('common.units.grams')}` : '',
+					protein: protein ? `${protein.toFixed(2)} ${this.$t('common.units.grams')}` : '',
+					fat: fat ? `${fat.toFixed(2)} ${this.$t('common.units.grams')}` : '',
+				};
+			});
+		},
 		nutritionSummary () {
-			return calculatorService.getNutritionSummaryFromRecipeItems(this.value);
+			return calculatorService.getNutritionSummaryFromCalculatorItems(this.value);
 		},
 		nutritionSummaryPercentages () {
 			return calculatorService.getNutritionSummaryPercentagesFromNutritionSummary(this.nutritionSummary);

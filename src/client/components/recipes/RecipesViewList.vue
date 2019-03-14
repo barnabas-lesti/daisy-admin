@@ -1,5 +1,5 @@
 <template>
-	<div class="RecipesListView view">
+	<div class="RecipesViewList view">
 		<h1>{{ $t('recipes.view.title') }}</h1>
 
 		<div class="view_section">
@@ -44,7 +44,7 @@ import SearchInput from '../common/SearchInput';
 import RecipesTable from './RecipesTable';
 
 export default {
-	name: 'RecipesListView',
+	name: 'RecipesViewList',
 	components: {
 		Loader,
 		SearchInput,

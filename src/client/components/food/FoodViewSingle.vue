@@ -1,5 +1,5 @@
 <template>
-	<div class="FoodSingleView view">
+	<div class="FoodViewSingle view">
 		<h1>{{ food.name || $t('food.view.newFoodDefaultTitle') }}</h1>
 
 		<LoadingOverlay
@@ -125,7 +125,7 @@ import LoadingOverlay from '../common/LoadingOverlay';
 import Input from '../common/Input';
 
 export default {
-	name: 'RecipesSingleView',
+	name: 'FoodViewSingle',
 	components: {
 		LoadingOverlay,
 		Input,

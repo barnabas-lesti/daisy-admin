@@ -1,32 +1,32 @@
 <template>
-	<div class="CalculatorFoodSelector">
+	<div class="CalculatorSelectorRecipe">
 		<div class="field">
 			<SearchInput
 				:initialValue="searchString"
-				:placeholder="$t('calculator.selectors.food.searchPlaceholder')"
+				:placeholder="$t('calculator.selectors.recipe.searchPlaceholder')"
 				@search="onSearch($event)"
 			/>
 		</div>
 
-		<div class="CalculatorFoodSelector_searchResult">
+		<div class="CalculatorSelectorRecipe_searchResult">
 			<Loader
 				v-if="isLoading"
 				dark
 			/>
 
-			<p v-else-if="loadOccurred && food.length === 0">
-				{{ $t('calculator.selectors.food.noItemsFound') }}
+			<p v-else-if="loadOccurred && recipes.length === 0">
+				{{ $t('calculator.selectors.recipe.noItemsFound') }}
 			</p>
 
 			<div v-else>
 				<div
-					v-for="(item, index) of food"
-					class="CalculatorFoodSelector_item hoverable"
+					v-for="(item, index) of recipes"
+					class="CalculatorSelectorRecipe_item hoverable"
 					:key="index"
 					@click="onTableRowClick(item)"
 				>
 					<span>{{ item.name }}</span>
-					<span class="CalculatorFoodSelector_calories">{{ `${item.nutrients.calories.value} ${$t('common.units.calories')}` }}</span>
+					<span class="CalculatorSelectorRecipe_calories">{{ `${getCalories(item)} ${$t('common.units.calories')}` }}</span>
 				</div>
 			</div>
 		</div>
@@ -35,28 +35,27 @@
 </template>
 
 <script>
-import Utils from '../../common/Utils';
 import logger from '../../common/logger';
-import foodService from '../../services/foodService';
+import Recipe from '../../models/Recipe';
+import recipeService from '../../services/recipeService';
+import calculatorService from '../../services/calculatorService';
 import notificationService from '../../services/notificationService';
 
 import Loader from '../common/Loader';
 import SearchInput from '../common/SearchInput';
 
 export default {
-	name: 'CalculatorFoodSelector',
+	name: 'CalculatorSelectorRecipe',
 	components: {
 		Loader,
 		SearchInput,
 	},
-	props: {
-		autoLoad: Boolean,
-	},
 	methods: {
-		loadFood () {
+		getCalories: recipe => calculatorService.getNutritionSummaryFromRecipe(recipe).calories,
+		loadRecipes () {
 			this.isLoading = true;
-			foodService.getMany({ searchString: this.searchString })
-				.then(food => this.food = food)
+			recipeService.getMany({ searchString: this.searchString })
+				.then(recipes => this.recipes = recipes)
 				.catch(error => {
 					logger.error(error);
 					notificationService.error('common.notifications.unknownErrorOccurred');
@@ -72,21 +71,16 @@ export default {
 		},
 		onSearch ({ searchString }) {
 			this.searchString = searchString;
-			this.loadFood();
+			this.loadRecipes();
 		},
 
-		emitSelect (selectedFood) {
-			this.$emit('select', { selectedFood: Utils.cloneDeep(selectedFood) });
+		emitSelect (recipe) {
+			this.$emit('select', { recipe: new Recipe(recipe) });
 		},
-	},
-	created () {
-		if (this.autoLoad) {
-			this.loadFood();
-		}
 	},
 	data () {
 		return {
-			food: [],
+			recipes: [],
 			searchString: '',
 			isLoading: false,
 			loadOccurred: false,
@@ -96,9 +90,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/mixins';
-
-.CalculatorFoodSelector {
+.CalculatorSelectorRecipe {
 	&_calories {
 		float: right;
 	}
