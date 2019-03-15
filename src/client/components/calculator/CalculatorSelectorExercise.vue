@@ -3,7 +3,7 @@
 		<div class="field">
 			<SearchInput
 				:initialValue="searchString"
-				:placeholder="$t('calculator.selectors.exercise.searchPlaceholder')"
+				:placeholder="$t('calculator.selector.exercise.searchPlaceholder')"
 				@search="onSearch($event)"
 			/>
 		</div>
@@ -15,7 +15,7 @@
 			/>
 
 			<p v-else-if="loadOccurred && exercises.length === 0">
-				{{ $t('calculator.selectors.exercise.noItemsFound') }}
+				{{ $t('calculator.selector.exercise.noItemsFound') }}
 			</p>
 
 			<div v-else>
@@ -26,7 +26,7 @@
 					@click="onTableRowClick(item)"
 				>
 					<span>{{ item.name }}</span>
-					<span class="CalculatorSelectorExercise_calories">{{ `${item.nutrients.calories.value} ${$t('common.units.calories')}` }}</span>
+					<span class="CalculatorSelectorExercise_calories">{{ `${item.calorieBurn.value} ${$t('common.units.calories')}` }}</span>
 				</div>
 			</div>
 		</div>

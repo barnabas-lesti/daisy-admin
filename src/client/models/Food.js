@@ -1,6 +1,7 @@
 export default class Food {
 	constructor (skeleton = {}) {
 		const { nutrients = {} } = skeleton;
+		this._id = skeleton._id;
 		this.name = skeleton.name || '';
 		this.nutrients = {
 			calories: nutrients.calories || {},

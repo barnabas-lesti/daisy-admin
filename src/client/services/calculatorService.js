@@ -1,6 +1,7 @@
 import CalculatorItem from '../models/CalculatorItem';
 import NutritionSummary from '../models/NutritionSummary';
 import RecipeItem from '../models/RecipeItem';
+import Food from '../models/Food';
 
 class CalculatorService {
 	getNutritionSummaryFromRecipeItem (recipeItem) {
@@ -75,6 +76,7 @@ class CalculatorService {
 		const calculatorItem = new CalculatorItem();
 		const foodNutrients = food.nutrients;
 		calculatorItem.type = 'food';
+		calculatorItem.itemId = food._id;
 		calculatorItem.name = food.name;
 		calculatorItem.serving = food.serving;
 		calculatorItem.nutrients = food.nutrients;
@@ -85,6 +87,15 @@ class CalculatorService {
 			fat: { servingMultiplier: foodNutrients.fat.servingMultiplier },
 		};
 		return calculatorItem;
+	}
+
+	convertCalculatorItemToFood (calculatorItem) {
+		const food = new Food();
+		const { nutrients } = calculatorItem;
+		food._id = calculatorItem.itemId;
+		food.nutrients = nutrients;
+		food.name = calculatorItem.name;
+		return food;
 	}
 
 	convertRecipeToCalculatorItem (recipe) {
@@ -113,8 +124,11 @@ class CalculatorService {
 		return calculatorItem;
 	}
 
-	convertCalculatorItemToRecipeItem () {
-
+	convertCalculatorItemToRecipeItem (calculatorItem) {
+		const recipeItem = new RecipeItem();
+		recipeItem.serving.value = calculatorItem.serving.value;
+		recipeItem.food = this.convertCalculatorItemToFood(calculatorItem);
+		return recipeItem;
 	}
 
 	convertExerciseToCalculatorItem (exercise) {

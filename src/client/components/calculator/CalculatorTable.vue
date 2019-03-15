@@ -41,9 +41,10 @@
 					<div class="table_cell">
 						<div class="CalculatorTable_serving">
 							<input
-								v-model="item.serving.value"
 								class="CalculatorTable_servingInput input"
 								type="number"
+								:value="item.serving.value"
+								@input="onServingInput(item, $event)"
 							/>
 							<span>{{ item.serving.unit }}</span>
 						</div>
@@ -92,6 +93,10 @@ export default {
 
 		onDeleteClick (index) {
 			this.removeItem(index);
+		},
+		onServingInput (item, { target }) {
+			item.serving.value = target.value;
+			this.emitInput(this.value);
 		},
 
 		emitInput (newValue) {

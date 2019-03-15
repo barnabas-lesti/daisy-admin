@@ -4,7 +4,7 @@
 			<CalculatorTable v-model="computedValue" />
 		</div>
 		<div class="field">
-			<Accordion :label="$t('calculator.selectors.food.accordionLabel')">
+			<Accordion :label="$t('calculator.selector.food.accordionLabel')">
 				<CalculatorSelectorFood @select="onFoodSelect($event)" />
 			</Accordion>
 		</div>
@@ -12,7 +12,7 @@
 			v-if="!onlyFoodSelector"
 			class="field"
 		>
-			<Accordion :label="$t('calculator.selectors.recipe.accordionLabel')">
+			<Accordion :label="$t('calculator.selector.recipe.accordionLabel')">
 				<CalculatorSelectorRecipe @select="onRecipeSelect($event)" />
 			</Accordion>
 		</div>
@@ -20,7 +20,7 @@
 			v-if="!onlyFoodSelector"
 			class="field"
 		>
-			<Accordion :label="$t('calculator.selectors.exercise.accordionLabel')">
+			<Accordion :label="$t('calculator.selector.exercise.accordionLabel')">
 				<CalculatorSelectorExercise @select="onExerciseSelect($event)" />
 			</Accordion>
 		</div>

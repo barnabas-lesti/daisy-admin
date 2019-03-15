@@ -3,7 +3,7 @@
 		<div class="field">
 			<SearchInput
 				:initialValue="searchString"
-				:placeholder="$t('calculator.selectors.food.searchPlaceholder')"
+				:placeholder="$t('calculator.selector.food.searchPlaceholder')"
 				@search="onSearch($event)"
 			/>
 		</div>
@@ -15,7 +15,7 @@
 			/>
 
 			<p v-else-if="loadOccurred && food.length === 0">
-				{{ $t('calculator.selectors.food.noItemsFound') }}
+				{{ $t('calculator.selector.food.noItemsFound') }}
 			</p>
 
 			<div v-else>
