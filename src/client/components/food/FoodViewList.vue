@@ -1,20 +1,20 @@
 <template>
-	<div class="ExercisesListView view">
-		<h1>{{ $t('exercises.view.title') }}</h1>
+	<div class="FoodViewList view">
+		<h1>{{ $t('food.view.title') }}</h1>
 
 		<div class="view_section">
 			<router-link
 				class="button button-primary"
-				:to="{ name: 'exerciseNew' }"
+				:to="{ name: 'foodNew' }"
 			>
-				{{ $t('exercises.view.newButton') }}
+				{{ $t('food.view.newButton') }}
 			</router-link>
 		</div>
 
 		<div class="view_section">
 			<SearchInput
 				autoSearch
-				:placeholder="$t('exercises.view.searchPlaceholder')"
+				:placeholder="$t('food.view.searchPlaceholder')"
 				:initialValue="searchString"
 				@search="onSearch($event)"
 			/>
@@ -26,9 +26,9 @@
 				dark
 			/>
 
-			<ExercisesTable
+			<FoodTable
 				v-if="!isLoading && loadOccurred"
-				:exercises="exercises"
+				:food="food"
 			/>
 		</div>
 	</div>
@@ -36,31 +36,31 @@
 
 <script>
 import logger from '../../common/logger';
-import exerciseService from '../../services/exerciseService';
+import foodService from '../../services/foodService';
 import notificationService from '../../services/notificationService';
 
 import Loader from '../common/Loader';
 import SearchInput from '../common/SearchInput';
-import ExercisesTable from './ExercisesTable';
+import FoodTable from './FoodTable';
 
 export default {
-	name: 'ExercisesListView',
+	name: 'FoodViewList',
 	components: {
 		Loader,
 		SearchInput,
-		ExercisesTable,
+		FoodTable,
 	},
 	methods: {
 		onSearch ({ searchString }) {
 			this.searchString = searchString;
-			this.loadExercises();
+			this.loadFood();
 		},
 
-		loadExercises () {
+		loadFood () {
 			this.isLoading = true;
 			this.loadOccurred = true;
-			exerciseService.getMany({ searchString: this.searchString })
-				.then(exercises => this.exercises = exercises)
+			foodService.getMany({ searchString: this.searchString })
+				.then(food => this.food = food)
 				.catch(error => {
 					notificationService.error('common.notifications.unknownErrorOccurred');
 					logger.error(error);
@@ -73,7 +73,7 @@ export default {
 			isLoading: false,
 			loadOccurred: false,
 			searchString: '',
-			exercises: [],
+			food: [],
 		};
 	},
 };

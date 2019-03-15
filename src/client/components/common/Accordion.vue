@@ -46,9 +46,9 @@ export default {
 
 <style lang="less">
 .Accordion {
-	@_borderColor: @colors_light1;
+	@_bgColor: #eeeeee;
 
-	border: 1px solid @_borderColor;
+	background-color: @_bgColor;
 	font-size: 1rem;
 
 	&_header {

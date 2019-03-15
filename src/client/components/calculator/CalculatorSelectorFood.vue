@@ -1,43 +1,32 @@
 <template>
-	<div class="CalculatorFoodSelector">
+	<div class="CalculatorSelectorFood">
 		<div class="field">
 			<SearchInput
 				:initialValue="searchString"
-				:placeholder="$t('calculator.foodSelector.searchPlaceholder')"
+				:placeholder="$t('calculator.selector.food.searchPlaceholder')"
 				@search="onSearch($event)"
 			/>
 		</div>
 
-		<div class="CalculatorFoodSelector_searchResults field">
+		<div class="CalculatorSelectorFood_searchResult">
 			<Loader
 				v-if="isLoading"
 				dark
 			/>
 
-			<div v-else>
-				<p v-if="loadOccurred && food.length === 0">
-					{{ $t('calculator.foodSelector.noFoodFound') }}
-				</p>
+			<p v-else-if="loadOccurred && food.length === 0">
+				{{ $t('calculator.selector.food.noItemsFound') }}
+			</p>
 
+			<div v-else>
 				<div
-					v-else
-					class="table table-fullWidth table-hoverable table-bordered"
+					v-for="(item, index) of food"
+					class="CalculatorSelectorFood_item hoverable"
+					:key="index"
+					@click="onTableRowClick(item)"
 				>
-					<div class="table_body">
-						<div
-							v-for="(item, index) of food"
-							class="table_row"
-							:key="index"
-							@click="onTableRowClick(item)"
-						>
-							<div class="table_cell">
-								<div>
-									<span>{{ item.name }}</span>
-									<span class="CalculatorFoodSelector_foodCalories">{{ `${item.nutrients.calories.value} ${$t('common.units.calories')}` }}</span>
-								</div>
-							</div>
-						</div>
-					</div>
+					<span>{{ item.name }}</span>
+					<span class="CalculatorSelectorFood_calories">{{ `${item.nutrients.calories.value} ${$t('common.units.calories')}` }}</span>
 				</div>
 			</div>
 		</div>
@@ -46,8 +35,8 @@
 </template>
 
 <script>
-import Utils from '../../common/Utils';
 import logger from '../../common/logger';
+import Food from '../../models/Food';
 import foodService from '../../services/foodService';
 import notificationService from '../../services/notificationService';
 
@@ -55,13 +44,10 @@ import Loader from '../common/Loader';
 import SearchInput from '../common/SearchInput';
 
 export default {
-	name: 'CalculatorFoodSelector',
+	name: 'CalculatorSelectorFood',
 	components: {
 		Loader,
 		SearchInput,
-	},
-	props: {
-		autoLoad: Boolean,
 	},
 	methods: {
 		loadFood () {
@@ -86,14 +72,9 @@ export default {
 			this.loadFood();
 		},
 
-		emitSelect (selectedFood) {
-			this.$emit('select', { selectedFood: Utils.cloneDeep(selectedFood) });
+		emitSelect (food) {
+			this.$emit('select', { food: new Food(food) });
 		},
-	},
-	created () {
-		if (this.autoLoad) {
-			this.loadFood();
-		}
 	},
 	data () {
 		return {
@@ -107,15 +88,16 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) '../../styles/mixins.less';
-@import (reference) '../../styles/variables.less';
-
-.CalculatorFoodSelector {
-	&_foodCalories {
+.CalculatorSelectorFood {
+	&_calories {
 		float: right;
 	}
 
-	&_searchResults {
+	&_item {
+		padding: .5rem;
+	}
+
+	&_searchResult {
 		height: 10rem;
 		overflow-y: auto;
 	}

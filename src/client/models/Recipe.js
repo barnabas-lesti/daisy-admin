@@ -1,7 +1,7 @@
 export default class Recipe {
-	constructor () {
-		this.name = '';
-		this.description = '';
-		this.items = [];
+	constructor (skeleton = {}) {
+		this.name = skeleton.name || '';
+		this.description = skeleton.description || '';
+		this.items = skeleton.items || [];
 	}
 }
