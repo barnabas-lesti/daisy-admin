@@ -1,7 +1,7 @@
 import CalculatorItem from '../models/CalculatorItem';
+import Food from '../models/Food';
 import NutritionSummary from '../models/NutritionSummary';
 import RecipeItem from '../models/RecipeItem';
-import Food from '../models/Food';
 
 class CalculatorService {
 	getNutritionSummaryFromRecipeItem (recipeItem) {

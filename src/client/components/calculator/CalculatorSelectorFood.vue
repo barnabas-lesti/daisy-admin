@@ -35,7 +35,6 @@
 </template>
 
 <script>
-// import Utils from '../../common/Utils';
 import logger from '../../common/logger';
 import Food from '../../models/Food';
 import foodService from '../../services/foodService';
