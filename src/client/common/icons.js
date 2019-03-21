@@ -3,6 +3,7 @@ const icons = {
 	'food': 'fas fa-utensils',
 	'circle': 'far fa-circle',
 	'recipes': 'fas fa-book-open',
+	'recipe': 'fas fa-book-open',
 	'calculator': 'fas fa-calculator',
 	'chevronDown': 'fas fa-chevron-down',
 	'trash': 'far fa-trash-alt',
@@ -11,6 +12,8 @@ const icons = {
 	'close': 'fas fa-times',
 	'home': 'fas fa-home',
 	'exercise': 'fas fa-running',
+	'exercises': 'fas fa-running',
+	'burger': 'fas fa-bars',
 };
 
 export default icons;

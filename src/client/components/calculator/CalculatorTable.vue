@@ -3,6 +3,10 @@
 		<div class="table table-fullWidth">
 			<div class="CalculatorTable_tableHeader table_header">
 				<div class="table_row">
+					<div
+						v-if="!noTypeIcon"
+						class="table_cell"
+					></div>
 					<div class="table_cell">{{ $t('calculator.table.header.name') }}</div>
 					<div class="table_cell">{{ $t('calculator.table.header.serving') }}</div>
 					<div class="table_cell">{{ $t('calculator.table.header.calories') }}</div>
@@ -13,6 +17,10 @@
 				</div>
 
 				<div class="CalculatorTable_tableRow CalculatorTable_tableRow-summary table_row">
+					<div
+						v-if="!noTypeIcon"
+						class="table_cell"
+					></div>
 					<div class="table_cell">{{ $t('calculator.table.header.summary') }}</div>
 					<div class="table_cell"></div>
 					<div class="table_cell">{{ `${nutritionSummary.calories.toFixed(0)} ${$t('common.units.calories')}` }}</div>
@@ -23,6 +31,10 @@
 				</div>
 				<div class="CalculatorTable_tableRow CalculatorTable_tableRow-summary
 					CalculatorTable_tableRow-summaryPercent table_row">
+					<div
+						v-if="!noTypeIcon"
+						class="table_cell"
+					></div>
 					<div class="table_cell"></div>
 					<div class="table_cell"></div>
 					<div class="table_cell"></div>
@@ -37,6 +49,16 @@
 					v-for="(item, index) of value"
 					class="CalculatorTable_tableRow table_row"
 					:key="index">
+					<div
+						v-if="!noTypeIcon"
+						class="table_cell"
+					>
+						<Icon
+							v-if="item.type"
+							class="CalculatorTable_typeIcon"
+							:type="item.type"
+						/>
+					</div>
 					<div class="table_cell">{{ item.name }}</div>
 					<div class="table_cell">
 						<div class="CalculatorTable_serving">
@@ -84,6 +106,7 @@ export default {
 			default: () => [],
 			type: Array,
 		},
+		noTypeIcon: Boolean,
 	},
 	methods: {
 		getServingMultipliedMacro: (macro, serving) => calculatorService.getServingMultipliedMacro(macro, serving),
@@ -150,8 +173,14 @@ export default {
 		}
 
 		&:hover {
-			.CalculatorTable_rowActions {
-				opacity: 1;
+			.CalculatorTable {
+				&_rowActions {
+					opacity: 1;
+				}
+
+				&_typeIcon {
+					opacity: .8;
+				}
 			}
 		}
 	}
@@ -183,6 +212,11 @@ export default {
 			opacity: 1;
 			cursor: pointer;
 		}
+	}
+
+	&_typeIcon {
+		.transition(opacity);
+		opacity: .5;
 	}
 }
 </style>

@@ -1,9 +1,6 @@
 <template>
 	<div class="Calculator">
 		<div class="field">
-			<CalculatorTable v-model="computedValue" />
-		</div>
-		<div class="field">
 			<Accordion :label="$t('calculator.selector.food.accordionLabel')">
 				<CalculatorSelectorFood @select="onFoodSelect($event)" />
 			</Accordion>
@@ -23,6 +20,12 @@
 			<Accordion :label="$t('calculator.selector.exercise.accordionLabel')">
 				<CalculatorSelectorExercise @select="onExerciseSelect($event)" />
 			</Accordion>
+		</div>
+		<div class="field">
+			<CalculatorTable
+				v-model="computedValue"
+				:noTypeIcon="noTypeIcon"
+			/>
 		</div>
 	</div>
 </template>
@@ -68,6 +71,7 @@ export default {
 	},
 	props: {
 		onlyFoodSelector: Boolean,
+		noTypeIcon: Boolean,
 		value: {
 			default: () => [],
 			type: Array,
