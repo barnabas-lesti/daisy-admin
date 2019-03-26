@@ -43,6 +43,7 @@
 						notField
 						type="select"
 						:label="$t('food.view.form.unit')"
+						:selectOptions="selectOptions"
 					/>
 				</div>
 			</div>
@@ -192,6 +193,20 @@ export default {
 		return {
 			food: new Food(),
 			isLoading: false,
+			selectOptions: [
+				{
+					label: this.$t('common.units.grams'),
+					value: 'g',
+				},
+				{
+					label: this.$t('common.units.milliliters'),
+					value: 'ml',
+				},
+				{
+					label: this.$t('common.units.pieces'),
+					value: 'piece',
+				},
+			],
 		};
 	},
 	created () {

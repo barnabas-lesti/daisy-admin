@@ -31,6 +31,8 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '../../styles/variables.less';
+
 .LayoutSimpleFooter {
 	@_linkColor: #607080;
 	@_linkColor-active: #242f3a;
@@ -41,17 +43,19 @@ export default {
 	box-shadow: @_boxShadow;
 
 	&_content {
-		padding: 1rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		padding: 2rem 1rem;
+		text-align: center;
+	}
+
+	&_links {
+		margin-bottom: 1rem;
 	}
 
 	&_link {
 		padding: .5rem;
-		display: inline-block;
 		font-weight: 600;
 		color: @_linkColor;
+		display: block;
 
 		&:hover {
 			color: @_linkColor-hover;
@@ -62,10 +66,22 @@ export default {
 		}
 	}
 
-	&_links {
-		margin: 0;
-		padding: 0;
-		display: flex;
+	@media screen and (min-width: @breakpoint_tabletMinWidth) {
+		&_content {
+			padding: 1rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		&_links {
+			display: flex;
+			margin-bottom: 0;
+		}
+
+		&_link {
+			display: inline-block;
+		}
 	}
 }
 </style>

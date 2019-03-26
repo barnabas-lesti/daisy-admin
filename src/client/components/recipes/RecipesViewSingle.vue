@@ -38,6 +38,7 @@
 			<Calculator
 				v-model="calculatorModel"
 				onlyFoodSelector
+				noTypeIcon
 			/>
 		</div>
 

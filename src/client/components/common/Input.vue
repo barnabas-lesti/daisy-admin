@@ -17,8 +17,13 @@
 			:value="value"
 			@input="onInput($event)"
 		>
-			<option value="g">g</option>
-			<option value="ml">ml</option>
+			<option
+				v-for="(option, index) of selectOptions"
+				:key="index"
+				:value="option.value"
+			>
+				{{ option.label }}
+			</option>
 		</select>
 		<textarea
 			v-else-if="type === 'textarea'"
@@ -64,6 +69,10 @@ export default {
 		type: {
 			type: String,
 			default: 'number',
+		},
+		selectOptions: {
+			type: Array,
+			default: () => [],
 		},
 		postfix: String,
 		notField: Boolean,

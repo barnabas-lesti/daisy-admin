@@ -4,6 +4,7 @@ export default class CalculatorItem {
 		this.serving = {};
 		this.name = '';
 		this.itemId = '';
+		this.type = '';
 		this.nutrients = {
 			calories: {
 				servingMultiplier: 0,

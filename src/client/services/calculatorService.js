@@ -106,7 +106,7 @@ class CalculatorService {
 		calculatorItem.name = recipe.name;
 		calculatorItem.serving = {
 			value: 1,
-			unit: 'dishes',
+			unit: 'plates',
 		};
 		calculatorItem.nutrients = {
 			calories: { servingMultiplier: nutrientSummary.calories },

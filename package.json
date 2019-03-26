@@ -5,6 +5,7 @@
 	"scripts": {
 		"serve:client": "vue-cli-service serve",
 		"serve:server": "nodemon ./src/server/main.js --env=development --watch ./src/server --watch ./env --ext js,yml",
+		"serve:server:prod": "node ./src/server/main.js --env=production",
 		"build:client": "vue-cli-service build",
 		"lint": "eslint ./src --ext=js,vue"
 	},
