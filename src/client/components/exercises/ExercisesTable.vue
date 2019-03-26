@@ -13,7 +13,6 @@
 					<div class="table_cell">{{ $t('exercises.table.header.name') }}</div>
 					<div class="table_cell">{{ $t('exercises.table.header.calorieBurn') }}</div>
 					<div class="table_cell">{{ $t('exercises.table.header.duration') }}</div>
-					<div class="table_cell">{{ $t('exercises.table.header.repetitions') }}</div>
 				</div>
 			</div>
 			<div class="table_body">
@@ -31,8 +30,7 @@
 				>
 					<div class="table_cell">{{ exercise.name }}</div>
 					<div class="table_cell">{{ exercise.calorieBurn.value }} kcal</div>
-					<div class="table_cell">{{ exercise.activity.duration.value ? `${exercise.activity.duration.value} ${$tc('common.units.minutes', exercise.activity.duration.value)}` : '' }}  </div>
-					<div class="table_cell">{{ exercise.activity.reps.value ? `${exercise.activity.reps.value} ${$tc('common.units.repetitions', exercise.activity.reps.value)}` : '' }}</div>
+					<div class="table_cell">{{ exercise.duration.value ? `${exercise.duration.value} ${$tc('common.units.minutes', exercise.duration.value)}` : '' }}  </div>
 				</router-link>
 			</div>
 		</div>

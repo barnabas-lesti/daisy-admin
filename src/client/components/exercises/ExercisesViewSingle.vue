@@ -35,24 +35,14 @@
 				:postfix="$t('common.units.calories')"
 			/>
 			<Input
-				v-model="exercise.activity.duration.value"
+				v-model="exercise.duration.value"
 				:label="$t('exercises.view.form.duration')"
-				:postfix="$tc('common.units.minutes', exercise.activity.duration.value)"
-			/>
-			<Input
-				v-model="exercise.activity.reps.value"
-				:label="$t('exercises.view.form.repetitions')"
-				:postfix="$tc('common.units.repetitions', exercise.activity.reps.value)"
+				:postfix="$tc('common.units.minutes', exercise.duration.value)"
 			/>
 			<Input
 				v-model="exercise.description"
 				type="textarea"
 				:label="$t('exercises.view.form.description')"
-			/>
-			<Input
-				v-model="exercise.description"
-				label="Description"
-				type="textarea"
 			/>
 		</div>
 

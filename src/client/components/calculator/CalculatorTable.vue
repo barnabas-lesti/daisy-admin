@@ -68,7 +68,7 @@
 								:value="item.serving.value"
 								@input="onServingInput(item, $event)"
 							/>
-							<span>{{ item.serving.unit }}</span>
+							<span>{{ $tc(`common.units.${item.serving.unit}`, item.serving.value) }}</span>
 						</div>
 					</div>
 					<div class="table_cell">{{ servingMultipliedMacroDisplay[index].calories }}</div>

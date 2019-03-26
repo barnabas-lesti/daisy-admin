@@ -20,9 +20,9 @@
 			<option
 				v-for="(option, index) of selectOptions"
 				:key="index"
-				:value="option.value"
+				:value="option.value || option"
 			>
-				{{ option.label }}
+				{{ option.label || option.labelKey ? $tc(option.labelKey) : option }}
 			</option>
 		</select>
 		<textarea

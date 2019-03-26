@@ -125,6 +125,12 @@ import notificationService from '../../services/notificationService';
 import LoadingOverlay from '../common/LoadingOverlay';
 import Input from '../common/Input';
 
+const servingUnits = [
+	'grams',
+	'milliliters',
+	'pieces',
+];
+
 export default {
 	name: 'FoodViewSingle',
 	components: {
@@ -193,20 +199,10 @@ export default {
 		return {
 			food: new Food(),
 			isLoading: false,
-			selectOptions: [
-				{
-					label: this.$t('common.units.grams'),
-					value: 'g',
-				},
-				{
-					label: this.$t('common.units.milliliters'),
-					value: 'ml',
-				},
-				{
-					label: this.$t('common.units.pieces'),
-					value: 'piece',
-				},
-			],
+			selectOptions: servingUnits.map(unit => ({
+				value: unit,
+				labelKey: `common.units.${unit}`,
+			})),
 		};
 	},
 	created () {
