@@ -1,18 +1,10 @@
 const mongoose = require('mongoose');
 
 const exerciseSchema = new mongoose.Schema({
-	activity: {
-		duration: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		reps: {
-			value: {
-				default: 0,
-				type: Number,
-			},
+	duration: {
+		value: {
+			default: 0,
+			type: Number,
 		},
 	},
 	calorieBurn: {
@@ -41,14 +33,9 @@ const exerciseSchema = new mongoose.Schema({
 	},
 });
 
-exerciseSchema.virtual('calorieBurn.activityDurationMultiplier').get(function () {
-	const duration = this.activity.duration.value;
+exerciseSchema.virtual('calorieBurn.durationMultiplier').get(function () {
+	const duration = this.duration.value;
 	return duration === 0 ? 0 : this.calorieBurn.value / duration;
-});
-
-exerciseSchema.virtual('calorieBurn.activityRepMultiplier').get(function () {
-	const reps = this.activity.reps.value;
-	return reps === 0 ? 0 : this.calorieBurn.value / reps;
 });
 
 module.exports = mongoose.model('Exercise', exerciseSchema);

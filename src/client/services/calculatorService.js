@@ -95,6 +95,7 @@ class CalculatorService {
 		food._id = calculatorItem.itemId;
 		food.nutrients = nutrients;
 		food.name = calculatorItem.name;
+		food.serving = calculatorItem.serving;
 		return food;
 	}
 
@@ -126,7 +127,7 @@ class CalculatorService {
 
 	convertCalculatorItemToRecipeItem (calculatorItem) {
 		const recipeItem = new RecipeItem();
-		recipeItem.serving.value = calculatorItem.serving.value;
+		recipeItem.serving = calculatorItem.serving;
 		recipeItem.food = this.convertCalculatorItemToFood(calculatorItem);
 		return recipeItem;
 	}
@@ -137,11 +138,11 @@ class CalculatorService {
 		calculatorItem.type = 'exercise';
 		calculatorItem.name = exercise.name;
 		calculatorItem.serving = {
-			value: 1,
-			unit: 'count',
+			value: exercise.duration.value,
+			unit: 'minutes',
 		};
 		calculatorItem.nutrients.calories = {
-			servingMultiplier: (exercise.calorieBurn.value || 0) * -1,
+			servingMultiplier: (exercise.calorieBurn.durationMultiplier || 0) * -1,
 		};
 		return calculatorItem;
 	}

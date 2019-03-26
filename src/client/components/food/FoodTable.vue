@@ -32,7 +32,7 @@
 					}"
 				>
 					<div class="table_cell">{{ food.name }}</div>
-					<div class="table_cell">{{ food.serving.value }} {{ food.serving.unit }}</div>
+					<div class="table_cell">{{ food.serving.value }} {{ $tc(`common.units.${food.serving.unit}`, food.serving.value) }}</div>
 					<div class="table_cell">{{ food.nutrients.calories.value.toFixed(0) }} {{ $t('common.units.calories') }}</div>
 					<div class="table_cell">{{ food.nutrients.carbs.value.toFixed(0) }} {{ $t('common.units.grams') }}</div>
 					<div class="table_cell">{{ food.nutrients.protein.value.toFixed(0) }} {{ $t('common.units.grams') }}</div>
