@@ -1,6 +1,7 @@
 import CalculatorItem from '../models/CalculatorItem';
 import Food from '../models/Food';
 import NutritionSummary from '../models/NutritionSummary';
+import Recipe from '../models/Recipe';
 import RecipeItem from '../models/RecipeItem';
 
 class CalculatorService {
@@ -72,6 +73,46 @@ class CalculatorService {
 		return macro.servingMultiplier * (serving.value || 0);
 	}
 
+	convertCalculatorItemsToRecipe (calculatorModel) {
+		const recipe = new Recipe();
+		recipe.items = calculatorModel
+			.filter(calculatorItem => calculatorItem.type === 'food')
+			.map(calculatorItem => this.convertCalculatorItemToRecipeItem(calculatorItem));
+		return recipe;
+	}
+
+	convertCalculatorItemToRecipeItem (calculatorItem) {
+		const recipeItem = new RecipeItem();
+		recipeItem.serving = calculatorItem.serving;
+		recipeItem.food = this.convertCalculatorItemToFood(calculatorItem);
+		return recipeItem;
+	}
+
+	convertCalculatorItemToFood (calculatorItem) {
+		const food = new Food();
+		const { nutrients } = calculatorItem;
+		food._id = calculatorItem.itemId;
+		food.nutrients = nutrients;
+		food.name = calculatorItem.name;
+		food.serving = calculatorItem.serving;
+		return food;
+	}
+
+	convertExerciseToCalculatorItem (exercise) {
+		const calculatorItem = new CalculatorItem();
+
+		calculatorItem.type = 'exercise';
+		calculatorItem.name = exercise.name;
+		calculatorItem.serving = {
+			value: exercise.duration.value,
+			unit: 'minutes',
+		};
+		calculatorItem.nutrients.calories = {
+			servingMultiplier: (exercise.calorieBurn.durationMultiplier || 0) * -1,
+		};
+		return calculatorItem;
+	}
+
 	convertFoodToCalculatorItem (food) {
 		const calculatorItem = new CalculatorItem();
 		const foodNutrients = food.nutrients;
@@ -87,16 +128,6 @@ class CalculatorService {
 			fat: { servingMultiplier: foodNutrients.fat.servingMultiplier },
 		};
 		return calculatorItem;
-	}
-
-	convertCalculatorItemToFood (calculatorItem) {
-		const food = new Food();
-		const { nutrients } = calculatorItem;
-		food._id = calculatorItem.itemId;
-		food.nutrients = nutrients;
-		food.name = calculatorItem.name;
-		food.serving = calculatorItem.serving;
-		return food;
 	}
 
 	convertRecipeToCalculatorItem (recipe) {
@@ -122,28 +153,6 @@ class CalculatorService {
 		const { food } = recipeItem;
 		const calculatorItem = this.convertFoodToCalculatorItem(food);
 		calculatorItem.serving.value = recipeItem.serving.value;
-		return calculatorItem;
-	}
-
-	convertCalculatorItemToRecipeItem (calculatorItem) {
-		const recipeItem = new RecipeItem();
-		recipeItem.serving = calculatorItem.serving;
-		recipeItem.food = this.convertCalculatorItemToFood(calculatorItem);
-		return recipeItem;
-	}
-
-	convertExerciseToCalculatorItem (exercise) {
-		const calculatorItem = new CalculatorItem();
-
-		calculatorItem.type = 'exercise';
-		calculatorItem.name = exercise.name;
-		calculatorItem.serving = {
-			value: exercise.duration.value,
-			unit: 'minutes',
-		};
-		calculatorItem.nutrients.calories = {
-			servingMultiplier: (exercise.calorieBurn.durationMultiplier || 0) * -1,
-		};
 		return calculatorItem;
 	}
 }
