@@ -10,6 +10,17 @@ class StorageService {
 		return data;
 	}
 
+	saveToSessionStorage (key, payload) {
+		const dataString = JSON.stringify(payload);
+		window.sessionStorage.setItem(this._prefixKey(key), dataString);
+	}
+
+	fetchFromSessionStorage (key) {
+		const dataString = window.sessionStorage.getItem(this._prefixKey(key));
+		const data = JSON.parse(dataString);
+		return data;
+	}
+
 	_prefixKey (key) {
 		return `Daisy.${key}`;
 	}
@@ -17,18 +28,14 @@ class StorageService {
 
 export const StorageKeys = {
 	common: {
-		LAYOUT: 'common.Layout',
-		LOCALE: 'common.Locale',
+		LAYOUT: 'common.layout',
+		LOCALE: 'common.locale',
 	},
 
-	calculatorView: {
-		CALCULATOR_MODEL: 'calculatorView.calculatorModel',
-		FOOD_MODEL: 'calculatorView.foodModel',
-		FOOD_SEARCH_STRING: 'calculatorView.foodSearchString',
-	},
-	foodView: {
-		FOOD_MODEL: 'foodView.food',
-		SEARCH_STRING: 'foodView.searchString',
+	calculator: {
+		view: {
+			CALCULATOR_MODEL: 'calculator.view.calculatorModel',
+		},
 	},
 };
 
