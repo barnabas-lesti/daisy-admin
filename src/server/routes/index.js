@@ -1,8 +1,9 @@
 module.exports = [
+	require('./diary'),
 	require('./exercises'),
 	require('./food'),
-	require('./i18n'),
 	require('./recipes'),
 
+	require('./i18n'),
 	require('./client'),
 ];
