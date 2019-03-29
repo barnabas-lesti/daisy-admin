@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import config from '../common/config';
 
 import calculator from './calculator';
+import diary from './diary';
 import exercises from './exercises';
 import food from './food';
 import home from './home';
@@ -16,6 +17,7 @@ export default new VueRouter({
 	mode: 'history',
 	routes: [
 		...calculator,
+		...diary,
 		...exercises,
 		...food,
 		...recipes,
