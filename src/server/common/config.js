@@ -12,7 +12,6 @@ const configLib = require('config');
  * Application configuration object.
  */
 const config = {
-	BUCKET_PATH: process.env.BUCKET_PATH || configLib.get('server.BUCKET_PATH'),
 	DEFAULT_LOCALE: process.env.DEFAULT_LOCALE || configLib.get('common.DEFAULT_LOCALE'),
 	ENV: process.env.NODE_ENV,
 	MONGO_URI: process.env.MONGO_URI || configLib.get('server.MONGO_URI'),
