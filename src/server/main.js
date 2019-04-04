@@ -1,44 +1,43 @@
-const mongoose = require('mongoose');
-const restify = require('restify');
-const restifyPromise = require('restify-await-promise');
-const restifyCorsMiddleware = require('restify-cors-middleware');
-const restifyLogger = require('restify-logger');
-const serveStaticRestify = require('serve-static-restify');
+const appRootPath = require('app-root-path').path;
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
+
+const database = require('./database');
 
 const config = require('./common/config');
 const logger = require('./common/logger');
 const routes = require('./routes');
 
 const delayResponse = require('./middlewares/delayResponse');
+const responder = require('./middlewares/responder');
+const clientEntryResolver = require('./middlewares/clientEntryResolver');
 
-const server = restify.createServer();
-const corsSetup = restifyCorsMiddleware({});
+const app = express();
 
-restifyPromise.install(server);
-
-server.use(restifyLogger('tiny'));
-server.use(corsSetup.actual);
-server.use(restify.plugins.queryParser());
-server.use(restify.plugins.bodyParser({ mapParams: true }));
-
-server.pre([
-	serveStaticRestify('dist'),
-	serveStaticRestify('public'),
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use([
+	express.static(path.join(appRootPath, 'dist')),
+	express.static(path.join(appRootPath, 'public')),
 ]);
-server.pre(corsSetup.preflight);
-server.pre(delayResponse());
+app.use(morgan('common'));
+app.use(delayResponse());
 
 for (const route of routes) {
-	route(server);
+	app.use('/api', route(express.Router()));
 }
+app.use('/api', responder());
 
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useNewUrlParser', true);
-mongoose.Promise = Promise;
+app.use('*', clientEntryResolver());
 
-mongoose.connect(config.MONGO_URI);
+database.connect();
 
-server.listen(config.PORT, () => {
-	logger.info(`API Server started: ${ server.url }`);
+const server = app.listen(config.PORT, () => {
+	const { address, port } = server.address();
+	logger.info(`Server started: ${ address + port }`);
+	return server;
 });

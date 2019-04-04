@@ -3,6 +3,4 @@ module.exports = [
 	require('./food'),
 	require('./i18n'),
 	require('./recipes'),
-
-	require('./client'),
 ];

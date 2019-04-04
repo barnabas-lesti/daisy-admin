@@ -1,36 +1,31 @@
+const appRootPath = require('app-root-path').path;
 const fsExtra = require('fs-extra');
 const jsYaml = require('js-yaml');
 const path = require('path');
 
 const config = require('../common/config');
 
-const { BUCKET_PATH, DEFAULT_LOCALE } = config;
-const I18N_MESSAGES_PATH = path.join(BUCKET_PATH, 'i18n');
+const { DEFAULT_LOCALE } = config;
 
 class ContentService {
 	async getMessagesByLocale (locale) {
-		const messages = await this._readFile(path.join(I18N_MESSAGES_PATH, `${ locale }.yml`), { extension: 'yml' });
+		const messages = await this._readFileFromAppRoot(path.join(`/static/i18n/${ locale }.yml`));
 		if (messages !== null) {
 			return {
 				[locale]: messages,
 			};
 		} else {
 			return {
-				[DEFAULT_LOCALE]: await this._readFile(path.join(I18N_MESSAGES_PATH, `${ DEFAULT_LOCALE }.yml`), { extension: 'yml' }),
+				[DEFAULT_LOCALE]: await this._readFileFromAppRoot(path.join(`/static/i18n/${ DEFAULT_LOCALE }.yml`)),
 			};
 		}
 	}
 
-	async _readFile (path = '', options = {}) {
-		const {
-			isRelativePath = false,
-			extension = '',
-		} = options;
-
+	async _readFileFromAppRoot (filePath = '') {
 		try {
-			const rawContent = await fsExtra.readFile(isRelativePath ? path.join(BUCKET_PATH, path) : path, 'utf-8');
+			const rawContent = await fsExtra.readFile(path.join(appRootPath, filePath), 'utf-8');
 
-			switch (extension) {
+			switch (this._getFileExtensionFromFilePath(filePath)) {
 			case 'yml':
 			case 'yaml':
 				return jsYaml.safeLoad(rawContent);
@@ -43,6 +38,11 @@ class ContentService {
 			}
 			throw error;
 		}
+	}
+
+	_getFileExtensionFromFilePath (filePath) {
+		const fragments = filePath.split('.');
+		return fragments[fragments.length - 1];
 	}
 }
 
