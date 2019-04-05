@@ -1,27 +1,18 @@
 # Development
 
-To start development, clone the repository, install dependencies and start the servers:
+To start development, follow the steps below after cloning or updating the repository:
 
 ```bash
 # Install dependencies
-yarn
-
-# Start the client development server
-yarn serve:client
-
-# Build the client bundle
-yarn build:client
+npm install
 ```
 
-Production build and startup:
+Create a `local.env` file in the `env` directory (or check/update your existing one). Use the `default.env` file as reference, it contains all the supported environment variables (this file is ignored by git due to security reasons).
 
 ```bash
-# Install dependencies
-yarn
+# Start the client development server
+npm run start:client
 
-# Build the client
-yarn build:client
-
-# Start the server
-yarn serve:server
+# Start the main server in development mode
+npm run start:server
 ```

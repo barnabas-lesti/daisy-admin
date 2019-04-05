@@ -5,15 +5,15 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 
-const database = require('./database');
-
 const config = require('./common/config');
+const database = require('./common/database');
 const logger = require('./common/logger');
-const routes = require('./routes');
 
-const delayResponse = require('./middlewares/delayResponse');
-const responder = require('./middlewares/responder');
+const apiResponder = require('./middlewares/apiResponder');
 const clientEntryResolver = require('./middlewares/clientEntryResolver');
+const delayResponse = require('./middlewares/delayResponse');
+
+const controllers = require('./controllers');
 
 const app = express();
 
@@ -27,10 +27,10 @@ app.use([
 app.use(morgan('common'));
 app.use(delayResponse());
 
-for (const route of routes) {
-	app.use('/api', route(express.Router()));
+for (const controller of controllers) {
+	app.use('/api', controller(express.Router()));
 }
-app.use('/api', responder());
+app.use('/api', apiResponder());
 
 app.use('*', clientEntryResolver());
 

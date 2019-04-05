@@ -3,10 +3,10 @@ common:
 
 client:
   DEV_PORT: 3000
-  API_BASE_URL: null
+  API_BASE_URL: 'http://localhost:8080/api'
   DEFAULT_LAYOUT: 'LayoutSimple'
 
 server:
-  MONGO_URI: null
-  RESPONSE_DELAY: null
+  MONGO_URI: 'mongodb://admin:admin@localhost:27017/daisy'
+  RESPONSE_DELAY: 0
   PORT: 8080
