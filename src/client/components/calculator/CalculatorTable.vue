@@ -59,7 +59,14 @@
 							:type="item.type"
 						/>
 					</div>
-					<div class="table_cell">{{ item.name }}</div>
+					<div class="table_cell">
+						<router-link
+							:to="{ name: `${item.type}Edit`, params: { _id: item.itemId } }"
+							class="CalculatorTable_itemLink"
+						>
+							{{ item.name }}
+						</router-link>
+					</div>
 					<div class="table_cell">
 						<div class="CalculatorTable_serving">
 							<input
@@ -159,6 +166,11 @@ export default {
 	@_summaryBorderColor: #91cbf2;
 
 	min-height: 15rem;
+
+	&_itemLink {
+		display: inline-block;
+		width: 100%;
+	}
 
 	&_tableRow {
 		&-summary {

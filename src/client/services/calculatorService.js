@@ -102,6 +102,7 @@ class CalculatorService {
 		const calculatorItem = new CalculatorItem();
 
 		calculatorItem.type = 'exercise';
+		calculatorItem.itemId = exercise._id;
 		calculatorItem.name = exercise.name;
 		calculatorItem.serving = {
 			value: exercise.duration.value,
@@ -135,6 +136,7 @@ class CalculatorService {
 		const nutrientSummary = this.getNutritionSummaryFromRecipe(recipe);
 
 		calculatorItem.type = 'recipe';
+		calculatorItem.itemId = recipe._id;
 		calculatorItem.name = recipe.name;
 		calculatorItem.serving = {
 			value: 1,

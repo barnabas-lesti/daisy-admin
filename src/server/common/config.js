@@ -12,7 +12,8 @@ const configLib = require('config');
  * Application configuration object.
  */
 const config = {
-	DEFAULT_LOCALE: process.env.DEFAULT_LOCALE || configLib.get('common.DEFAULT_LOCALE'),
+	ACCESS_PASSWORD: process.env.ACCESS_PASSWORD || configLib.get('server.ACCESS_PASSWORD'),
+	ACCESS_USERNAME: process.env.ACCESS_USERNAME || configLib.get('server.ACCESS_USERNAME'),
 	ENV: process.env.NODE_ENV,
 	MONGO_URI: process.env.MONGO_URI || configLib.get('server.MONGO_URI'),
 	PORT: process.env.PORT || configLib.get('server.PORT'),

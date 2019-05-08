@@ -20,9 +20,8 @@ module.exports = {
 					...processEnvSettings,
 
 					// Custom .env variables
-					DEFAULT_LOCALE: JSON.stringify(configLib.get('common.DEFAULT_LOCALE')),
-
 					API_BASE_URL: JSON.stringify(configLib.get('client.API_BASE_URL')),
+					DEFAULT_LOCALE: JSON.stringify(configLib.get('client.DEFAULT_LOCALE')),
 					DEFAULT_LAYOUT: JSON.stringify(configLib.get('client.DEFAULT_LAYOUT')),
 				};
 				return args;

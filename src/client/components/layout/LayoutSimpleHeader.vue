@@ -22,6 +22,15 @@
 				{ 'LayoutSimpleHeader_content-active': isOpen }
 			]"
 		>
+			<router-link
+				:to="{ name: 'home' }"
+				class="LayoutSimpleHeader_brand"
+			>
+				<img
+					src="daisy-logo.jpg"
+					class="LayoutSimpleHeader_logo"
+				/>
+			</router-link>
 			<div class="LayoutSimpleHeader_links">
 				<router-link
 					v-for="(item, index) in menuItems"
@@ -77,6 +86,16 @@ export default {
 
 	box-shadow: 0 2px 4px 0 rgba(43, 43, 43, .1);
 	height: @_height;
+
+	&_brand {
+		// display: inline-block;
+		font-size: 0;
+	}
+
+	&_logo {
+		width: auto;
+		height: 2.5rem;
+	}
 
 	&_content {
 		position: fixed;
@@ -134,9 +153,11 @@ export default {
 
 	@media screen and (min-width: @breakpoint_tabletMinWidth) {
 		&_content {
-			padding: 0;
+			padding: 0 1rem;
 			position: static;
-			display: block;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 		}
 
 		&_toggle {

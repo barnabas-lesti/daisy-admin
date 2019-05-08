@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
 
 const exerciseSchema = new mongoose.Schema({
-	duration: {
-		value: {
-			default: 0,
-			type: Number,
-		},
-	},
 	calorieBurn: {
 		value: {
 			default: 0,
@@ -16,6 +10,12 @@ const exerciseSchema = new mongoose.Schema({
 	description: {
 		trim: true,
 		type: String,
+	},
+	duration: {
+		value: {
+			default: 0,
+			type: Number,
+		},
 	},
 	name: {
 		trim: true,

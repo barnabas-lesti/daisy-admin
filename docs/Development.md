@@ -25,3 +25,10 @@ yarn build:client
 # Start the server
 yarn serve:server
 ```
+
+```bash
+# Setting environment variables (Windows Powershell)
+$env:ACCESS_PASSWORD="admin"
+$env:ACCESS_USERNAME="admin1234"
+$env:MONGO_URI="mongodb://dbUser:dbUPass@localhost:30023/daisy"
+```

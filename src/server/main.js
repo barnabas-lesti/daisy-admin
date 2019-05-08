@@ -11,15 +11,19 @@ const config = require('./common/config');
 const logger = require('./common/logger');
 const routes = require('./routes');
 
+const auth = require('./middlewares/auth');
+const clientEntryResolver = require('./middlewares/clientEntryResolver');
 const delayResponse = require('./middlewares/delayResponse');
 const responder = require('./middlewares/responder');
-const clientEntryResolver = require('./middlewares/clientEntryResolver');
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(auth());
+
 app.use([
 	express.static(path.join(appRootPath, 'dist')),
 	express.static(path.join(appRootPath, 'public')),
