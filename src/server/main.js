@@ -22,7 +22,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(auth());
+if (config.IS_PRODUCTION) {
+	app.use(auth());
+}
 
 app.use([
 	express.static(path.join(appRootPath, 'dist')),

@@ -22,9 +22,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="less">
-.Icon {
-	display: inline-block;
-}
-</style>

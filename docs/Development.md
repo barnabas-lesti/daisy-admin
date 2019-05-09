@@ -7,28 +7,14 @@ To start development, clone the repository, install dependencies and start the s
 yarn
 
 # Start the client development server
-yarn serve:client
+yarn start:client
 
-# Build the client bundle
-yarn build:client
-```
+# Start the server in development mode
+yarn start:server
 
-Production build and startup:
-
-```bash
-# Install dependencies
-yarn
-
-# Build the client
+# Build the client bundle for production
 yarn build:client
 
-# Start the server
-yarn serve:server
-```
-
-```bash
-# Setting environment variables (Windows Powershell)
-$env:ACCESS_PASSWORD="admin"
-$env:ACCESS_USERNAME="admin1234"
-$env:MONGO_URI="mongodb://dbUser:dbUPass@localhost:30023/daisy"
+# Start the server in production mode
+yarn start:server:prod
 ```

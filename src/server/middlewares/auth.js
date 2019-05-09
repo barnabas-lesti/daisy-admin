@@ -4,5 +4,5 @@ const config = require('../common/config');
 
 module.exports = () => basicAuth({
 	challenge: true,
-	users: { [config.ACCESS_USERNAME]: config.ACCESS_PASSWORD }
+	users: { [config.ACCESS_USERNAME]: config.ACCESS_PASSWORD },
 });

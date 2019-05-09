@@ -12,12 +12,13 @@ const configLib = require('config');
  * Application configuration object.
  */
 const config = {
-	ACCESS_PASSWORD: process.env.ACCESS_PASSWORD || configLib.get('server.ACCESS_PASSWORD'),
-	ACCESS_USERNAME: process.env.ACCESS_USERNAME || configLib.get('server.ACCESS_USERNAME'),
+	ACCESS_PASSWORD: configLib.get('server.ACCESS_PASSWORD'),
+	ACCESS_USERNAME: configLib.get('server.ACCESS_USERNAME'),
 	ENV: process.env.NODE_ENV,
-	MONGO_URI: process.env.MONGO_URI || configLib.get('server.MONGO_URI'),
-	PORT: process.env.PORT || configLib.get('server.PORT'),
-	RESPONSE_DELAY: process.env.RESPONSE_DELAY || configLib.get('server.RESPONSE_DELAY') || 0,
+	IS_PRODUCTION: process.env.NODE_ENV === 'production',
+	MONGO_URI: configLib.get('server.MONGO_URI'),
+	PORT: configLib.get('server.PORT'),
+	RESPONSE_DELAY: configLib.get('server.RESPONSE_DELAY'),
 };
 
 module.exports = config;
