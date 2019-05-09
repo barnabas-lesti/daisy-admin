@@ -33,3 +33,9 @@
    - Create a _production.env_ file in the _env_ folder.
    - Build the client
    - Start the server
+
+## Updating the repository
+```
+# In the app folder
+git pull
+```
