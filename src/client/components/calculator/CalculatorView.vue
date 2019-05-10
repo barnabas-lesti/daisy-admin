@@ -9,7 +9,7 @@
 
 		<div class="CalculatorView_actions view_section">
 			<button
-				class="button button-primary"
+				class="CalculatorView_action button button-primary"
 				:disabled="!canSaveAsRecipe"
 				@click="onSaveAsRecipeClick()"
 			>
@@ -68,6 +68,14 @@ export default {
 
 <style lang="less">
 .CalculatorView {
+	&_action {
+		margin-right: 1rem;
+
+		&:last-of-type {
+			margin-right: 0;
+		}
+	}
+
 	&_actions {
 		display: flex;
 		justify-content: flex-end;

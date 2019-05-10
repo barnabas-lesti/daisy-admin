@@ -2,7 +2,7 @@
 	<div class="HomeView view">
 		<div class="field">
 			<img
-				src="daisy-logo.jpg"
+				src="/daisy-logo.jpg"
 				class="HomeView_logo"
 			/>
 		</div>

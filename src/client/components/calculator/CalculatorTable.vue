@@ -165,8 +165,6 @@ export default {
 	@_summaryBgColor: #a8d6f5;
 	@_summaryBorderColor: #91cbf2;
 
-	min-height: 15rem;
-
 	&_itemLink {
 		display: inline-block;
 		width: 100%;

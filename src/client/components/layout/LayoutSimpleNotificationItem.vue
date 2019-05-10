@@ -1,16 +1,16 @@
 <template>
 	<div
 		:class="[
-			'LayoutNotificationItem',
-			{ 'LayoutNotificationItem-error': type === 'error' },
-			{ 'LayoutNotificationItem-success': type === 'success' },
+			'LayoutSimpleNotificationItem',
+			{ 'LayoutSimpleNotificationItem-error': type === 'error' },
+			{ 'LayoutSimpleNotificationItem-success': type === 'success' },
 		]"
 	>
-		<div class="LayoutNotificationItem_content">
+		<div class="LayoutSimpleNotificationItem_content">
 			<slot />
 		</div>
 		<Icon
-			class="LayoutNotificationItem_closeIcon"
+			class="LayoutSimpleNotificationItem_closeIcon"
 			type="close"
 			@click.native="close()"
 		/>
@@ -21,7 +21,7 @@
 import Icon from '../common/Icon';
 
 export default {
-	name: 'LayoutNotificationItem',
+	name: 'LayoutSimpleNotificationItem',
 	components: {
 		Icon,
 	},
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="less">
-.LayoutNotificationItem {
+.LayoutSimpleNotificationItem {
 	@_infoBgColor: #7ebae2;
 	@_successBgColor: #c8e4bb;
 	@_errorBgColor: #f09494;

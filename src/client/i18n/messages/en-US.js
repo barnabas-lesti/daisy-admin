@@ -45,6 +45,7 @@ export default {
 			`,
 		},
 		table: {
+			addItem: 'Add new item',
 			header: {
 				name: 'Name',
 				serving: 'Serving',

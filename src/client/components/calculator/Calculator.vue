@@ -26,7 +26,13 @@
 				v-model="computedValue"
 				:noTypeIcon="noTypeIcon"
 			/>
+
+			<div class="Calculator_addItemButton">
+				<Icon type="add" />
+			</div>
 		</div>
+
+		<CalculatorModal />
 	</div>
 </template>
 
@@ -34,19 +40,23 @@
 import calculatorService from '../../services/calculatorService';
 
 import Accordion from '../common/Accordion';
+import Icon from '../common/Icon';
 import CalculatorSelectorFood from './CalculatorSelectorFood';
 import CalculatorSelectorRecipe from './CalculatorSelectorRecipe';
 import CalculatorSelectorExercise from './CalculatorSelectorExercise';
 import CalculatorTable from './CalculatorTable';
+import CalculatorModal from './CalculatorModal';
 
 export default {
 	name: 'Calculator',
 	components: {
 		Accordion,
+		Icon,
 		CalculatorSelectorFood,
 		CalculatorSelectorRecipe,
 		CalculatorSelectorExercise,
 		CalculatorTable,
+		CalculatorModal,
 	},
 	methods: {
 		onFoodSelect ({ food }) {
@@ -90,3 +100,25 @@ export default {
 	},
 };
 </script>
+
+<style lang="less">
+@import (reference) '../../styles/mixins.less';
+
+.Calculator {
+	@_addItemButtonColor: #a8d6f5;
+	@_addItemButtonColor-hover: #91cbf2;
+
+	&_addItemButton {
+		.transition(color);
+		font-size: 3rem;
+		color: @_addItemButtonColor;
+		text-align: center;
+		margin-top: 1rem;
+
+		&:hover {
+			color: @_addItemButtonColor-hover;
+			cursor: pointer;
+		}
+	}
+}
+</style>

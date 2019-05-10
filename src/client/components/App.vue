@@ -1,30 +1,17 @@
 <template>
 	<div class="App">
-		<Layout>
+		<LayoutSimple>
 			<router-view />
-		</Layout>
+		</LayoutSimple>
 	</div>
 </template>
 
 <script>
-import config from '../common/config';
-import logger from '../common/logger';
-import storageService, { StorageKeys } from '../services/storageService';
-
-const getLayout = () => {
-	const url = new URL(window.location.href);
-	const forcedLayout = url.searchParams.get('layout');
-	if (forcedLayout) {
-		storageService.saveToLocalStorage(StorageKeys.common.LAYOUT, forcedLayout);
-	}
-	const layoutName = forcedLayout || storageService.fetchFromLocalStorage(StorageKeys.common.LAYOUT) || config.DEFAULT_LAYOUT;
-	logger.info(`Using layout: "${layoutName}"`);
-	return layoutName;
-};
+import LayoutSimple from './layout/LayoutSimple';
 
 export default {
 	components: {
-		Layout: () => import(`./layout/${getLayout()}`),
+		LayoutSimple,
 	},
 };
 </script>

@@ -27,7 +27,7 @@
 				class="LayoutSimpleHeader_brand"
 			>
 				<img
-					src="daisy-logo.jpg"
+					src="/daisy-logo.jpg"
 					class="LayoutSimpleHeader_logo"
 				/>
 			</router-link>
@@ -88,7 +88,6 @@ export default {
 	height: @_height;
 
 	&_brand {
-		// display: inline-block;
 		font-size: 0;
 	}
 
@@ -154,7 +153,7 @@ export default {
 	@media screen and (min-width: @breakpoint_tabletMinWidth) {
 		&_content {
 			padding: 0 1rem;
-			position: static;
+			position: static !important;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;

@@ -14,6 +14,7 @@ const icons = {
 	'exercise': 'fas fa-running',
 	'exercises': 'fas fa-running',
 	'burger': 'fas fa-bars',
+	'add': 'fas fa-plus-circle',
 };
 
 export default icons;
