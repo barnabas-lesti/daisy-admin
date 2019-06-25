@@ -7,8 +7,5 @@
 	"eslint.validate": [
 		"javascript",
 		"vue"
-	],
-	"cSpell.words": [
-		"Heroku"
-	],
+	]
 }

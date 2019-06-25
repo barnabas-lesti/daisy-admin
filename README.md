@@ -1,10 +1,22 @@
-# Daisy Admin
+# daisy-web-app
 
-At home stuff helper application thingy.
+> My bedazzling Nuxt.js project
 
-## Additional documentation
-- [Development](./docs/Development.md)
-- [Conventions](./docs/Conventions.md)
-- [Style Guide](./docs/StyleGuide.md)
+## Build Setup
 
-The base of this project was generated with the help of [Vue CLI](https://cli.vuejs.org).
+``` bash
+# install dependencies
+$ yarn install
+
+# serve with hot reload at localhost:3000
+$ yarn dev
+
+# build for production and launch server
+$ yarn build
+$ yarn start
+
+# generate static project
+$ yarn generate
+```
+
+For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
