@@ -4,54 +4,59 @@ const { Nuxt, Builder } = require('nuxt');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const config = require('../../nuxt.config');
+const nuxtConfig = require('../../nuxt.config');
 
+const config = require('./common/config');
 const apiRoutes = require('./api/routes');
 
 const app = express();
 
-// Import and Set Nuxt.js options
-config.dev = !(process.env.NODE_ENV === 'production');
+nuxtConfig.dev = !config.public.IS_PRODUCTION;
 
-function connectToDatabase () {
+async function connectToDatabase () {
 	mongoose.set('useFindAndModify', false);
 	mongoose.set('useCreateIndex', true);
 	mongoose.set('useNewUrlParser', true);
 	mongoose.Promise = Promise;
-	mongoose.connect('mongodb://localhost/daisy'); // TODO: from config
+	await mongoose.connect(config.private.MONGO_URI);
 }
 
-async function start () {
-	// Init Nuxt.js
-	const nuxt = new Nuxt(config);
+(async () => {
+	try {
+		// Init Nuxt.js
+		const nuxt = new Nuxt(nuxtConfig);
 
-	const { host, port } = nuxt.options.server;
+		const { host } = nuxt.options.server;
+		const port = config.private.PORT;
 
-	// Build only in dev mode
-	if (config.dev) {
-		const builder = new Builder(nuxt);
-		await builder.build();
-	} else {
-		await nuxt.ready();
+		await connectToDatabase();
+
+		// Build only in dev mode
+		if (!config.public.IS_PRODUCTION) {
+			const builder = new Builder(nuxt);
+			await builder.build();
+		} else {
+			await nuxt.ready();
+		}
+
+		app.use(bodyParser.urlencoded({ extended: true }));
+		app.use(bodyParser.json());
+
+		for (const route of apiRoutes) {
+			app.use('/api', route(express.Router()));
+		}
+
+		// Give nuxt middleware to express
+		app.use(nuxt.render);
+
+		// Listen the server
+		await app.listen(port, host);
+		consola.ready({
+			message: `Server listening on http://${host}:${port}`,
+			badge: true,
+		});
+	} catch (error) {
+		consola.error(error);
+		process.exit();
 	}
-
-	app.use(bodyParser.urlencoded({ extended: true }));
-	app.use(bodyParser.json());
-
-	for (const route of apiRoutes) {
-		app.use('/api', route(express.Router()));
-	}
-
-	// Give nuxt middleware to express
-	app.use(nuxt.render);
-
-	// Listen the server
-	app.listen(port, host);
-	consola.ready({
-		message: `Server listening on http://${host}:${port}`,
-		badge: true,
-	});
-}
-
-start();
-connectToDatabase();
+})();

@@ -1,4 +1,5 @@
-_old/
+# Local environment settings
+env/local.yml
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
