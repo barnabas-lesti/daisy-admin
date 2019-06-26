@@ -3,5 +3,5 @@ module.exports = [
 	require('./food'),
 	require('./recipes'),
 
-	require('./notFound'),
+	require('./not-found'),
 ];

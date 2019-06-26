@@ -1,4 +1,4 @@
-const Exercise = require('../models/Exercise');
+const Exercise = require('../models/exercise');
 
 module.exports = (router) => {
 	router.route('/exercises')
