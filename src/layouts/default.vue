@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import LayoutHeader from '../components/layout/header';
-import LayoutFooter from '../components/layout/footer';
+import LayoutHeader from '../components/layout/layout-header';
+import LayoutFooter from '../components/layout/layout-footer';
 
 export default {
-	name: 'DefaultLayout',
+	name: 'LayoutDefault',
 	components: {
 		LayoutHeader,
 		LayoutFooter,

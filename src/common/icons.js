@@ -1,4 +1,4 @@
-const icons = {
+export default {
 	'dashboard': 'fas fa-chart-line',
 	'food': 'fas fa-utensils',
 	'circle': 'far fa-circle',
@@ -15,5 +15,3 @@ const icons = {
 	'exercises': 'fas fa-running',
 	'burger': 'fas fa-bars',
 };
-
-export default icons;
