@@ -1,25 +1,26 @@
 const mongoose = require('mongoose');
 
+const valueDescription = {
+	default: 0,
+	type: Number,
+};
+
 const exerciseSchema = new mongoose.Schema({
-	calorieBurn: {
-		value: {
-			default: 0,
-			type: Number,
+	content: {
+		description: {
+			trim: true,
+			type: String,
+		},
+		name: {
+			trim: true,
+			type: String,
 		},
 	},
-	description: {
-		trim: true,
-		type: String,
+	calorieBurn: {
+		value: valueDescription,
 	},
 	duration: {
-		value: {
-			default: 0,
-			type: Number,
-		},
-	},
-	name: {
-		trim: true,
-		type: String,
+		value: valueDescription,
 	},
 }, {
 	id: false,

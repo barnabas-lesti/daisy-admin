@@ -1,10 +1,18 @@
-# Daisy Admin
+# Daisy Web App
 
-At home stuff helper application thingy.
+## Build Setup
 
-## Additional documentation
-- [Development](./docs/Development.md)
-- [Conventions](./docs/Conventions.md)
-- [Style Guide](./docs/StyleGuide.md)
+``` bash
+# Install dependencies
+yarn
 
-The base of this project was generated with the help of [Vue CLI](https://cli.vuejs.org).
+# Serve with hot reload at localhost:3000
+yarn start:dev
+
+# Build for production and launch server
+yarn build
+yarn start:prod
+
+# Lint the code with Eslint
+yarn lint
+```

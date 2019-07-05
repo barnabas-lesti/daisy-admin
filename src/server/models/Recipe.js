@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 
 const recipeSchema = new mongoose.Schema({
-	description: {
-		trim: true,
-		type: String,
+	content: {
+		description: {
+			trim: true,
+			type: String,
+		},
+		name: {
+			trim: true,
+			type: String,
+		},
 	},
 	items: {
 		default: [],
@@ -21,10 +27,6 @@ const recipeSchema = new mongoose.Schema({
 				},
 			},
 		],
-	},
-	name: {
-		trim: true,
-		type: String,
 	},
 }, {
 	id: false,

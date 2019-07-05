@@ -1,79 +1,42 @@
 const mongoose = require('mongoose');
 
+const valueDescription = {
+	default: 0,
+	type: Number,
+};
+
+const nutrientDescription = {
+	value: valueDescription,
+};
+
 const foodSchema = new mongoose.Schema({
-	description: {
-		trim: true,
-		type: String,
-	},
-	name: {
-		trim: true,
-		type: String,
+	content: {
+		description: {
+			trim: true,
+			type: String,
+		},
+		name: {
+			trim: true,
+			type: String,
+		},
 	},
 	nutrients: {
-		calories: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		carbs: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		energy: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		fat: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		fiber: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		protein: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		salt: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		saturatedFat: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
-		sugar: {
-			value: {
-				default: 0,
-				type: Number,
-			},
-		},
+		calories: nutrientDescription,
+		carbs: nutrientDescription,
+		energy: nutrientDescription,
+		fat: nutrientDescription,
+		fiber: nutrientDescription,
+		protein: nutrientDescription,
+		salt: nutrientDescription,
+		saturatedFat: nutrientDescription,
+		sugar: nutrientDescription,
 	},
 	serving: {
 		unit: {
 			default: 'g',
 			type: String,
 		},
-		value: {
-			default: 0,
-			type: Number,
-		},
+		value: valueDescription,
 	},
 }, {
 	id: false,
