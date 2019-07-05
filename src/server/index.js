@@ -9,7 +9,7 @@ const nuxtConfig = require('../../nuxt.config');
 	const app = express();
 
 	const nuxt = new Nuxt(nuxtConfig);
-	const { host, port } = nuxt.options.server;
+	const { port } = nuxt.options.server;
 
 	if (nuxtConfig.dev) {
 		const builder = new Builder(nuxt);
@@ -28,8 +28,6 @@ const nuxtConfig = require('../../nuxt.config');
 	app.use(nuxt.render);
 
 	require('./db')();
-
-	await app.listen(port, host);
 
 	const server = app.listen(port, () => {
 		const { address, port } = server.address();
