@@ -18,5 +18,6 @@ module.exports = {
 		IS_PRODUCTION: process.env.NODE_ENV === 'production',
 		MONGO_URI: process.env.MONGO_URI || configLib.get('MONGO_URI'),
 		PORT: process.env.PORT || configLib.get('PORT') || 3000,
+		BASE_URL: process.env.BASE_URL || configLib.get('BASE_URL') || 'http://localhost:3000',
 	},
 };
