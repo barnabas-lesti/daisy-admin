@@ -30,5 +30,9 @@ const nuxtConfig = require('../../nuxt.config');
 	require('./db')();
 
 	await app.listen(port, host);
-	consola.ready({ message: `Server listening on http://${host}:${port}`, badge: true });
+
+	const server = app.listen(port, () => {
+		const { address, port } = server.address();
+		consola.ready({ message: `Server listening on http://${address}:${port}`, badge: true });
+	});
 })();

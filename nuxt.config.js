@@ -8,7 +8,6 @@ module.exports = {
 
 	server: {
 		port: appConfig.env.PORT,
-		host: appConfig.env.HOST,
 	},
 
 	dev: !appConfig.env.IS_PRODUCTION,
