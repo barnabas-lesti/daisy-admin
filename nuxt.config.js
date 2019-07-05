@@ -1,59 +1,41 @@
+const appConfig = require('./app.config');
 
 module.exports = {
 	mode: 'universal',
 	srcDir: './src',
-	loading: false,
 
-	/*
-	** Headers of the page
-	*/
-	head: {
-		meta: [
-			{ charset: 'utf-8' },
-			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-		],
+	loading: '~/components/base-loader.vue',
+
+	server: {
+		port: appConfig.env.PORT,
+		host: appConfig.env.HOST,
 	},
 
-	/*
-	** Plugins to load before mounting the App
-	*/
+	dev: !appConfig.env.IS_PRODUCTION,
+
 	plugins: [
+		'plugins/filters',
 		'plugins/i18n',
+		'plugins/vuetify',
 	],
 
-	/*
-	** Router configuration
-	*/
+	modules: [
+		'@nuxtjs/axios',
+	],
+
 	router: {
 		middleware: 'i18n',
 	},
 
-	/*
-	** Nuxt.js modules
-	*/
-	modules: [
-		'@nuxtjs/bulma',
-		'@nuxtjs/axios',
-		'@nuxtjs/eslint-module',
-	],
-
-	/*
-	** Axios module configuration
-	** See https://axios.nuxtjs.org/options
-	*/
 	axios: {
+		// See https://github.com/nuxt-community/axios-module#options
 	},
 
-	/*
-	** Build configuration
-	*/
-	build: {
-		postcss: {
-			preset: {
-				features: {
-					customProperties: false,
-				},
-			},
-		},
+	head: {
+		titleTemplate: '%s | Daisy',
+		meta: [
+			{ charset: 'utf-8' },
+			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
+		],
 	},
 };

@@ -1,22 +1,40 @@
-<template>
-	<div>
-		<layout-header />
+<template lang="pug">
+	v-app
+		layout-header(:menu-items='menuItems')
 
-		<nuxt />
+		v-content
+			v-container(grid-list-xl)
+				nuxt
 
-		<layout-footer />
-	</div>
+		layout-footer(:social-items='socialItems')
+
+		layout-notifications
 </template>
 
 <script>
-import LayoutHeader from '../components/layout/layout-header';
-import LayoutFooter from '../components/layout/layout-footer';
+import { mapState } from 'vuex';
+
+import menuItems from '../config/menu-items';
+import socialItems from '../config/social-items';
+
+import LayoutHeader from '../components/layout-header';
+import LayoutFooter from '../components/layout-footer';
+import LayoutNotifications from '../components/layout-notifications';
 
 export default {
-	name: 'LayoutDefault',
 	components: {
 		LayoutHeader,
 		LayoutFooter,
+		LayoutNotifications,
+	},
+	data () {
+		return {
+			menuItems,
+			socialItems,
+		};
+	},
+	computed: {
+		...mapState([ 'isLoading' ]),
 	},
 };
 </script>

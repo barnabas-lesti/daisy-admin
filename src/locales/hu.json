@@ -1,3 +1,6 @@
 {
-	"test": "HU Test"
+	"pages": {
+		"home": "Kezdooldal",
+		"test": "Test Oldal"
+	}
 }

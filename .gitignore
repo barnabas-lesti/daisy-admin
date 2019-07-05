@@ -1,6 +1,3 @@
-# Local environment settings
-env/local.yml
-
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
 # Logs
@@ -80,12 +77,8 @@ dist
 # Serverless directories
 .serverless
 
-# IDE / Editor
+# IDE
 .idea
-.editorconfig
 
 # Service worker
 sw.*
-
-# Mac OSX
-.DS_Store

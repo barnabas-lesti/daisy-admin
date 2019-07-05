@@ -1,22 +1,18 @@
-# daisy-web-app
-
-> My bedazzling Nuxt.js project
+# Daisy Web App
 
 ## Build Setup
 
 ``` bash
-# install dependencies
-$ yarn install
+# Install dependencies
+yarn
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+# Serve with hot reload at localhost:3000
+yarn start:dev
 
-# build for production and launch server
-$ yarn build
-$ yarn start
+# Build for production and launch server
+yarn build
+yarn start:prod
 
-# generate static project
-$ yarn generate
+# Lint the code with Eslint
+yarn lint
 ```
-
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).

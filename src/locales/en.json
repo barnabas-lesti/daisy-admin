@@ -1,165 +1,173 @@
 {
 	"common": {
-		 "copyrightHtml": "© 2019 Daisy, Inc.",
-		 "menuItems": {
-				"calculator": "Calculator",
-				"exercises": "Exercises",
-				"food": "Food",
+		"serving": "Serving",
+		"unit": "Unit",
+		"type": "Type",
+		"name": "Name",
+		"description": "Description",
+		"noDescription": "No description available",
+		"duration": "Duration",
+		"calorieBurn": "Calorie burn",
+		"nutrients": {
+			"nutrient": "Nutrient",
+			"calories": "Calories",
+			"carbs": "Carbs",
+			"energy": "Energy",
+			"fat": "Fat",
+			"fiber": "Fiber",
+			"protein": "Protein",
+			"salt": "Salt",
+			"saturatedFat": "Saturated Fat",
+			"sugar": "Sugar"
+		},
+		"units": {
+			"kj": "kJ",
+			"g": "g",
+			"ml": "ml",
+			"kcal": "kcal",
+			"mins": "min | mins",
+			"plates": "plate | plates"
+		},
+		"navigation": {
+			"menu": {
 				"home": "Home",
-				"recipes": "Recipes"
-		 },
-		 "units": {
-				"calories": "kcal",
-				"grams": "g",
-				"milliliters": "ml",
-				"percent": "%",
-				"energy": "kJ",
-				"minutes": "min | mins",
-				"pieces": "piece | pieces",
-				"plates": "plate | plates"
-		 },
-		 "notifications": {
-				"unknownErrorOccurred": "Sorry, but an unknown error occurred."
-		 }
+				"calculator": "Calculator",
+				"food": "Food",
+				"recipes": "Recipes",
+				"exercises": "Exercises"
+			}
+		},
+		"notifications": {
+			"unknownErrorOccurred": "Sorry, but an unknown error occurred."
+		}
 	},
-	"home": {
-		 "view": {
-				"title": "Home",
-				"descriptionHtml": "\n\t\t\t\t<p>Nothing here yet, but I guess you’ve noticed it without me writing this down… <b>haha<\/b>.<\/p> <p>I use this \n\t\t\t\tpage to test out new or existing components while developing.<\/p> <p>In the future some useful <b>widgets<\/b> \n\t\t\t\tmight be available here, <b>settings<\/b>, etc.<\/p> <p>Or I’ll just delete this view, who knows…<\/p>\n\n\t\t\t"
-		 }
-	},
-	"calculator": {
-		 "view": {
-				"title": "Calculator",
-				"saveAsRecipeButton": "Save as recipe",
-				"descriptionHtml": "\n\t\t\t\t<p>On this page you can calculate a calorie and macro summary of different food combinations.<\/p> <p>Search for \n\t\t\t\tfood using the <b>food search module<\/b> on the right-hand side and add food to the calorie calculator by \n\t\t\t\tclicking on an item.<\/p> <p>You can customize the <b>serving amount<\/b> of the added food using the <b>inputs in \n\t\t\t\tthe calculator table<\/b>.<\/p> <p>A <b>trash icon<\/b> will appear on items when hoovered, click on this icon to remove \n\t\t\t\tan item from the table.<\/p>\n\n\t\t\t"
-		 },
-		 "table": {
-				"header": {
-					 "name": "Name",
-					 "serving": "Serving",
-					 "calories": "Calories",
-					 "carbs": "Carbs",
-					 "protein": "Protein",
-					 "fat": "Fat",
-					 "summary": "Summary"
+	"pages": {
+		"calculator": {
+			"title": "Calculator",
+			"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+			"nutritionSummary": "Summary",
+			"itemsEmpty": "Click on the button to add items",
+			"modal": {
+				"addItems": "Add items",
+				"searchPlaceholder": "Search recipes, food...",
+				"table": {
+					"noData": "No items found"
 				}
-		 },
-		 "selector": {
+			}
+		},
+		"exercises": {
+			"title": "Exercises",
+			"description": "Lorem ipsum dolor sit amet.",
+			"searchPlaceholder": "Search exercises",
+			"modal": {
+				"createTitle": "Create exercise",
+				"editTitle": "Edit exercise"
+			},
+			"notifications": {
+				"created": "Exercise successfully created",
+				"updated": "Exercise successfully updated",
+				"deleted": "Exercise successfully deleted"
+			},
+			"table": {
+				"noData": "No exercises found"
+			}
+		},
+		"food": {
+			"title": "Food",
+			"description": "Lorem ipsum dolor sit amet.",
+			"searchPlaceholder":"Search food",
+			"modal": {
+				"createTitle": "Create food",
+				"editTitle": "Edit food"
+			},
+			"table": {
+				"noData": "No food was found"
+			},
+			"notifications": {
+				"created": "Food successfully created",
+				"updated": "Food successfully updated",
+				"deleted": "Food successfully deleted"
+			}
+		},
+		"index": {
+			"title": "Welcome to Daisy",
+			"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+			"descriptionHtml":"<strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+			"cards": {
+				"defaultActionLabel": "Check out",
 				"food": {
-					 "accordionLabel": "Food selector",
-					 "searchPlaceholder": "Search for food",
-					 "noItemsFound": "No food found."
+					"title": "Food",
+					"descriptionHtml": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus."
 				},
-				"recipe": {
-					 "accordionLabel": "Recipe selector",
-					 "searchPlaceholder": "Search for recipes",
-					 "noItemsFound": "No recipes found."
+				"recipes": {
+					"title": "Recipes",
+					"descriptionHtml": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Quisque porttitor nibh</strong> id massa semper. Cras venenatis euismod dapibus."
 				},
-				"exercise": {
-					 "accordionLabel": "Exercise selector",
-					 "searchPlaceholder": "Search for exercises",
-					 "noItemsFound": "No exercises found."
-				}
-		 }
-	},
-	"food": {
-		 "view": {
-				"title": "Food",
-				"descriptionHtml": "\n\t\t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sed erat viverra, egestas mi et, tempor augue. \n\t\t\tNulla id nisl sollicitudin, imperdiet nisl nec, sagittis enim. Aliquam purus tellus, vulputate elementum rhoncus \n\t\t\tvel, vulputate eget nisi.\n\t\t\t",
-				"newFoodDefaultTitle": "New food",
-				"newButton": "New food",
-				"saveButton": "Save food",
-				"deleteButton": "Delete food",
-				"searchPlaceholder": "Search food",
-				"form": {
-					 "name": "Name",
-					 "serving": "Serving",
-					 "unit": "Unit",
-					 "calories": "Calories",
-					 "carbs": "Carbs",
-					 "protein": "Protein",
-					 "fat": "Fat",
-					 "energy": "Energy",
-					 "saturatedFat": "Saturated fat",
-					 "sugar": "Sugar",
-					 "fiber": "Fiber",
-					 "salt": "Salt",
-					 "description": "Description"
+				"exercises": {
+					"title": "Exercises",
+					"descriptionHtml": "<strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus."
 				},
-				"notifications": {
-					 "saved": "Food successfully saved.",
-					 "deleted": "Food successfully deleted."
+				"calculator": {
+					"title": "Calculator",
+					"descriptionHtml": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non dictum ex cursus. Cras venenatis euismod dapibus."
 				}
-		 },
-		 "table": {
-				"noFoodFound": "No food found.",
-				"header": {
-					 "name": "Name",
-					 "serving": "Serving",
-					 "calories": "Calories",
-					 "carbs": "Carbs",
-					 "protein": "Protein",
-					 "fat": "Fat"
-				}
-		 }
-	},
-	"recipes": {
-		 "view": {
+			}
+		},
+		"recipes": {
+			"index": {
 				"title": "Recipes",
-				"descriptionHtml": "\n\t\t\t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sed erat viverra, egestas mi et, tempor augue. \n\t\t\t\tNulla id nisl sollicitudin, imperdiet nisl nec, sagittis enim. Aliquam purus tellus, vulputate elementum rhoncus \n\t\t\t\tvel, vulputate eget nisi.\n\t\t\t",
-				"newRecipeDefaultTitle": "New recipe",
-				"newButton": "New recipe",
-				"saveButton": "Save recipe",
-				"deleteButton": "Delete recipe",
-				"searchPlaceholder": "Search recipes...",
-				"form": {
-					 "name": "Name",
-					 "description": "Description"
-				},
-				"notifications": {
-					 "saved": "Recipe successfully saved.",
-					 "deleted": "Recipe successfully deleted."
+				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+				"searchPlaceholder": "Search recipes",
+				"table": {
+					"noData": "No recipes found"
 				}
-		 },
-		 "table": {
-				"noRecipeFound": "No recipe found.",
-				"header": {
-					 "name": "Name",
-					 "calories": "Calories",
-					 "carbs": "Carbs",
-					 "protein": "Protein",
-					 "fat": "Fat"
-				}
-		 }
+			},
+			"new": {
+				"title": "New recipe",
+				"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+			},
+			"id": {
+				"fallbackTitle": "Just a recipe"
+			}
+		}
 	},
-	"exercises": {
-		 "view": {
-				"title": "Exercises",
-				"descriptionHtml": "\n\t\t\t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sed erat viverra, egestas mi et, tempor augue. \n\t\t\t\tNulla id nisl sollicitudin, imperdiet nisl nec, sagittis enim. Aliquam purus tellus, vulputate elementum rhoncus \n\t\t\t\tvel, vulputate eget nisi.\n\t\t\t",
-				"newExerciseDefaultTitle": "New exercise",
-				"newButton": "New exercise",
-				"saveButton": "Save exercise",
-				"deleteButton": "Delete exercise",
-				"searchPlaceholder": "Search exercises",
-				"form": {
-					 "name": "Name",
-					 "calorieBurn": "Calorie burn",
-					 "duration": "Duration",
-					 "description": "Description and notes"
-				},
-				"notifications": {
-					 "saved": "Exercise successfully saved.",
-					 "deleted": "Exercise successfully deleted."
+	"components": {
+		"calculatorTable": {
+			"noDataFallback":"No items found"
+		},
+		"layoutFooter": {
+			"descriptionHtml": "Lorem ipsum dolor sit amet. <strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus.",
+			"copyrightHtml": "&copy;2019 — <strong>RainbowSoft</strong>"
+		},
+		"recipesEditor": {
+			"fallbackTitle": "Just a recipe",
+			"modal": {
+				"addFood": "Add food",
+				"searchPlaceholder": "Search food",
+				"table": {
+					"noData": "No food found"
 				}
-		 },
-		 "table": {
-				"noExerciseFound": "No exercise found.",
+			},
+			"form": {
+				"name": "Name",
+				"description": "Description"
+			},
+			"nutritionSummary": {
+				"title": "Nutrition summary"
+			},
+			"table": {
+				"addFood": "Add food",
+				"title": "Food",
 				"header": {
-					 "name": "Name",
-					 "calorieBurn": "Calorie burn",
-					 "duration": "Duration"
+					"name": "Name",
+					"serving": "Serving"
 				}
-		 }
+			},
+			"notifications": {
+				"created": "Recipe successfully created",
+				"updated": "Recipe successfully updated",
+				"deleted": "Recipe successfully deleted"
+			}
+		}
 	}
 }
