@@ -7,10 +7,10 @@ module.exports = {
 	loading: '~/components/base-loader.vue',
 
 	server: {
-		port: appConfig.env.PORT,
+		port: appConfig.PORT,
 	},
 
-	dev: !appConfig.env.IS_PRODUCTION,
+	dev: !appConfig.IS_PRODUCTION,
 
 	plugins: [
 		'plugins/filters',
@@ -27,7 +27,7 @@ module.exports = {
 	},
 
 	axios: {
-		baseURL: appConfig.env.BASE_URL,
+		baseURL: appConfig.BASE_URL,
 	},
 
 	head: {

@@ -1,9 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const consola = require('consola');
+const basicAuth = require('express-basic-auth');
 const { Nuxt, Builder } = require('nuxt');
 
 const nuxtConfig = require('../../nuxt.config');
+const appConfig = require('../../app.config');
+
+const connectToDatabase = require('./db');
 
 (async () => {
 	const app = express();
@@ -18,8 +22,15 @@ const nuxtConfig = require('../../nuxt.config');
 		await nuxt.ready();
 	}
 
-	if (nuxtConfig.dev) {
-		app.use((req, res, next) => setTimeout(next, 500));
+	if (appConfig.IS_PRODUCTION) {
+		app.use(basicAuth({
+			challenge: true,
+			users: { [appConfig.ACCESS_USERNAME]: appConfig.ACCESS_PASSWORD },
+		}));
+	}
+
+	if (!appConfig.IS_PRODUCTION && appConfig.RESPONSE_DELAY) {
+		app.use((req, res, next) => setTimeout(next, appConfig.RESPONSE_DELAY));
 	}
 
 	app.use(bodyParser.json());
@@ -27,10 +38,10 @@ const nuxtConfig = require('../../nuxt.config');
 
 	app.use(nuxt.render);
 
-	require('./db')();
+	connectToDatabase();
 
 	const server = app.listen(port, () => {
 		const { address, port } = server.address();
-		consola.ready({ message: `Server listening on http://${address}:${port}`, badge: true });
+		consola.ready({ message: `Server listening on http://${address}:${port} (BASE_URL: ${appConfig.BASE_URL})`, badge: true });
 	});
 })();
