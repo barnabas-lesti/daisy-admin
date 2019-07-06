@@ -246,8 +246,5 @@ export default {
 			this.fetchRecipeItems();
 		}
 	},
-	created () {
-		throw new Error('hallo!!');
-	}
 };
 </script>
