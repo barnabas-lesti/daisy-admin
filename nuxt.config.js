@@ -12,6 +12,14 @@ module.exports = {
 
 	dev: !appConfig.IS_PRODUCTION,
 
+	head: {
+		titleTemplate: '%s | Daisy',
+		meta: [
+			{ charset: 'utf-8' },
+			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
+		],
+	},
+
 	plugins: [
 		'plugins/filters',
 		'plugins/i18n',
@@ -20,21 +28,18 @@ module.exports = {
 
 	modules: [
 		'@nuxtjs/axios',
+		'@nuxtjs/sentry',
 	],
-
-	router: {
-		middleware: 'i18n',
-	},
 
 	axios: {
 		baseURL: appConfig.BASE_URL,
 	},
 
-	head: {
-		titleTemplate: '%s | Daisy',
-		meta: [
-			{ charset: 'utf-8' },
-			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-		],
+	sentry: {
+		dsn: appConfig.SENTRY_DSN,
+	},
+
+	router: {
+		middleware: 'i18n',
 	},
 };
