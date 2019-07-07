@@ -22,14 +22,14 @@ const connectToDatabase = require('./db');
 		await nuxt.ready();
 	}
 
-	if (appConfig.IS_PRODUCTION) {
+	if (appConfig.ACCESS_USERNAME && appConfig.ACCESS_PASSWORD) {
 		app.use(basicAuth({
 			challenge: true,
 			users: { [appConfig.ACCESS_USERNAME]: appConfig.ACCESS_PASSWORD },
 		}));
 	}
 
-	if (!appConfig.IS_PRODUCTION && appConfig.RESPONSE_DELAY) {
+	if (appConfig.RESPONSE_DELAY) {
 		app.use((req, res, next) => setTimeout(next, appConfig.RESPONSE_DELAY));
 	}
 

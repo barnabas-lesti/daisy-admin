@@ -23,12 +23,12 @@ module.exports = {
 	plugins: [
 		'plugins/filters',
 		'plugins/i18n',
-		'plugins/vuetify',
 	],
 
 	modules: [
 		'@nuxtjs/axios',
 		'@nuxtjs/sentry',
+		'@nuxtjs/vuetify',
 	],
 
 	axios: {
@@ -37,6 +37,11 @@ module.exports = {
 
 	sentry: {
 		dsn: appConfig.SENTRY_DSN,
+	},
+
+	vuetify: {
+		materialIcons: true,
+		treeShake: true,
 	},
 
 	router: {

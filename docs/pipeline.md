@@ -13,6 +13,7 @@
 
 - Login to console or ssh into the server (ssh user@ip)
 - Commands:
+
 	```bash
 	# Update
 	sudo apt-get update
@@ -31,6 +32,7 @@
 	cd daisy-web-app
 	npm install
 	```
+
 - Create a _production.env_ file in the _env_ folder.
 - Build the app
 - Start the server in the background

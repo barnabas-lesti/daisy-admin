@@ -122,7 +122,12 @@ export default {
 			this.items = this.items.filter(item => this.selection.map(item => item._id).indexOf(item._id) === -1);
 			this.selection = [];
 		},
-		openModal () { this.modalMode = 'add-item'; },
+		async openModal () {
+			if (!this.modal.items.length > 0) {
+				await this.fetchItems();
+			}
+			this.modalMode = 'add-item';
+		},
 		closeModal () { this.modalMode = undefined; },
 		onSearchInput () {
 			if (this._searchInputTimeoutId) {
@@ -151,11 +156,6 @@ export default {
 			];
 			this.$store.commit('finishLoading');
 		},
-	},
-	mounted () {
-		if (!this.modal.items.length > 0) {
-			this.fetchItems();
-		}
 	},
 };
 </script>
