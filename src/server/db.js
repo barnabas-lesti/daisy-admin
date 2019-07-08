@@ -9,11 +9,11 @@ mongoose.set('useNewUrlParser', true);
 mongoose.Promise = Promise;
 
 module.exports = async (mongoUri = appConfig.MONGO_URI) => {
-	try {
-		await mongoose.connect(mongoUri);
-		consola.ready({ message: 'Connected to MongoDB', badge: true });
-	} catch (error) {
-		consola.error(error);
-		throw error;
-	}
+  try {
+    await mongoose.connect(mongoUri);
+    consola.ready({ message: 'Connected to MongoDB', badge: true });
+  } catch (error) {
+    consola.error(error);
+    throw error;
+  }
 };

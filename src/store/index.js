@@ -1,8 +1,8 @@
 export const state = () => ({
-	isLoading: false,
+  isLoading: false,
 });
 
 export const mutations = {
-	startLoading (state) { state.isLoading = true; },
-	finishLoading (state) { state.isLoading = false; },
+  startLoading (state) { state.isLoading = true; },
+  finishLoading (state) { state.isLoading = false; },
 };
