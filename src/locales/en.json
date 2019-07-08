@@ -43,17 +43,7 @@
 	},
 	"pages": {
 		"calculator": {
-			"title": "Calculator",
-			"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-			"nutritionSummary": "Summary",
-			"itemsEmpty": "Click on the button to add items",
-			"modal": {
-				"addItems": "Add items",
-				"searchPlaceholder": "Search recipes, food...",
-				"table": {
-					"noData": "No items found"
-				}
-			}
+
 		},
 		"exercises": {
 			"title": "Exercises",
@@ -90,28 +80,7 @@
 			}
 		},
 		"index": {
-			"title": "Welcome to Daisy",
-			"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-			"descriptionHtml":"<strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-			"cards": {
-				"defaultActionLabel": "Check out",
-				"food": {
-					"title": "Food",
-					"descriptionHtml": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus."
-				},
-				"recipes": {
-					"title": "Recipes",
-					"descriptionHtml": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Quisque porttitor nibh</strong> id massa semper. Cras venenatis euismod dapibus."
-				},
-				"exercises": {
-					"title": "Exercises",
-					"descriptionHtml": "<strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus."
-				},
-				"calculator": {
-					"title": "Calculator",
-					"descriptionHtml": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non dictum ex cursus. Cras venenatis euismod dapibus."
-				}
-			}
+
 		},
 		"recipes": {
 			"index": {

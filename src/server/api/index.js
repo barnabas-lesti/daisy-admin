@@ -1,5 +1,5 @@
 module.exports = [
-	require('./food'),
-	require('./exercises'),
-	require('./recipes'),
+  require('./food'),
+  require('./exercises'),
+  require('./recipes'),
 ];
