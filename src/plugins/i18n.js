@@ -7,9 +7,5 @@ export default (context) => {
   context.app.i18n = new VueI18n({
     locale: context.store.state.i18n.locale,
     fallbackLocale: 'en',
-    // messages: {
-    // 	'en': require('../locales/en.json'),
-    // 	'hu': require('../locales/hu.json'),
-    // },
   });
 };

@@ -26,7 +26,7 @@
             div(v-if='props.item.nutrients.fat.servingMultiplier', style='width: 55px')
               | {{ props.item.nutrients.fat.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
     v-card.pa-4.text-xs-center(v-else)
-      slot(name='noData') {{ $t('components.calculatorTable.noDataFallback') }}
+      slot(name='noData') {{ $t('noDataFallback') }}
 </template>
 
 <script>
@@ -67,6 +67,7 @@ export default {
 en:
   name: Name
   serving: Serving
+  noDataFallback: No items found
   nutrients:
     calories: Calories
     carbs: Carbs

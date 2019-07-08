@@ -1,20 +1,20 @@
 <template lang="pug">
   .pages-exercises-index
-    base-modal(:value='modalMode', :title="$t(`pages.exercises.modal.${ modal.model._id ? 'editTitle' : 'createTitle' }`)",
+    base-modal(:value='modalMode', :title="$t(`modal.${ modal.model._id ? 'editTitle' : 'createTitle' }`)",
       @accept='saveExercise()', @discard='closeModal()')
       template(v-slot:content)
         v-form(@submit.prevent='saveExercise')
           v-card-text.mt-5
-            v-text-field(v-model='modal.model.content.name', :label="$t('common.name')")
-            v-text-field(v-model='modal.model.duration.value', :label="$t('common.duration')", :suffix="$tc('common.units.mins', modal.model.duration.value)",
+            v-text-field(v-model='modal.model.content.name', :label="$t('name')")
+            v-text-field(v-model='modal.model.duration.value', :label="$t('duration')", :suffix="$tc('units.mins', modal.model.duration.value)",
               type='number')
-            v-text-field(v-model='modal.model.calorieBurn.value', :label="$t('common.calorieBurn')", :suffix="$t('common.units.kcal')",
+            v-text-field(v-model='modal.model.calorieBurn.value', :label="$t('calorieBurn')", :suffix="$t('units.kcal')",
               type='number')
-            v-textarea(v-model='modal.model.content.description', :label="$t('common.description')", rows='10')
+            v-textarea(v-model='modal.model.content.description', :label="$t('descriptionLabel')", rows='10')
 
     v-layout(row, wrap)
       v-flex(xs12)
-        base-control-title(:title="$t('pages.exercises.title')")
+        base-control-title(:title="$t('title')")
           template(v-slot:controls)
             v-slide-x-reverse-transition
               v-btn.red.lighten-1(v-show='selection', :loading='isLoading', fab, dark, small, @click='deleteExercise()')
@@ -27,24 +27,24 @@
 
       v-flex(xs12)
         v-form(@submit.prevent='onSearchFormSubmit()')
-          v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('pages.exercises.searchPlaceholder')",
+          v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('searchPlaceholder')",
           ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, @input='onSearchInput()')
 
       v-flex(xs12)
-        v-data-table.elevation-1(v-model='table.selected', :headers='table.headers', :items='exercises', :no-data-text="$t('pages.exercises.table.noData')",
-          :no-results-text="$t('pages.exercises.table.noData')", ref='dataTable', item-key='_id', hide-actions)
+        v-data-table.elevation-1(v-model='table.selected', :headers='table.headers', :items='exercises', :no-data-text="$t('table.noData')",
+          :no-results-text="$t('table.noData')", ref='dataTable', item-key='_id', hide-actions)
           template(v-slot:items='props')
             tr(:active='props.selected', @click='onListItemClick(props)')
               td
                 div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.content.name }}
-                div.font-italic {{ `${props.item.duration.value} ${$tc('common.units.mins', props.item.duration.value)}` }}
-              td.text-xs-right {{ props.item.calorieBurn.value }} {{ $t('common.units.kcal') }}
+                div.font-italic {{ `${props.item.duration.value} ${$tc('units.mins', props.item.duration.value)}` }}
+              td.text-xs-right {{ props.item.calorieBurn.value }} {{ $t('units.kcal') }}
           template(v-slot:expand='props')
             v-card.grey.lighten-4(flat, tile)
-              v-card-title.px-4.pb-2.caption.font-weight-bold {{ $t('common.description') }}
+              v-card-title.px-4.pb-2.caption.font-weight-bold {{ $t('descriptionLabel') }}
               v-card-text.px-4.pt-0.caption
                 span(v-if="props.item.content.description") {{ props.item.content.description }}
-                span.font-italic(v-if="!props.item.content.description") {{ $t('common.noDescription') }}
+                span.font-italic(v-if="!props.item.content.description") {{ $t('noDescription') }}
             v-divider
 
       base-fab
@@ -75,8 +75,8 @@ export default {
   },
   head () {
     return {
-      title: this.$t('pages.exercises.title'),
-      meta: [ { name: 'description', content: this.$t('pages.exercises.description') } ],
+      title: this.$t('title'),
+      meta: [ { name: 'description', content: this.$t('description') } ],
     };
   },
   data () {
@@ -86,8 +86,8 @@ export default {
       },
       table: {
         headers: [
-          { text: this.$t('common.name'), value: 'content.name', align: 'left' },
-          { text: this.$t('common.calorieBurn'), value: 'calorieBurn.value', align: 'right' },
+          { text: this.$t('name'), value: 'content.name', align: 'left' },
+          { text: this.$t('calorieBurn'), value: 'calorieBurn.value', align: 'right' },
         ],
         selected: [],
       },
@@ -151,12 +151,12 @@ export default {
       this.$store.commit('startLoading');
       try {
         await this.$axios.$delete(`/api/exercises/${this.selection}`);
-        this.$store.commit('notifications/showSuccess', this.$t('pages.exercises.notifications.deleted'));
+        this.$store.commit('notifications/showSuccess', this.$t('notifications.deleted'));
         this.selection = undefined;
         await this.fetchExercises();
       } catch (ex) {
         this.$sentry.captureException(ex);
-        this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
       }
       this.$store.commit('finishLoading');
     },
@@ -165,17 +165,17 @@ export default {
       try {
         if (this.modal.model._id) {
           await this.$axios.$patch(`/api/exercises/${this.modal.model._id}`, this.modal.model);
-          this.$store.commit('notifications/showSuccess', this.$t('pages.exercises.notifications.updated'));
+          this.$store.commit('notifications/showSuccess', this.$t('notifications.updated'));
         } else {
           await this.$axios.$put('/api/exercises', this.modal.model);
-          this.$store.commit('notifications/showSuccess', this.$t('pages.exercises.notifications.created'));
+          this.$store.commit('notifications/showSuccess', this.$t('notifications.created'));
         }
         this.modal.model = new Exercise();
         this.closeModal();
         await this.fetchExercises();
       } catch (ex) {
         this.$sentry.captureException(ex);
-        this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
       }
       this.$store.commit('finishLoading');
     },
@@ -197,3 +197,27 @@ export default {
   },
 };
 </script>
+
+<i18n>
+en:
+  title: Exercises
+  description: Lorem ipsum dolor sit amet.
+  searchPlaceholder: Search exercises
+  name: Name
+  calorieBurn: Calorie Burn
+  duration: Duration
+  descriptionLabel: Description
+  noDescription: No description available
+  modal:
+    createTitle: Create exercise
+    editTitle: Edit exercise
+  notifications:
+    created: Exercise successfully created
+    updated: Exercise successfully updated
+    deleted: Exercise successfully deleted
+  table:
+    noData: No exercises found
+  units:
+    kcal: kcal
+    mins: min | mins
+</i18n>

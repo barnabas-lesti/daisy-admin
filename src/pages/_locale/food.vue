@@ -1,35 +1,35 @@
 <template lang="pug">
   .pages-food-index
-    base-modal(:value='modalMode', :title="$t(`pages.food.modal.${ modal.model._id ? 'editTitle' : 'createTitle' }`)",
+    base-modal(:value='modalMode', :title="$t(`modal.${ modal.model._id ? 'editTitle' : 'createTitle' }`)",
       @accept='saveFood()', @discard='closeModal()')
       template(v-slot:content)
         v-form(@submit.prevent='saveFood()')
           v-card-text.mt-5
-            v-text-field(v-model='modal.model.content.name', :label="$t('common.name')")
+            v-text-field(v-model='modal.model.content.name', :label="$t('name')")
             v-layout(wrap, row)
               v-flex(xs8)
-                v-text-field(v-model='modal.model.serving.value', :label="$t('common.serving')", type='number')
+                v-text-field(v-model='modal.model.serving.value', :label="$t('serving')", type='number')
               v-spacer
               v-flex(xs3)
-                v-select(v-model='modal.model.serving.unit', :label="$t('common.unit')", :items='modal.units')
+                v-select(v-model='modal.model.serving.unit', :label="$t('unit')", :items='modal.units')
                   template(v-slot:selection='data')
-                    | {{ $t(`common.units.${data.item}`) }}
+                    | {{ $t(`units.${data.item}`) }}
                   template(v-slot:item='data')
-                    | {{ $t(`common.units.${data.item}`) }}
-            v-text-field(v-model='modal.model.nutrients.calories.value', :label="$t('common.nutrients.calories')", :suffix="$t('common.units.kcal')", type='number')
-            v-text-field(v-model='modal.model.nutrients.carbs.value', :label="$t('common.nutrients.carbs')", :suffix="$t('common.units.g')", type='number')
-            v-text-field(v-model='modal.model.nutrients.protein.value', :label="$t('common.nutrients.protein')", :suffix="$t('common.units.g')", type='number')
-            v-text-field(v-model='modal.model.nutrients.fat.value', :label="$t('common.nutrients.fat')", :suffix="$t('common.units.g')", type='number')
-            v-text-field(v-model='modal.model.nutrients.energy.value', :label="$t('common.nutrients.energy')", :suffix="$t('common.units.kj')", type='number')
-            v-text-field(v-model='modal.model.nutrients.fiber.value', :label="$t('common.nutrients.fiber')", :suffix="$t('common.units.g')", type='number')
-            v-text-field(v-model='modal.model.nutrients.salt.value', :label="$t('common.nutrients.salt')", :suffix="$t('common.units.g')", type='number')
-            v-text-field(v-model='modal.model.nutrients.saturatedFat.value', :label="$t('common.nutrients.saturatedFat')", :suffix="$t('common.units.g')", type='number')
-            v-text-field(v-model='modal.model.nutrients.sugar.value', :label="$t('common.nutrients.sugar')", :suffix="$t('common.units.g')", type='number')
-            v-textarea(v-model='modal.model.content.description', :label="$t('common.description')")
+                    | {{ $t(`units.${data.item}`) }}
+            v-text-field(v-model='modal.model.nutrients.calories.value', :label="$t('nutrients.calories')", :suffix="$t('units.kcal')", type='number')
+            v-text-field(v-model='modal.model.nutrients.carbs.value', :label="$t('nutrients.carbs')", :suffix="$t('units.g')", type='number')
+            v-text-field(v-model='modal.model.nutrients.protein.value', :label="$t('nutrients.protein')", :suffix="$t('units.g')", type='number')
+            v-text-field(v-model='modal.model.nutrients.fat.value', :label="$t('nutrients.fat')", :suffix="$t('units.g')", type='number')
+            v-text-field(v-model='modal.model.nutrients.energy.value', :label="$t('nutrients.energy')", :suffix="$t('units.kj')", type='number')
+            v-text-field(v-model='modal.model.nutrients.fiber.value', :label="$t('nutrients.fiber')", :suffix="$t('units.g')", type='number')
+            v-text-field(v-model='modal.model.nutrients.salt.value', :label="$t('nutrients.salt')", :suffix="$t('units.g')", type='number')
+            v-text-field(v-model='modal.model.nutrients.saturatedFat.value', :label="$t('nutrients.saturatedFat')", :suffix="$t('units.g')", type='number')
+            v-text-field(v-model='modal.model.nutrients.sugar.value', :label="$t('nutrients.sugar')", :suffix="$t('units.g')", type='number')
+            v-textarea(v-model='modal.model.content.description', :label="$t('descriptionLabel')")
 
     v-layout(row, wrap)
       v-flex(xs12)
-        base-control-title(:title="$t('pages.food.title')")
+        base-control-title(:title="$t('title')")
           template(v-slot:controls)
             v-slide-x-reverse-transition
               v-btn.red.lighten-1(v-show='selection', :loading='isLoading', fab, dark, small, @click='deleteFood()')
@@ -42,27 +42,27 @@
 
       v-flex(xs12)
         v-form(@submit.prevent='onSearchFormSubmit()')
-          v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('pages.food.searchPlaceholder')",
+          v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('searchPlaceholder')",
             ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, @input='onSearchInput()')
 
       v-flex(xs12)
-        v-data-table.elevation-1(:value='table.selected', :headers='table.headers', :items='food', :no-data-text="$t('pages.food.table.noData')",
-          :no-results-text="$t('pages.food.table.noData')", ref='dataTable', item-key='_id', hide-actions)
+        v-data-table.elevation-1(:value='table.selected', :headers='table.headers', :items='food', :no-data-text="$t('table.noData')",
+          :no-results-text="$t('table.noData')", ref='dataTable', item-key='_id', hide-actions)
           template(v-slot:items='props')
             tr(:active='props.selected', @click='onFoodListSelect(props.item._id)')
               td
                 div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.content.name }}
-                div.font-italic {{ `${props.item.serving.value} ${$t(`common.units.${props.item.serving.unit}`)}` }}
-              td.text-xs-right {{ props.item.nutrients.calories.value }} {{ $t('common.units.kcal') }}
-              td.text-xs-right {{ props.item.nutrients.carbs.value }} {{ $t('common.units.g') }}
-              td.text-xs-right {{ props.item.nutrients.protein.value }} {{ $t('common.units.g') }}
-              td.text-xs-right {{ props.item.nutrients.fat.value }} {{ $t('common.units.g') }}
+                div.font-italic {{ `${props.item.serving.value} ${$t(`units.${props.item.serving.unit}`)}` }}
+              td.text-xs-right {{ props.item.nutrients.calories.value }} {{ $t('units.kcal') }}
+              td.text-xs-right {{ props.item.nutrients.carbs.value }} {{ $t('units.g') }}
+              td.text-xs-right {{ props.item.nutrients.protein.value }} {{ $t('units.g') }}
+              td.text-xs-right {{ props.item.nutrients.fat.value }} {{ $t('units.g') }}
           template(v-slot:expand='props')
             v-card.grey.lighten-4(flat, tile)
-              v-card-title.px-4.pb-2.caption.font-weight-bold {{ $t('common.description') }}
+              v-card-title.px-4.pb-2.caption.font-weight-bold {{ $t('descriptionLabel') }}
               v-card-text.px-4.pt-0.caption
                 span(v-if="props.item.content.description") {{ props.item.content.description }}
-                span.font-italic(v-if="!props.item.content.description") {{ $t('common.noDescription') }}
+                span.font-italic(v-if="!props.item.content.description") {{ $t('noDescription') }}
             v-divider
 
       base-fab
@@ -95,8 +95,8 @@ export default {
   },
   head () {
     return {
-      title: this.$t('pages.food.title'),
-      meta: [ { name: 'description', content: this.$t('pages.food.description') } ],
+      title: this.$t('title'),
+      meta: [ { name: 'description', content: this.$t('description') } ],
     };
   },
   data () {
@@ -107,11 +107,11 @@ export default {
       },
       table: {
         headers: [
-          { text: this.$t('common.name'), value: 'content.name', align: 'left' },
-          { text: this.$t('common.nutrients.calories'), value: 'nutrients.calories.value', align: 'right' },
-          { text: this.$t('common.nutrients.carbs'), value: 'nutrients.carbs.value', align: 'right' },
-          { text: this.$t('common.nutrients.protein'), value: 'nutrients.protein.value', align: 'right' },
-          { text: this.$t('common.nutrients.fat'), value: 'nutrients.fat.value', align: 'right' },
+          { text: this.$t('name'), value: 'content.name', align: 'left' },
+          { text: this.$t('nutrients.calories'), value: 'nutrients.calories.value', align: 'right' },
+          { text: this.$t('nutrients.carbs'), value: 'nutrients.carbs.value', align: 'right' },
+          { text: this.$t('nutrients.protein'), value: 'nutrients.protein.value', align: 'right' },
+          { text: this.$t('nutrients.fat'), value: 'nutrients.fat.value', align: 'right' },
         ],
         selected: [],
       },
@@ -173,12 +173,12 @@ export default {
       this.$store.commit('startLoading');
       try {
         await this.$axios.$delete(`/api/food/${this.selection}`);
-        this.$store.commit('notifications/showSuccess', this.$t('pages.food.notifications.deleted'));
+        this.$store.commit('notifications/showSuccess', this.$t('notifications.deleted'));
         this.selection = undefined;
         await this.fetchFood();
       } catch (ex) {
         this.$sentry.captureException(ex);
-        this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
       }
       this.$store.commit('finishLoading');
     },
@@ -187,17 +187,17 @@ export default {
       try {
         if (this.modal.model._id) {
           await this.$axios.$patch(`/api/food/${this.modal.model._id}`, this.modal.model);
-          this.$store.commit('notifications/showSuccess', this.$t('pages.food.notifications.updated'));
+          this.$store.commit('notifications/showSuccess', this.$t('notifications.updated'));
         } else {
           await this.$axios.$put('/api/food', this.modal.model);
-          this.$store.commit('notifications/showSuccess', this.$t('pages.food.notifications.created'));
+          this.$store.commit('notifications/showSuccess', this.$t('notifications.created'));
         }
         this.modal.model = new Food();
         this.closeModal();
         await this.fetchFood();
       } catch (ex) {
         this.$sentry.captureException(ex);
-        this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
       }
       this.$store.commit('finishLoading');
     },
@@ -219,3 +219,40 @@ export default {
   },
 };
 </script>
+
+<i18n>
+en:
+  title: Food
+  description: Lorem ipsum dolor sit amet.
+  searchPlaceholder: Search food
+  name: Name
+  serving: Serving
+  unit: Unit
+  descriptionLabel: Description
+  noDescription: No description available
+  modal:
+    createTitle: Create food
+    editTitle: Edit food
+  table:
+    noData: No food was found
+  notifications:
+    created: Food successfully created
+    updated: Food successfully updated
+    deleted: Food successfully deleted
+  nutrients:
+    nutrient: Nutrient
+    calories: Calories
+    carbs: Carbs
+    energy: Energy
+    fat: Fat
+    fiber: Fiber
+    protein: Protein
+    salt: Salt
+    saturatedFat: Saturated Fat
+    sugar: Sugar
+  units:
+    g: g
+    kcal: kcal
+    ml: ml
+    kj: kJ
+</i18n>

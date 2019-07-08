@@ -57,7 +57,7 @@
             base-nutrition-summary(:model='summary')
       v-flex.mb-3.hidden-xs-only(xs12, lg3)
         v-card.light-blue.lighten-4
-          v-card-title.font-weight-bold {{ $t('pages.calculator.nutritionSummary') }}
+          v-card-title.font-weight-bold {{ $t('nutritionSummary.title') }}
           v-divider
           base-nutrition-summary(:model='summary')
 
@@ -250,7 +250,35 @@ export default {
 </script>
 
 <i18n>
+en:
+  fallbackTitle: Just a recipe
+  modal:
+    addFood: Add food
+    searchPlaceholder: Search food
+    table:
+      noData: No food found
+  form:
+    name: Name
+    description: Description
+  nutritionSummary:
+    title: Nutrition summary
+  table:
+    addFood: Add food
+    title: Food
+    header:
+      name: Name
+      serving: Serving
+  notifications:
+    created: Recipe successfully created
+    updated: Recipe successfully updated
+    deleted: Recipe successfully deleted
+  nutrients:
+    calories: Calories
+    carbs: Carbs
+    fat: Fat
+    protein: Protein
   units:
     g: g
     kcal: kcal
+    ml: ml
 </i18n>
