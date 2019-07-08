@@ -60,11 +60,11 @@
 <script>
 import { mapState } from 'vuex';
 
-import Exercise from '../../models/exercise';
+import Exercise from '../../../models/exercise';
 
-import BaseControlTitle from '../../components/base-control-title';
-import BaseFab from '../../components/base-fab';
-import BaseModal from '../../components/base-modal';
+import BaseControlTitle from '../../../components/base-control-title';
+import BaseFab from '../../../components/base-fab';
+import BaseModal from '../../../components/base-modal';
 
 export default {
   name: 'PagesExercisesIndex',

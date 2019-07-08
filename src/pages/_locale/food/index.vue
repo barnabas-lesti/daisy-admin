@@ -78,11 +78,11 @@
 <script>
 import { mapState } from 'vuex';
 
-import Food from '../../models/food';
+import Food from '../../../models/food';
 
-import BaseControlTitle from '../../components/base-control-title';
-import BaseFab from '../../components/base-fab';
-import BaseModal from '../../components/base-modal';
+import BaseControlTitle from '../../../components/base-control-title';
+import BaseFab from '../../../components/base-fab';
+import BaseModal from '../../../components/base-modal';
 
 const units = [ 'g', 'ml' ];
 

@@ -13,7 +13,7 @@ export default {
   },
   head () {
     return {
-      title: this.recipe.content.name || this.$t('pages.recipes.id.fallbackTitle'),
+      title: this.recipe.content.name || this.$t('fallbackTitle'),
       meta: [ { name: 'description', content: this.recipe.content.description } ],
     };
   },
