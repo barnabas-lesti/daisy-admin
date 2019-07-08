@@ -12,7 +12,7 @@ module.exports = {
 		'plugin:nuxt/recommended'
 	],
 	rules: {
-		'indent': [ 2, 'tab' ],
+		// 'indent': [ 2, 'tab' ],
 		'comma-dangle': [ 2, 'always-multiline' ],
 		'semi': [ 2, 'always' ],
 		'curly': [ 2, 'all' ],
