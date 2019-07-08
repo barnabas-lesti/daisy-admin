@@ -1,18 +1,7 @@
 # Daisy Web App
 
-## Build Setup
+## Table of contents
 
-``` bash
-# Install dependencies
-yarn
-
-# Serve with hot reload at localhost:3000
-yarn start:dev
-
-# Build for production and launch server
-yarn build
-yarn start:prod
-
-# Lint the code with Eslint
-yarn lint
-```
+- [Development](./docs/development.md)
+- [Pipeline](./docs/pipeline.md)
+- [Links and other useful things](./docs/links.md)

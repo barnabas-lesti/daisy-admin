@@ -177,7 +177,7 @@ export default {
 				this.selection = undefined;
 				await this.fetchFood();
 			} catch (ex) {
-				console.error(ex);
+				this.$sentry.captureException(ex);
 				this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
 			}
 			this.$store.commit('finishLoading');
@@ -196,7 +196,7 @@ export default {
 				this.closeModal();
 				await this.fetchFood();
 			} catch (ex) {
-				console.error(ex);
+				this.$sentry.captureException(ex);
 				this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
 			}
 			this.$store.commit('finishLoading');

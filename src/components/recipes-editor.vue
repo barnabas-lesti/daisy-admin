@@ -215,7 +215,7 @@ export default {
 					this.$store.commit('notifications/showSuccess', this.$t('components.recipesEditor.notifications.deleted'));
 					this.$router.push({ name: 'locale-recipes' });
 				} catch (ex) {
-					console.error(ex);
+					this.$sentry.captureException(ex);
 					this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
 				}
 				this.$store.commit('finishLoading');
@@ -235,7 +235,7 @@ export default {
 					this.$router.push({ name: 'locale-recipes-id', params: { id } });
 				}
 			} catch (ex) {
-				console.error(ex);
+				this.$sentry.captureException(ex);
 				this.$store.commit('notifications/showError', this.$t('common.notifications.unknownErrorOccurred'));
 			}
 			this.$store.commit('finishLoading');

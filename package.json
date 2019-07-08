@@ -5,25 +5,25 @@
 	"author": "Barnabas Lesti",
 	"license": "MIT",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=development nodemon ./src/server --watch ./src/server --watch ./env --ext js,yml",
-		"start": "cross-env NODE_ENV=production node ./src/server",
+		"start:dev": "cross-env NODE_ENV=development nodemon ./src/server --watch ./src/server --watch ./env --ext js,yml",
+		"start:prod": "cross-env NODE_ENV=production node ./src/server",
 		"build": "nuxt build",
 		"generate": "nuxt generate",
 		"lint": "eslint --ext .js,.vue ."
 	},
 	"dependencies": {
 		"@nuxtjs/axios": "^5.3.6",
+		"@nuxtjs/sentry": "^3.0.0",
+		"@nuxtjs/vuetify": "^0.5.6",
 		"body-parser": "^1.19.0",
 		"config": "^3.1.0",
 		"cross-env": "^5.2.0",
 		"express": "^4.16.4",
+		"express-basic-auth": "^1.2.0",
 		"lodash": "^4.17.11",
-		"material-design-icons-iconfont": "^5.0.1",
 		"mongoose": "^5.6.3",
 		"nuxt": "^2.4.0",
 		"vue-i18n": "^8.11.2",
-		"vuetify": "^1.5.5",
-		"vuetify-loader": "^1.2.1",
 		"yargs": "^13.2.4"
 	},
 	"devDependencies": {
@@ -46,6 +46,9 @@
 		"nodemon": "^1.18.9",
 		"pug": "^2.0.3",
 		"pug-plain-loader": "^1.0.0",
-		"vue-jest": "^3.0.3"
+		"stylus": "^0.54.5",
+		"stylus-loader": "^3.0.2",
+		"vue-jest": "^3.0.3",
+		"vuetify-loader": "^1.2.2"
 	}
 }
