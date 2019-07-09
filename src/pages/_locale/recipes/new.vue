@@ -1,6 +1,5 @@
 <template lang="pug">
-  .pages-recipes-new
-    recipes-editor(:title="$t('title')")
+  recipes-editor.pages-recipes-new(:title="$t('page.title')")
 </template>
 
 <script>
@@ -13,8 +12,8 @@ export default {
   },
   head () {
     return {
-      title: this.$t('title'),
-      meta: [ { name: 'description', content: this.$t('description') } ],
+      title: this.$t('page.title'),
+      meta: [ { name: 'description', content: this.$t('page.description') } ],
     };
   },
 };
@@ -22,6 +21,7 @@ export default {
 
 <i18n>
 en:
-  title: New recipe
-  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  page:
+    title: New recipe
+    description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 </i18n>

@@ -14,7 +14,7 @@
 
     v-layout(row, wrap)
       v-flex(xs12)
-        base-control-title(:title="$t('title')")
+        base-control-title(:title="$t('page.title')")
           template(v-slot:controls)
             v-slide-x-reverse-transition
               v-btn.blue.lighten-2(v-show='selection.length', fab, dark, small, @click='removeSelectedItems()')
@@ -28,13 +28,7 @@
                   v-icon add
                 v-icon layers
 
-      v-flex.hidden-sm-and-up(xs12)
-        v-expansion-panel.mb-3
-          v-expansion-panel-content.light-blue.lighten-4
-            template(v-slot:header)
-              div.font-weight-bold {{ $t('nutritionSummary') }}
-            base-nutrition-summary(:model='summary')
-      v-flex.mb-3.hidden-xs-only(sm12, lg3)
+      v-flex(xs12, lg3)
         v-card.light-blue.lighten-4
           v-card-title.font-weight-bold {{ $t('nutritionSummary') }}
           v-divider
@@ -43,7 +37,7 @@
       v-flex(sm12, lg9)
         calculator-table(v-model='selection', :items='items')
           template(v-slot:noData)
-            span.mr-2 {{ $t('itemsEmpty') }}
+            span.mr-2 {{ $t('noItems') }}
             v-btn.blue.lighten-2(fab, dark, @click='openModal()')
               v-badge(color='green darken-1')
                 template(v-slot:badge)
@@ -86,8 +80,8 @@ export default {
   },
   head () {
     return {
-      title: this.$t('title'),
-      meta: [ { name: 'description', content: this.$t('description') } ],
+      title: this.$t('page.title'),
+      meta: [ { name: 'description', content: this.$t('page.description') } ],
     };
   },
   data () {
@@ -157,15 +151,19 @@ export default {
       this.$store.commit('finishLoading');
     },
   },
+  mounted () {
+    if (this.modalMode && !this.modal.items.length > 0) { this.fetchItems(); }
+  },
 };
 </script>
 
 <i18n>
 en:
-  title: Calculator
-  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   nutritionSummary: Summary
-  itemsEmpty: Click on the button to add items
+  noItems: Click on the button to add items
+  page:
+    title: Calculator
+    description: Tool to help calculate your calorie intake
   modal:
     addItems: Add items
     searchPlaceholder: Search recipes, food...

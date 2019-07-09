@@ -1,33 +1,23 @@
 <template lang="pug">
-  .pages-recipes-index
-    v-layout(row, wrap)
-      v-flex(xs12)
-        base-control-title(:title="$t('title')")
-          template(v-slot:controls)
-            v-btn(color='green lighten-1', fab, dark, small, @click='createNewRecipe()')
-              v-icon add
-
-      v-flex(xs12)
-        v-form(@submit.prevent='onSearchFormSubmit()')
-          v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('searchPlaceholder')",
-            ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, @input='onSearchInput()')
-
-      v-flex(xs12)
-        v-data-table.elevation-1(:headers='table.headers', :items='computedRecipes', :no-data-text="$t('table.noData')",
-          :no-results-text="$t('table.noData')", item-key='_id', hide-actions)
-          template(v-slot:items='props')
-            tr(:active='props.selected', @click='onListItemClick(props.item._id)')
-              td
-                div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.content.name }}
-              td.text-xs-right(:style='table.summaryTdStyle') {{ props.item.summary.calories.value | twoDecimal }} {{ $t('units.kcal') }}
-              td.text-xs-right(:style='table.summaryTdStyle') {{ props.item.summary.carbs.value | twoDecimal }} {{ $t('units.g') }}
-              td.text-xs-right(:style='table.summaryTdStyle') {{ props.item.summary.protein.value | twoDecimal }} {{ $t('units.g') }}
-              td.text-xs-right(:style='table.summaryTdStyle') {{ props.item.summary.fat.value | twoDecimal }} {{ $t('units.g') }}
-
-      base-fab
-        template(v-slot:content)
+  v-layout.pages-recipes-index(row, wrap)
+    v-flex(xs12)
+      base-control-title(:title="$t('page.title')")
+        template(v-slot:controls)
           v-btn(color='green lighten-1', fab, dark, small, @click='createNewRecipe()')
             v-icon add
+
+    v-flex(xs12)
+      v-form(@submit.prevent='onSearchFormSubmit()')
+        v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('searchPlaceholder')",
+          ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, @input='onSearchInput()')
+
+    v-flex(xs12)
+      recipes-table(:recipes='computedRecipes')
+
+    base-fab
+      template(v-slot:content)
+        v-btn(color='green lighten-1', fab, dark, small, @click='createNewRecipe()')
+          v-icon add
 </template>
 
 <script>
@@ -37,31 +27,19 @@ import Recipe from '../../../models/recipe';
 
 import BaseControlTitle from '../../../components/base-control-title';
 import BaseFab from '../../../components/base-fab';
+import RecipesTable from '../../../components/recipes-table';
 
 export default {
   name: 'PagesRecipesIndex',
   components: {
     BaseControlTitle,
     BaseFab,
+    RecipesTable,
   },
   head () {
     return {
-      title: this.$t('title'),
-      meta: [ { name: 'description', content: this.$t('description') } ],
-    };
-  },
-  data () {
-    return {
-      table: {
-        summaryTdStyle: 'min-width: 110px;',
-        headers: [
-          { text: this.$t('name'), value: 'content.name', align: 'left' },
-          { text: this.$t('nutrients.calories'), value: 'summary.calories.value', align: 'right' },
-          { text: this.$t('nutrients.carbs'), value: 'summary.carbs.value', align: 'right' },
-          { text: this.$t('nutrients.protein'), value: 'summary.protein.value', align: 'right' },
-          { text: this.$t('nutrients.fat'), value: 'summary.fat.value', align: 'right' },
-        ],
-      },
+      title: this.$t('page.title'),
+      meta: [ { name: 'description', content: this.$t('page.description') } ],
     };
   },
   computed: {
@@ -79,9 +57,6 @@ export default {
     },
   },
   methods: {
-    onListItemClick (id) {
-      this.$router.push({ name: 'locale-recipes-id', params: { id } });
-    },
     createNewRecipe () {
       this.$router.push({ name: 'locale-recipes-new' });
     },
@@ -112,18 +87,8 @@ export default {
 
 <i18n>
 en:
-  title: Recipes
-  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   searchPlaceholder: Search recipes
-  name: Name
-  table:
-    noData: No recipes found
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    fat: Fat
-    protein: Protein
-  units:
-    g: g
-    kcal: kcal
+  page:
+    title: Recipes
+    description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 </i18n>
