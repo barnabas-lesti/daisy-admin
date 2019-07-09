@@ -1,7 +1,6 @@
 <template lang="pug">
   .recipes-editor
-    base-modal(:value='modalMode', :title="$t('modal.addFood')",
-      @accept='addSelectedRecipeItemsToRecipe()', @discard='closeModal()')
+    base-modal(:value='modalMode', :title="$t('modal.addFood')", @accept='addSelectedRecipeItemsToRecipe()', @discard='closeModal()')
       template(v-slot:content)
         v-card-text.mt-5.pt-4
           v-layout(row, wrap)
@@ -49,13 +48,7 @@
         v-text-field.mb-3(v-model='recipe.content.name', :label="$t('form.name')", solo, hide-details)
         v-textarea.mb-3(v-model='recipe.content.description', :label="$t('form.description')", solo, hide-details)
 
-      v-flex.hidden-sm-and-up(xs12)
-        v-expansion-panel.mb-3
-          v-expansion-panel-content.light-blue.lighten-4
-            template(v-slot:header)
-              div.font-weight-bold {{ $t('nutritionSummary.title') }}
-            base-nutrition-summary(:model='summary')
-      v-flex.mb-3.hidden-xs-only(xs12, lg3)
+      v-flex.mb-3(xs12, lg3)
         v-card.light-blue.lighten-4
           v-card-title.font-weight-bold {{ $t('nutritionSummary.title') }}
           v-divider
@@ -67,31 +60,24 @@
             v-text-field.mb-3(v-model='recipe.content.name', :label="$t('form.name')", solo, hide-details)
             v-textarea.mb-3(v-model='recipe.content.description', :label="$t('form.description')", solo, hide-details)
           v-flex(xs12)
-            v-expansion-panel
-              v-expansion-panel-content.teal.lighten-4
-                template(v-slot:header)
-                  div.font-weight-bold {{ $t('table.title') }}
-                .text-xs-center.white(v-if='!recipe.items.length')
-                  v-btn.my-3(color='teal lighten-3', fab, dark, @click='openModal()')
-                    v-badge(color='green darken-1')
-                      template(v-slot:badge)
-                        v-icon add
-                      v-icon fastfood
-                v-data-table.elevation-1(v-else, v-model='table.selection', :headers='table.headers', :items='recipe.items', item-key='food._id', hide-actions)
-                  template(v-slot:items='props')
-                    tr(:class="props.selected ? 'teal lighten-5': ''", @click='props.selected = !props.selected')
-                      td
-                        div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.food.content.name }}
-                        div.font-italic {{ props.item.food.nutrients.calories.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.kcal') }}
-                      td.text-xs-right
-                        v-text-field.pa-2(v-model='props.item.serving.value', :suffix="$t(`units.${props.item.food.serving.unit}`)",
-                          type='number', style='width: 75px;', hide-details, @click.stop)
-                      td.text-xs-right
-                        div(style='width: 55px') {{ props.item.food.nutrients.carbs.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
-                      td.text-xs-right
-                        div(style='width: 55px') {{ props.item.food.nutrients.protein.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
-                      td.text-xs-right
-                        div(style='width: 55px') {{ props.item.food.nutrients.fat.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
+            v-card.teal.lighten-4
+              v-card-title.font-weight-bold {{ $t('table.title') }}
+              v-divider
+              v-data-table.elevation-1(v-model='table.selection', :headers='table.headers', :items='recipe.items', item-key='food._id', hide-actions)
+                template(v-slot:items='props')
+                  tr(:class="props.selected ? 'teal lighten-5': ''", @click='props.selected = !props.selected')
+                    td
+                      div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.food.content.name }}
+                      div.font-italic {{ props.item.food.nutrients.calories.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.kcal') }}
+                    td.text-xs-right
+                      v-text-field.pa-2(v-model='props.item.serving.value', :suffix="$t(`units.${props.item.food.serving.unit}`)",
+                        type='number', style='width: 75px;', hide-details, @click.stop)
+                    td.text-xs-right
+                      div(style='width: 55px') {{ props.item.food.nutrients.carbs.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
+                    td.text-xs-right
+                      div(style='width: 55px') {{ props.item.food.nutrients.protein.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
+                    td.text-xs-right
+                      div(style='width: 55px') {{ props.item.food.nutrients.fat.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
 
       base-fab
         template(v-slot:content)

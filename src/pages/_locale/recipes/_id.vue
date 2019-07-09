@@ -1,6 +1,5 @@
 <template lang="pug">
-  .pages-recipes-id
-    recipes-editor(:title='recipe.content.name', :recipe='recipe')
+  recipes-editor.pages-recipes-id(:title='recipe.content.name', :recipe='recipe')
 </template>
 
 <script>
@@ -13,7 +12,7 @@ export default {
   },
   head () {
     return {
-      title: this.recipe.content.name || this.$t('pages.recipes.id.fallbackTitle'),
+      title: this.recipe.content.name || this.$t('page.fallbackTitle'),
       meta: [ { name: 'description', content: this.recipe.content.description } ],
     };
   },
@@ -25,5 +24,6 @@ export default {
 
 <i18n>
 en:
-  fallbackTitle: Just a recipe
+  page:
+    fallbackTitle: Just a recipe
 </i18n>

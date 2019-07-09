@@ -10,14 +10,14 @@
               type='number')
             v-text-field(v-model='modal.model.calorieBurn.value', :label="$t('calorieBurn')", :suffix="$t('units.kcal')",
               type='number')
-            v-textarea(v-model='modal.model.content.description', :label="$t('descriptionLabel')", rows='10')
+            v-textarea(v-model='modal.model.content.description', :label="$t('description')", rows='10')
 
     v-layout(row, wrap)
       v-flex(xs12)
-        base-control-title(:title="$t('title')")
+        base-control-title(:title="$t('page.title')")
           template(v-slot:controls)
             v-slide-x-reverse-transition
-              v-btn.red.lighten-1(v-show='selection', :loading='isLoading', fab, dark, small, @click='deleteExercise()')
+              v-btn.red.lighten-1(v-show='selection', fab, dark, small, @click='deleteExercise()')
                 v-icon delete
             v-slide-x-reverse-transition
               v-btn.blue.lighten-1(v-show='selection', fab, dark, small, @click='openEditModal()')
@@ -28,24 +28,10 @@
       v-flex(xs12)
         v-form(@submit.prevent='onSearchFormSubmit()')
           v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('searchPlaceholder')",
-          ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, @input='onSearchInput()')
+          ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, hide-details, @input='onSearchInput()')
 
       v-flex(xs12)
-        v-data-table.elevation-1(v-model='table.selected', :headers='table.headers', :items='exercises', :no-data-text="$t('table.noData')",
-          :no-results-text="$t('table.noData')", ref='dataTable', item-key='_id', hide-actions)
-          template(v-slot:items='props')
-            tr(:active='props.selected', @click='onListItemClick(props)')
-              td
-                div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.content.name }}
-                div.font-italic {{ `${props.item.duration.value} ${$tc('units.mins', props.item.duration.value)}` }}
-              td.text-xs-right {{ props.item.calorieBurn.value }} {{ $t('units.kcal') }}
-          template(v-slot:expand='props')
-            v-card.grey.lighten-4(flat, tile)
-              v-card-title.px-4.pb-2.caption.font-weight-bold {{ $t('descriptionLabel') }}
-              v-card-text.px-4.pt-0.caption
-                span(v-if="props.item.content.description") {{ props.item.content.description }}
-                span.font-italic(v-if="!props.item.content.description") {{ $t('noDescription') }}
-            v-divider
+        exercises-table(v-model='selectedExercise', :exercises='exercises')
 
       base-fab
         template(v-slot:content)
@@ -53,7 +39,7 @@
             v-icon add
           v-btn.blue.lighten-1(v-if='selection', fab, dark, small, @click='openEditModal()')
             v-icon create
-          v-btn.red.lighten-1(v-if='selection', :loading='isLoading', fab, dark, small, @click='deleteExercise()')
+          v-btn.red.lighten-1(v-if='selection', fab, dark, small, @click='deleteExercise()')
             v-icon delete
 </template>
 
@@ -65,6 +51,7 @@ import Exercise from '../../models/exercise';
 import BaseControlTitle from '../../components/base-control-title';
 import BaseFab from '../../components/base-fab';
 import BaseModal from '../../components/base-modal';
+import ExercisesTable from '../../components/exercises-table';
 
 export default {
   name: 'PagesExercisesIndex',
@@ -72,24 +59,18 @@ export default {
     BaseControlTitle,
     BaseFab,
     BaseModal,
+    ExercisesTable,
   },
   head () {
     return {
-      title: this.$t('title'),
-      meta: [ { name: 'description', content: this.$t('description') } ],
+      title: this.$t('page.title'),
+      meta: [ { name: 'description', content: this.$t('page.description') } ],
     };
   },
   data () {
     return {
       modal: {
         model: new Exercise(),
-      },
-      table: {
-        headers: [
-          { text: this.$t('name'), value: 'content.name', align: 'left' },
-          { text: this.$t('calorieBurn'), value: 'calorieBurn.value', align: 'right' },
-        ],
-        selected: [],
       },
     };
   },
@@ -108,13 +89,13 @@ export default {
       get () { return this.$route.query['search']; },
       set (newValue) { this.$router.push({ query: { ...this.$route.query, 'search': newValue || undefined } }); },
     },
+    selectedExercise: {
+      get () { return this.exercises.filter(item => item._id === this.selection)[0]; },
+      set (newValue) { this.selection = newValue ? newValue._id : undefined; },
+    },
   },
 
   methods: {
-    checkSelection () {
-      this.$refs.dataTable.expanded = { [this.selection]: true };
-      this.table.selected = [ this.exercises.filter(item => item._id === this.selection)[0] ];
-    },
     openCreateModal () {
       this.modal.model = new Exercise();
       this.modalMode = 'create';
@@ -126,9 +107,7 @@ export default {
     closeModal () {
       this.modalMode = undefined;
     },
-    onListItemClick (props) {
-      const { _id: id } = props.item;
-      props.selected = !props.selected;
+    onTableSelect ({ _id: id }) {
       this.selection = id !== this.$route.query.selection ? id : undefined;
     },
     onSearchInput () {
@@ -189,25 +168,23 @@ export default {
     if (this.modalMode === 'edit') {
       this.openEditModal();
     }
-    this.checkSelection();
-  },
-
-  watch: {
-    '$route.query.selection' () { this.checkSelection(); },
   },
 };
 </script>
 
 <i18n>
 en:
-  title: Exercises
-  description: Lorem ipsum dolor sit amet.
   searchPlaceholder: Search exercises
   name: Name
   calorieBurn: Calorie Burn
   duration: Duration
-  descriptionLabel: Description
-  noDescription: No description available
+  description: Description
+  page:
+    title: Exercises
+    description: List of exercises
+  units:
+    kcal: kcal
+    mins: min | mins
   modal:
     createTitle: Create exercise
     editTitle: Edit exercise
@@ -215,9 +192,4 @@ en:
     created: Exercise successfully created
     updated: Exercise successfully updated
     deleted: Exercise successfully deleted
-  table:
-    noData: No exercises found
-  units:
-    kcal: kcal
-    mins: min | mins
 </i18n>

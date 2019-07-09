@@ -11,7 +11,7 @@
                 v-text-field(v-model='modal.model.serving.value', :label="$t('serving')", type='number')
               v-spacer
               v-flex(xs3)
-                v-select(v-model='modal.model.serving.unit', :label="$t('unit')", :items='modal.units')
+                v-select(v-model='modal.model.serving.unit', :label="$t('unit')", :items="[ 'g', 'ml' ]")
                   template(v-slot:selection='data')
                     | {{ $t(`units.${data.item}`) }}
                   template(v-slot:item='data')
@@ -25,11 +25,11 @@
             v-text-field(v-model='modal.model.nutrients.salt.value', :label="$t('nutrients.salt')", :suffix="$t('units.g')", type='number')
             v-text-field(v-model='modal.model.nutrients.saturatedFat.value', :label="$t('nutrients.saturatedFat')", :suffix="$t('units.g')", type='number')
             v-text-field(v-model='modal.model.nutrients.sugar.value', :label="$t('nutrients.sugar')", :suffix="$t('units.g')", type='number')
-            v-textarea(v-model='modal.model.content.description', :label="$t('descriptionLabel')")
+            v-textarea(v-model='modal.model.content.description', :label="$t('description')")
 
     v-layout(row, wrap)
       v-flex(xs12)
-        base-control-title(:title="$t('title')")
+        base-control-title(:title="$t('page.title')")
           template(v-slot:controls)
             v-slide-x-reverse-transition
               v-btn.red.lighten-1(v-show='selection', :loading='isLoading', fab, dark, small, @click='deleteFood()')
@@ -43,27 +43,10 @@
       v-flex(xs12)
         v-form(@submit.prevent='onSearchFormSubmit()')
           v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('searchPlaceholder')",
-            ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, @input='onSearchInput()')
+            ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, hide-details, @input='onSearchInput()')
 
       v-flex(xs12)
-        v-data-table.elevation-1(:value='table.selected', :headers='table.headers', :items='food', :no-data-text="$t('table.noData')",
-          :no-results-text="$t('table.noData')", ref='dataTable', item-key='_id', hide-actions)
-          template(v-slot:items='props')
-            tr(:active='props.selected', @click='onFoodListSelect(props.item._id)')
-              td
-                div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.content.name }}
-                div.font-italic {{ `${props.item.serving.value} ${$t(`units.${props.item.serving.unit}`)}` }}
-              td.text-xs-right {{ props.item.nutrients.calories.value }} {{ $t('units.kcal') }}
-              td.text-xs-right {{ props.item.nutrients.carbs.value }} {{ $t('units.g') }}
-              td.text-xs-right {{ props.item.nutrients.protein.value }} {{ $t('units.g') }}
-              td.text-xs-right {{ props.item.nutrients.fat.value }} {{ $t('units.g') }}
-          template(v-slot:expand='props')
-            v-card.grey.lighten-4(flat, tile)
-              v-card-title.px-4.pb-2.caption.font-weight-bold {{ $t('descriptionLabel') }}
-              v-card-text.px-4.pt-0.caption
-                span(v-if="props.item.content.description") {{ props.item.content.description }}
-                span.font-italic(v-if="!props.item.content.description") {{ $t('noDescription') }}
-            v-divider
+        food-table(v-model='selectedFood', :food='food')
 
       base-fab
         template(v-slot:content)
@@ -83,8 +66,7 @@ import Food from '../../models/food';
 import BaseControlTitle from '../../components/base-control-title';
 import BaseFab from '../../components/base-fab';
 import BaseModal from '../../components/base-modal';
-
-const units = [ 'g', 'ml' ];
+import FoodTable from '../../components/food-table';
 
 export default {
   name: 'PagesFoodIndex',
@@ -92,28 +74,18 @@ export default {
     BaseControlTitle,
     BaseFab,
     BaseModal,
+    FoodTable,
   },
   head () {
     return {
-      title: this.$t('title'),
-      meta: [ { name: 'description', content: this.$t('description') } ],
+      title: this.$t('page.title'),
+      meta: [ { name: 'description', content: this.$t('page.description') } ],
     };
   },
   data () {
     return {
       modal: {
-        units,
         model: new Food(),
-      },
-      table: {
-        headers: [
-          { text: this.$t('name'), value: 'content.name', align: 'left' },
-          { text: this.$t('nutrients.calories'), value: 'nutrients.calories.value', align: 'right' },
-          { text: this.$t('nutrients.carbs'), value: 'nutrients.carbs.value', align: 'right' },
-          { text: this.$t('nutrients.protein'), value: 'nutrients.protein.value', align: 'right' },
-          { text: this.$t('nutrients.fat'), value: 'nutrients.fat.value', align: 'right' },
-        ],
-        selected: [],
       },
     };
   },
@@ -132,13 +104,13 @@ export default {
       get () { return this.$route.query['search']; },
       set (newValue) { this.$router.push({ query: { ...this.$route.query, 'search': newValue || undefined } }); },
     },
+    selectedFood: {
+      get () { return this.food.filter(item => item._id === this.selection)[0]; },
+      set (newValue) { this.selection = newValue ? newValue._id : undefined; },
+    },
   },
 
   methods: {
-    checkSelection () {
-      this.$refs.dataTable.expanded = { [this.selection]: true };
-      this.table.selected = [ this.food.filter(item => item._id === this.selection)[0] ];
-    },
     openCreateModal () {
       this.modal.model = new Food();
       this.modalMode = 'create';
@@ -211,36 +183,28 @@ export default {
     if (this.modalMode === 'edit') {
       this.openEditModal();
     }
-    this.checkSelection();
-  },
-
-  watch: {
-    '$route.query.selection' () { this.checkSelection(); },
   },
 };
 </script>
 
 <i18n>
 en:
-  title: Food
-  description: Lorem ipsum dolor sit amet.
   searchPlaceholder: Search food
   name: Name
   serving: Serving
   unit: Unit
-  descriptionLabel: Description
-  noDescription: No description available
+  description: Description
+  page:
+    title: Food
+    description: Lorem ipsum dolor sit amet.
   modal:
     createTitle: Create food
     editTitle: Edit food
-  table:
-    noData: No food was found
   notifications:
     created: Food successfully created
     updated: Food successfully updated
     deleted: Food successfully deleted
   nutrients:
-    nutrient: Nutrient
     calories: Calories
     carbs: Carbs
     energy: Energy

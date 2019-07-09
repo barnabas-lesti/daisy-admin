@@ -3,27 +3,27 @@
     v-data-table.elevation-1(v-if='items && items.length', :value='value', :items='items', :headers='headers',
       item-key='_id', hide-actions, @input='onInput')
       template(v-slot:items='props')
-        tr(:class="props.selected ? 'blue lighten-4': ''", :active='props.selected', @click='props.selected = !props.selected')
-          td(style='width: 50px;')
+        tr.calculator-table_row(:class="props.selected ? 'blue lighten-4': ''", :active='props.selected', @click='props.selected = !props.selected')
+          td
             v-icon(v-if="props.item.type === 'food'", small) fastfood
             v-icon(v-if="props.item.type === 'recipe'", small) book
             v-icon(v-if="props.item.type === 'exercise'", small) directions_run
           td.pl-1
-            div.font-weight-bold.text-truncate(style='width: 150px;') {{ props.item.content.name }}
+            div.calculator-table_name.font-weight-bold.text-truncate {{ props.item.content.name }}
           td.text-xs-right
-            v-text-field.my-2.py-0(v-model='props.item.serving.value', :suffix="$tc(`units.${props.item.serving.unit}`, props.item.serving.value)",
-              type='number', style='font-size: 14px; max-width: 80px;', hide-details, @click.stop)
+            v-text-field.calculator-table_serving.my-2.py-0(v-model='props.item.serving.value', :suffix="$tc(`units.${props.item.serving.unit}`, props.item.serving.value)",
+              type='number', hide-details, @click.stop)
           td.text-xs-right
-            div(v-if='props.item.nutrients.calories.servingMultiplier', style='width: 65px')
+            .calculator-table_nutrient(v-if='props.item.nutrients.calories.servingMultiplier')
               | {{ props.item.nutrients.calories.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.kcal') }}
           td.text-xs-right
-            div(v-if='props.item.nutrients.carbs.servingMultiplier', style='width: 55px')
+            .calculator-table_nutrient(v-if='props.item.nutrients.carbs.servingMultiplier')
               | {{ props.item.nutrients.carbs.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
           td.text-xs-right
-            div(v-if='props.item.nutrients.protein.servingMultiplier', style='width: 55px')
+            .calculator-table_nutrient(v-if='props.item.nutrients.protein.servingMultiplier')
               | {{ props.item.nutrients.protein.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
           td.text-xs-right
-            div(v-if='props.item.nutrients.fat.servingMultiplier', style='width: 55px')
+            .calculator-table_nutrient(v-if='props.item.nutrients.fat.servingMultiplier')
               | {{ props.item.nutrients.fat.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
     v-card.pa-4.text-xs-center(v-else)
       slot(name='noData') {{ $t('noDataFallback') }}
@@ -62,6 +62,22 @@ export default {
   },
 };
 </script>
+
+<style lang="stylus">
+.calculator-table
+  &_row
+    cursor: pointer
+
+  &_serving
+    font-size: 14px
+    min-width: 70px
+  &_nutrient
+    min-width: 80px
+
+  @media screen and (max-width: 599px)
+    &_name
+      width: 150px
+</style>
 
 <i18n>
 en:
