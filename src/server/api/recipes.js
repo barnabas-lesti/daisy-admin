@@ -11,6 +11,11 @@ const convertReqBodyToDocument = (params) => {
   return params;
 };
 
+const convertDocumentToResponse = (doc) => {
+  doc.items = doc.items.filter(item => item.food !== null);
+  return doc;
+};
+
 module.exports = (router) => {
   router.route('/recipes')
     .get(async (req, res) => {
@@ -22,45 +27,36 @@ module.exports = (router) => {
           .join('|'),
         'i'
       );
-      const docs = await Recipe
-        .find({ 'content.name': nameRegex })
-        .populate('items.food')
-        .exec();
-      return res.send(docs);
+      const docs = await Recipe.find({ 'content.name': nameRegex });
+      return res.send(docs.map(doc => convertDocumentToResponse(doc)));
     })
     .put(async (req, res) => {
       const { _id } = await Recipe.create(convertReqBodyToDocument(req.body));
-      const doc = await Recipe
-        .findById(_id)
-        .populate('items.food')
-        .exec();
-      return res.send(doc);
+      const doc = await Recipe.findById(_id);
+      return res.send(convertDocumentToResponse(doc));
     });
 
   router.route('/recipes/:_id')
     .get(async (req, res) => {
-      const doc = await Recipe
-        .findById(req.params._id)
-        .populate('items.food')
-        .exec();
+      const doc = await Recipe.findById(req.params._id);
       if (!doc) {
         return res.status(404).end();
       }
-      return res.send(doc);
+      return res.send(convertDocumentToResponse(doc));
     })
     .patch(async (req, res) => {
       const updatedDoc = await Recipe.findOneAndUpdate({ _id: req.params._id }, convertReqBodyToDocument(req.body), { new: true });
       if (!updatedDoc) {
         return res.status(404).end();
       }
-      return res.send(updatedDoc);
+      return res.send(convertDocumentToResponse(updatedDoc));
     })
     .delete(async (req, res) => {
       const doc = await Recipe.findByIdAndRemove(req.params._id);
       if (!doc) {
         return res.status(404).end();
       }
-      return res.send(doc);
+      return res.send(convertDocumentToResponse(doc));
     });
 
   return router;

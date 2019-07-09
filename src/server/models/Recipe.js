@@ -18,6 +18,7 @@ const recipeSchema = new mongoose.Schema({
         food: {
           ref: 'Food',
           type: mongoose.SchemaTypes.ObjectId,
+          autopopulate: true,
         },
         serving: {
           value: {
@@ -33,5 +34,7 @@ const recipeSchema = new mongoose.Schema({
   toJSON: { versionKey: false },
   toObject: { versionKey: false },
 });
+
+recipeSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('Recipe', recipeSchema);
