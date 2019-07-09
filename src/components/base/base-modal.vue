@@ -1,8 +1,7 @@
 <template lang="pug">
   v-dialog.base-modal(:value='value', transition='dialog-bottom-transition', :fullscreen='$vuetify.breakpoint.smAndDown',
-    :hide-overlay='$vuetify.breakpoint.smAndDown', :max-width="$vuetify.breakpoint.smAndDown ? 'none' : '80%'",
-    lazy)
-    v-card.pb-5
+    :hide-overlay='$vuetify.breakpoint.smAndDown', :max-width="$vuetify.breakpoint.smAndDown ? 'none' : '80%'", lazy)
+    v-card
       v-toolbar.blue.lighten-1(card, dark)
         v-toolbar-title(v-if='title') {{ title }}
         v-spacer(v-if='title')

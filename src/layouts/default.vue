@@ -11,9 +11,9 @@
 <script>
 import { mapState } from 'vuex';
 
-import LayoutHeader from '../components/layout-header';
-import LayoutFooter from '../components/layout-footer';
-import LayoutNotifications from '../components/layout-notifications';
+import LayoutHeader from '../components/layout/layout-header';
+import LayoutFooter from '../components/layout/layout-footer';
+import LayoutNotifications from '../components/layout/layout-notifications';
 
 export default {
   components: {

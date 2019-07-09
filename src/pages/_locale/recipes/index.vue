@@ -9,7 +9,7 @@
     v-flex(xs12)
       v-form(@submit.prevent='onSearchFormSubmit()')
         v-text-field(v-model='searchString', :disabled='isLoading', :placeholder="$t('searchPlaceholder')",
-          ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, @input='onSearchInput()')
+          ref='searchInput', prepend-inner-icon='search', solo, clearable, autofocus, hide-details, @input='onSearchInput()')
 
     v-flex(xs12)
       recipes-table(:recipes='computedRecipes')
@@ -25,9 +25,9 @@ import { mapState } from 'vuex';
 
 import Recipe from '../../../models/recipe';
 
-import BaseControlTitle from '../../../components/base-control-title';
-import BaseFab from '../../../components/base-fab';
-import RecipesTable from '../../../components/recipes-table';
+import BaseControlTitle from '../../../components/base/base-control-title';
+import BaseFab from '../../../components/base/base-fab';
+import RecipesTable from '../../../components/recipes/recipes-table';
 
 export default {
   name: 'PagesRecipesIndex',

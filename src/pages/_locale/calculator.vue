@@ -3,11 +3,11 @@
     base-modal(:value='modalMode', :title="$t('modal.addItems')",
       @accept='addSelectedItemsToCalculator()', @discard='closeModal()')
       template(v-slot:content)
-        v-card-text.mt-5.pt-4
+        v-card-text
           v-layout(row, wrap)
-            v-flex(xs12)
+            v-flex.mb-3(xs12)
               v-form(@submit.prevent='onSearchFormSubmit()')
-                v-text-field.mb-3(v-model='modal.searchString', :disabled='isLoading', :placeholder="$t('modal.searchPlaceholder')",
+                v-text-field(v-model='modal.searchString', :disabled='isLoading', :placeholder="$t('modal.searchPlaceholder')",
                   ref='searchInput', prepend-inner-icon='search', color='teal', solo, clearable, autofocus, hide-details, @input='onSearchInput')
             v-flex(xs12)
               calculator-table(v-model='modal.selection', :items='modal.items')
@@ -38,7 +38,7 @@
         calculator-table(v-model='selection', :items='items')
           template(v-slot:noData)
             span.mr-2 {{ $t('noItems') }}
-            v-btn.blue.lighten-2(fab, dark, @click='openModal()')
+            v-btn.blue.lighten-2(fab, dark, small, @click='openModal()')
               v-badge(color='green darken-1')
                 template(v-slot:badge)
                   v-icon add
@@ -63,11 +63,11 @@ import { mapState } from 'vuex';
 
 import CalculatorItem from '../../models/calculator-item';
 
-import BaseControlTitle from '../../components/base-control-title';
-import BaseFab from '../../components/base-fab';
-import BaseModal from '../../components/base-modal';
-import BaseNutritionSummary from '../../components/base-nutrition-summary';
-import CalculatorTable from '../../components/calculator-table';
+import BaseControlTitle from '../../components/base/base-control-title';
+import BaseFab from '../../components/base/base-fab';
+import BaseModal from '../../components/base/base-modal';
+import BaseNutritionSummary from '../../components/base/base-nutrition-summary';
+import CalculatorTable from '../../components/calculator/calculator-table';
 
 export default {
   name: 'PagesCalculatorIndex',

@@ -4,7 +4,7 @@
       @accept='saveFood()', @discard='closeModal()')
       template(v-slot:content)
         v-form(@submit.prevent='saveFood()')
-          v-card-text.mt-5
+          v-card-text
             v-text-field(v-model='modal.model.content.name', :label="$t('name')")
             v-layout(wrap, row)
               v-flex(xs8)
@@ -63,10 +63,10 @@ import { mapState } from 'vuex';
 
 import Food from '../../models/food';
 
-import BaseControlTitle from '../../components/base-control-title';
-import BaseFab from '../../components/base-fab';
-import BaseModal from '../../components/base-modal';
-import FoodTable from '../../components/food-table';
+import BaseControlTitle from '../../components/base/base-control-title';
+import BaseFab from '../../components/base/base-fab';
+import BaseModal from '../../components/base/base-modal';
+import FoodTable from '../../components/food/food-table';
 
 export default {
   name: 'PagesFoodIndex',

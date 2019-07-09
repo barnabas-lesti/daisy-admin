@@ -2,27 +2,14 @@
   .recipes-editor
     base-modal(:value='modalMode', :title="$t('modal.addFood')", @accept='addSelectedRecipeItemsToRecipe()', @discard='closeModal()')
       template(v-slot:content)
-        v-card-text.mt-5.pt-4
+        v-card-text
           v-layout(row, wrap)
-            v-flex(xs12)
+            v-flex.mb-3(xs12)
               v-form(@submit.prevent='onSearchFormSubmit()')
-                v-text-field.mb-3(v-model='modal.searchString', :disabled='isLoading', :placeholder="$t('modal.searchPlaceholder')",
+                v-text-field(v-model='modal.searchString', :disabled='isLoading', :placeholder="$t('modal.searchPlaceholder')",
                   ref='searchInput', prepend-inner-icon='search', color='teal', solo, clearable, autofocus, hide-details, @input='onSearchInput')
-
             v-flex(xs12)
-              v-data-table.elevation-1(v-model='modal.selection', :headers='table.headers', :items='modal.recipeItems', :no-data-text="$t('modal.table.noData')",
-                :no-results-text="$t('modal.table.noData')", item-key='food._id', hide-actions)
-                template(v-slot:items='props')
-                  tr(:class="props.selected ? 'teal lighten-4': ''", :active='props.selected', @click='props.selected = !props.selected')
-                    td
-                      div.font-weight-bold.text-truncate(style='width: 150px;') {{ props.item.food.content.name }}
-                      div.font-italic {{ `${props.item.food.nutrients.calories.value} ${$t('units.kcal')} / ${props.item.food.serving.value} ${$t(`units.${props.item.food.serving.unit}`)}` }}
-                    td.text-xs-right
-                      v-text-field.pa-2(v-model='props.item.serving.value', :suffix="$t(`units.${props.item.food.serving.unit}`)",
-                        type='number', style='width: 75px;', hide-details, @click.stop)
-                    td.text-xs-right {{ props.item.food.nutrients.carbs.servingMultiplier * props.item.serving.value }} {{ $t('units.g') }}
-                    td.text-xs-right {{ props.item.food.nutrients.protein.servingMultiplier * props.item.serving.value }} {{ $t('units.g') }}
-                    td.text-xs-right {{ props.item.food.nutrients.fat.servingMultiplier * props.item.serving.value }} {{ $t('units.g') }}
+              recipes-food-selector(v-model='modal.selection', :items='modal.recipeItems')
 
     v-layout(row, wrap)
       v-flex(xs12)
@@ -39,18 +26,18 @@
                 template(v-slot:badge)
                   v-icon add
                 v-icon fastfood
-            v-btn.red.lighten-1(:loading='isLoading', dark, fab, small, @click='deleteRecipe()')
+            v-btn.red.lighten-1(dark, fab, small, @click='deleteRecipe()')
               v-icon delete
-            v-btn.green.lighten-1(:loading='isLoading', dark, fab, small, @click='saveRecipe()')
+            v-btn.green.lighten-1(dark, fab, small, @click='saveRecipe()')
               v-icon done
 
       v-flex.hidden-lg-and-up(xs12)
-        v-text-field.mb-3(v-model='recipe.content.name', :label="$t('form.name')", solo, hide-details)
-        v-textarea.mb-3(v-model='recipe.content.description', :label="$t('form.description')", solo, hide-details)
+        v-text-field.mb-3(v-model='recipe.content.name', :label="$t('form.name')", hide-details)
+        v-textarea.mb-3(v-model='recipe.content.description', :label="$t('form.description')", hide-details)
 
       v-flex.mb-3(xs12, lg3)
         v-card.light-blue.lighten-4
-          v-card-title.font-weight-bold {{ $t('nutritionSummary.title') }}
+          v-card-title.font-weight-bold {{ $t('nutritionSummary') }}
           v-divider
           base-nutrition-summary(:model='summary')
 
@@ -63,25 +50,18 @@
             v-card.teal.lighten-4
               v-card-title.font-weight-bold {{ $t('table.title') }}
               v-divider
-              v-data-table.elevation-1(v-model='table.selection', :headers='table.headers', :items='recipe.items', item-key='food._id', hide-actions)
-                template(v-slot:items='props')
-                  tr(:class="props.selected ? 'teal lighten-5': ''", @click='props.selected = !props.selected')
-                    td
-                      div.font-weight-bold.text-truncate(style='width: 130px;') {{ props.item.food.content.name }}
-                      div.font-italic {{ props.item.food.nutrients.calories.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.kcal') }}
-                    td.text-xs-right
-                      v-text-field.pa-2(v-model='props.item.serving.value', :suffix="$t(`units.${props.item.food.serving.unit}`)",
-                        type='number', style='width: 75px;', hide-details, @click.stop)
-                    td.text-xs-right
-                      div(style='width: 55px') {{ props.item.food.nutrients.carbs.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
-                    td.text-xs-right
-                      div(style='width: 55px') {{ props.item.food.nutrients.protein.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
-                    td.text-xs-right
-                      div(style='width: 55px') {{ props.item.food.nutrients.fat.servingMultiplier * props.item.serving.value | twoDecimal }} {{ $t('units.g') }}
+              recipes-food-selector(v-model='table.selection', :items='recipe.items')
+                template(v-slot:noData)
+                  span.mr-2 {{ $t('table.addFood') }}
+                  v-btn.teal.lighten-1(fab, dark, small, @click='openModal()')
+                    v-badge(color='green darken-1')
+                      template(v-slot:badge)
+                        v-icon add
+                      v-icon fastfood
 
       base-fab
         template(v-slot:content)
-          v-btn.green.lighten-1(:loading='isLoading', fab, dark, small, @click='saveRecipe()')
+          v-btn.green.lighten-1(fab, dark, small, @click='saveRecipe()')
             v-icon done
           v-btn.red.lighten-1(fab, dark, small, @click='deleteRecipe()')
             v-icon delete
@@ -101,13 +81,14 @@
 import _ from 'lodash';
 import { mapState } from 'vuex';
 
-import Recipe from '../models/recipe';
-import RecipeItem from '../models/recipe-item';
+import Recipe from '../../models/recipe';
+import RecipeItem from '../../models/recipe-item';
 
-import BaseControlTitle from './base-control-title';
-import BaseFab from './base-fab';
-import BaseModal from './base-modal';
-import BaseNutritionSummary from './base-nutrition-summary';
+import BaseControlTitle from '../base/base-control-title';
+import BaseFab from '../base/base-fab';
+import BaseModal from '../base/base-modal';
+import BaseNutritionSummary from '../base/base-nutrition-summary';
+import RecipesFoodSelector from '../recipes/recipes-food-selector';
 
 export default {
   name: 'RecipesEditor',
@@ -116,6 +97,7 @@ export default {
     BaseFab,
     BaseModal,
     BaseNutritionSummary,
+    RecipesFoodSelector,
   },
   props: {
     title: {
@@ -136,13 +118,6 @@ export default {
         selection: [],
       },
       table: {
-        headers: [
-          { text: this.$t('table.header.name'), value: 'food.content.name', align: 'left' },
-          { text: this.$t('table.header.serving'), value: 'serving.value', align: 'right' },
-          { text: this.$t('nutrients.carbs'), value: 'food.nutrients.carbs.value', align: 'right' },
-          { text: this.$t('nutrients.protein'), value: 'food.nutrients.protein.value', align: 'right' },
-          { text: this.$t('nutrients.fat'), value: 'food.nutrients.fat.value', align: 'right' },
-        ],
         selection: [],
       },
     };
@@ -241,30 +216,15 @@ en:
   modal:
     addFood: Add food
     searchPlaceholder: Search food
-    table:
-      noData: No food found
   form:
     name: Name
     description: Description
-  nutritionSummary:
-    title: Nutrition summary
+  nutritionSummary: Nutrition summary
   table:
-    addFood: Add food
+    addFood: Click on the button to add food
     title: Food
-    header:
-      name: Name
-      serving: Serving
   notifications:
     created: Recipe successfully created
     updated: Recipe successfully updated
     deleted: Recipe successfully deleted
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    fat: Fat
-    protein: Protein
-  units:
-    g: g
-    kcal: kcal
-    ml: ml
 </i18n>

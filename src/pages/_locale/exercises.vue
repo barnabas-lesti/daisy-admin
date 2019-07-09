@@ -4,7 +4,7 @@
       @accept='saveExercise()', @discard='closeModal()')
       template(v-slot:content)
         v-form(@submit.prevent='saveExercise')
-          v-card-text.mt-5
+          v-card-text
             v-text-field(v-model='modal.model.content.name', :label="$t('name')")
             v-text-field(v-model='modal.model.duration.value', :label="$t('duration')", :suffix="$tc('units.mins', modal.model.duration.value)",
               type='number')
@@ -48,10 +48,10 @@ import { mapState } from 'vuex';
 
 import Exercise from '../../models/exercise';
 
-import BaseControlTitle from '../../components/base-control-title';
-import BaseFab from '../../components/base-fab';
-import BaseModal from '../../components/base-modal';
-import ExercisesTable from '../../components/exercises-table';
+import BaseControlTitle from '../../components/base/base-control-title';
+import BaseFab from '../../components/base/base-fab';
+import BaseModal from '../../components/base/base-modal';
+import ExercisesTable from '../../components/exercises/exercises-table';
 
 export default {
   name: 'PagesExercisesIndex',

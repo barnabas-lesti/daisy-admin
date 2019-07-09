@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import RecipesEditor from '../../../components/recipes-editor';
+import RecipesEditor from '../../../components/recipes/recipes-editor';
 
 export default {
   name: 'PagesRecipesId',

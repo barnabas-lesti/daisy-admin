@@ -4,7 +4,7 @@ module.exports = {
   mode: 'universal',
   srcDir: './src',
 
-  loading: '~/components/base-loader.vue',
+  loading: '~/components/base/base-loader.vue',
 
   server: {
     port: appConfig.PORT,
