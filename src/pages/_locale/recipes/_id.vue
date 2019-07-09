@@ -16,8 +16,12 @@ export default {
       meta: [ { name: 'description', content: this.recipe.content.description } ],
     };
   },
-  async asyncData ({ params, $axios }) {
-    return { recipe: await $axios.$get(`/api/recipes/${params.id}`) };
+  async asyncData ({ params, error, $axios }) {
+    try {
+      return { recipe: await $axios.$get(`/api/recipes/${params.id}`) };
+    } catch (ex) {
+      error({ statusCode: ex.response.status });
+    }
   },
 };
 </script>

@@ -164,8 +164,12 @@ export default {
     },
     async fetchRecipeItems () {
       this.$store.commit('startLoading');
-      const food = await this.$axios.$get('/api/food', { params: { search: this.modal.searchString } });
-      this.modal.recipeItems = food.map(item => new RecipeItem(item));
+      try {
+        const food = await this.$axios.$get('/api/food', { params: { search: this.modal.searchString } });
+        this.modal.recipeItems = food.map(item => new RecipeItem(item));
+      } catch (ex) {
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
+      }
       this.$store.commit('finishLoading');
     },
     async deleteRecipe () {
@@ -176,7 +180,6 @@ export default {
           this.$store.commit('notifications/showSuccess', this.$t('notifications.deleted'));
           this.$router.push({ name: 'locale-recipes' });
         } catch (ex) {
-          this.$sentry.captureException(ex);
           this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
         }
         this.$store.commit('finishLoading');
@@ -196,7 +199,6 @@ export default {
           this.$router.push({ name: 'locale-recipes-id', params: { id } });
         }
       } catch (ex) {
-        this.$sentry.captureException(ex);
         this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
       }
       this.$store.commit('finishLoading');
@@ -227,4 +229,5 @@ en:
     created: Recipe successfully created
     updated: Recipe successfully updated
     deleted: Recipe successfully deleted
+    unknownErrorOccurred: Something went wrong
 </i18n>

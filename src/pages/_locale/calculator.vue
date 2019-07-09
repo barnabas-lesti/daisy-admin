@@ -138,16 +138,20 @@ export default {
     async fetchItems () {
       this.$store.commit('startLoading');
       const requestOptions = { params: { search: this.modal.searchString } };
-      const [ exercises, food, recipes ] = await Promise.all([
-        this.$axios.$get('/api/exercises', requestOptions),
-        this.$axios.$get('/api/food', requestOptions),
-        this.$axios.$get('/api/recipes', requestOptions),
-      ]);
-      this.modal.items = [
-        ...exercises.map(item => CalculatorItem.createFromExercise(item)),
-        ...food.map(item => CalculatorItem.createFromFood(item)),
-        ...recipes.map(item => CalculatorItem.createFromRecipe(item)),
-      ];
+      try {
+        const [ exercises, food, recipes ] = await Promise.all([
+          this.$axios.$get('/api/exercises', requestOptions),
+          this.$axios.$get('/api/food', requestOptions),
+          this.$axios.$get('/api/recipes', requestOptions),
+        ]);
+        this.modal.items = [
+          ...exercises.map(item => CalculatorItem.createFromExercise(item)),
+          ...food.map(item => CalculatorItem.createFromFood(item)),
+          ...recipes.map(item => CalculatorItem.createFromRecipe(item)),
+        ];
+      } catch (ex) {
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
+      }
       this.$store.commit('finishLoading');
     },
   },
@@ -169,4 +173,6 @@ en:
     searchPlaceholder: Search recipes, food...
     table:
       noData: No items found
+  notifications:
+    unknownErrorOccurred: Something went wrong
 </i18n>

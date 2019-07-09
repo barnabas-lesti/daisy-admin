@@ -72,15 +72,23 @@ export default {
     },
     async fetchRecipes () {
       this.$store.commit('startLoading');
-      const response = await this.$axios.$get('/api/recipes', { params: { search: this.searchString } });
-      this.recipes = response.map(item => new Recipe(item));
+      try {
+        const response = await this.$axios.$get('/api/recipes', { params: { search: this.searchString } });
+        this.recipes = response.map(item => new Recipe(item));
+      } catch (ex) {
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
+      }
       this.$store.commit('finishLoading');
     },
   },
 
-  async asyncData ({ route, $axios }) {
-    const response = await $axios.$get('/api/recipes', { params: { search: route.query['search'] } });
-    return { recipes: response.map(item => new Recipe(item)) };
+  async asyncData ({ route, error, $axios }) {
+    try {
+      const response = await $axios.$get('/api/recipes', { params: { search: route.query['search'] } });
+      return { recipes: response.map(item => new Recipe(item)) };
+    } catch (ex) {
+      error({ statusCode: ex.response.status });
+    }
   },
 };
 </script>
@@ -91,4 +99,6 @@ en:
   page:
     title: Recipes
     description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  notifications:
+    unknownErrorOccurred: Something went wrong
 </i18n>

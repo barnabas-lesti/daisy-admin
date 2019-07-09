@@ -122,8 +122,12 @@ export default {
     },
     async fetchExercises () {
       this.$store.commit('startLoading');
-      const response = await this.$axios.$get('/api/exercises', { params: { search: this.searchString } });
-      this.exercises = response.map(item => new Exercise(item));
+      try {
+        const response = await this.$axios.$get('/api/exercises', { params: { search: this.searchString } });
+        this.exercises = response.map(item => new Exercise(item));
+      } catch (ex) {
+        this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
+      }
       this.$store.commit('finishLoading');
     },
     async deleteExercise () {
@@ -134,7 +138,6 @@ export default {
         this.selection = undefined;
         await this.fetchExercises();
       } catch (ex) {
-        this.$sentry.captureException(ex);
         this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
       }
       this.$store.commit('finishLoading');
@@ -153,16 +156,19 @@ export default {
         this.closeModal();
         await this.fetchExercises();
       } catch (ex) {
-        this.$sentry.captureException(ex);
         this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
       }
       this.$store.commit('finishLoading');
     },
   },
 
-  async asyncData ({ route, $axios }) {
-    const response = await $axios.$get('/api/exercises', { params: { search: route.query['search'] } });
-    return { exercises: response.map(item => new Exercise(item)) };
+  async asyncData ({ route, error, $axios }) {
+    try {
+      const response = await $axios.$get('/api/exercises', { params: { search: route.query['search'] } });
+      return { exercises: response.map(item => new Exercise(item)) };
+    } catch (ex) {
+      error({ statusCode: ex.response.status });
+    }
   },
   mounted () {
     if (this.modalMode === 'edit') {
