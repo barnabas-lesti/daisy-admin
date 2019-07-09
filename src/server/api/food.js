@@ -1,3 +1,5 @@
+const { Types } = require('mongoose');
+
 const Food = require('../models/Food');
 
 module.exports = (router) => {
@@ -25,26 +27,28 @@ module.exports = (router) => {
 
   router.route('/food/:_id')
     .get(async (req, res) => {
-      const doc = await Food.findById(req.params._id);
-      if (!doc) {
-        res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const doc = await Food.findById(_id);
+        if (doc) { return res.send(doc); }
       }
-      return res.send(doc);
+      return res.status(404).end();
     })
     .patch(async (req, res) => {
-      const skeleton = req.body;
-      const updatedDoc = await Food.findOneAndUpdate({ _id: req.params._id }, skeleton, { new: true });
-      if (!updatedDoc) {
-        res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const updatedDoc = await Food.findOneAndUpdate({ _id }, req.body, { new: true });
+        if (updatedDoc) { return res.send(updatedDoc); }
       }
-      return res.send(updatedDoc);
+      return res.status(404).end();
     })
     .delete(async (req, res) => {
-      const doc = await Food.findByIdAndRemove(req.params._id);
-      if (!doc) {
-        return res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const doc = await Food.findByIdAndRemove(_id);
+        if (doc) { return res.send(doc); }
       }
-      return res.send(doc);
+      return res.status(404).end();
     });
 
   return router;

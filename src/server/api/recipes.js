@@ -1,3 +1,5 @@
+const { Types } = require('mongoose');
+
 const Recipe = require('../models/Recipe');
 
 const convertReqBodyToDocument = (params) => {
@@ -38,25 +40,28 @@ module.exports = (router) => {
 
   router.route('/recipes/:_id')
     .get(async (req, res) => {
-      const doc = await Recipe.findById(req.params._id);
-      if (!doc) {
-        return res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const doc = await Recipe.findById(_id);
+        if (doc) { return res.send(convertDocumentToResponse(doc)); }
       }
-      return res.send(convertDocumentToResponse(doc));
+      return res.status(404).end();
     })
     .patch(async (req, res) => {
-      const updatedDoc = await Recipe.findOneAndUpdate({ _id: req.params._id }, convertReqBodyToDocument(req.body), { new: true });
-      if (!updatedDoc) {
-        return res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const updatedDoc = await Recipe.findOneAndUpdate({ _id }, convertReqBodyToDocument(req.body), { new: true });
+        if (updatedDoc) { return res.send(convertDocumentToResponse(updatedDoc)); }
       }
-      return res.send(convertDocumentToResponse(updatedDoc));
+      return res.status(404).end();
     })
     .delete(async (req, res) => {
-      const doc = await Recipe.findByIdAndRemove(req.params._id);
-      if (!doc) {
-        return res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const doc = await Recipe.findByIdAndRemove(_id);
+        if (doc) { return res.send(convertDocumentToResponse(doc)); }
       }
-      return res.send(convertDocumentToResponse(doc));
+      return res.status(404).end();
     });
 
   return router;

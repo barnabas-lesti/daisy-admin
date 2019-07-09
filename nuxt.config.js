@@ -41,7 +41,7 @@ module.exports = {
 
   vuetify: {
     materialIcons: true,
-    treeShake: true,
+    treeShake: appConfig.IS_PRODUCTION,
   },
 
   router: {

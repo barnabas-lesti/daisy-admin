@@ -1,3 +1,5 @@
+const { Types } = require('mongoose');
+
 const Exercise = require('../models/Exercise');
 
 module.exports = (router) => {
@@ -18,33 +20,34 @@ module.exports = (router) => {
       return res.send(docs);
     })
     .put(async (req, res) => {
-      const skeleton = req.body;
-      const doc = await Exercise.create(skeleton);
+      const doc = await Exercise.create(req.body);
       return res.send(doc);
     });
 
   router.route('/exercises/:_id')
     .get(async (req, res) => {
-      const doc = await Exercise.findById(req.params._id);
-      if (!doc) {
-        res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const doc = await Exercise.findById(_id);
+        if (doc) { return res.send(doc); }
       }
-      return res.send(doc);
+      return res.status(404).end();
     })
     .patch(async (req, res) => {
-      const skeleton = req.body;
-      const updatedDoc = await Exercise.findOneAndUpdate({ _id: req.params._id }, skeleton, { new: true });
-      if (!updatedDoc) {
-        res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const updatedDoc = await Exercise.findOneAndUpdate({ _id }, req.body, { new: true });
+        if (updatedDoc) { return res.send(updatedDoc); }
       }
-      return res.send(updatedDoc);
+      return res.status(404).end();
     })
     .delete(async (req, res) => {
-      const doc = await Exercise.findByIdAndRemove(req.params._id);
-      if (!doc) {
-        return res.status(404).end();
+      const { _id } = req.params;
+      if (Types.ObjectId.isValid(_id)) {
+        const doc = await Exercise.findByIdAndRemove(_id);
+        if (doc) { return res.send(doc); }
       }
-      return res.send(doc);
+      return res.status(404).end();
     });
 
   return router;
