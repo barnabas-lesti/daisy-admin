@@ -21,6 +21,7 @@ module.exports = {
   },
 
   plugins: [
+    'plugins/auth',
     'plugins/filters',
     'plugins/i18n',
   ],
