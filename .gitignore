@@ -1,9 +1,11 @@
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-env/local.yml
-env/production.yml
+# Environment specific files (excluding the example file)
+env/*
+!env/default.yml
 
 .nuxt/
 node_modules/

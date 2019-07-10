@@ -1,42 +1,25 @@
-const mongoose = require('mongoose');
+const { db } = require('../firebase');
 
-const valueDescription = {
-  default: 0,
-  type: Number,
+class Exercise {
+  constructor (skeleton = {}) {
+    const {
+      id,
+      content = {},
+      calorieBurn = {},
+      duration = {},
+    } = skeleton;
+
+    this.id = id;
+    this.content = content;
+    this.calorieBurn = calorieBurn;
+    this.duration = duration;
+  }
+}
+
+Exercise.create = async (skeleton) => {
+  const ref = await db.collection('exercises').add(skeleton);
+  const doc = await ref.get();
+  return doc.data();
 };
 
-const exerciseSchema = new mongoose.Schema({
-  content: {
-    description: {
-      trim: true,
-      type: String,
-    },
-    name: {
-      trim: true,
-      type: String,
-    },
-  },
-  calorieBurn: {
-    value: valueDescription,
-  },
-  duration: {
-    value: valueDescription,
-  },
-}, {
-  id: false,
-  toJSON: {
-    versionKey: false,
-    virtuals: true,
-  },
-  toObject: {
-    versionKey: false,
-    virtuals: true,
-  },
-});
-
-exerciseSchema.virtual('calorieBurn.durationMultiplier').get(function () {
-  const duration = this.duration.value;
-  return duration === 0 ? 0 : this.calorieBurn.value / duration;
-});
-
-module.exports = mongoose.model('Exercise', exerciseSchema);
+module.exports = Exercise;

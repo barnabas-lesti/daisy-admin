@@ -1,8 +1,10 @@
-APP_NAME: 'daisy-web-app_default'
 PORT: 3000
 BASE_URL: 'http://localhost:3000'
+APP_NAME: 'daisy-web-app_default'
 MONGO_URI: 'mongodb://localhost/daisy'
 SENTRY_DSN: ''
 RESPONSE_DELAY: 0
-ACCESS_USERNAME: ''
-ACCESS_PASSWORD: ''
+
+access:
+  USERNAME: ''
+  PASSWORD: ''

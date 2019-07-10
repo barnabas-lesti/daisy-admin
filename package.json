@@ -5,11 +5,11 @@
 	"author": "Barnabas Lesti",
 	"license": "MIT",
 	"scripts": {
-		"start:dev": "cross-env NODE_ENV=development nodemon ./src/server --watch ./src/server --watch ./env --ext js,yml",
+		"start:dev": "cross-env NODE_ENV=development nodemon ./src/server --watch ./src/server --watch ./env --ext js,yml,json",
 		"start:prod": "cross-env NODE_ENV=production node ./src/server",
 		"build": "nuxt build",
 		"generate": "nuxt generate",
-		"lint": "eslint --ext .js,.vue ."
+		"lint": "eslint --ignore-path .gitignore --ext .js,.vue ."
 	},
 	"dependencies": {
 		"@nuxtjs/axios": "^5.3.6",
@@ -20,6 +20,7 @@
 		"cross-env": "^5.2.0",
 		"express": "^4.16.4",
 		"express-basic-auth": "^1.2.0",
+		"firebase-admin": "^8.2.0",
 		"lodash": "^4.17.11",
 		"mongoose": "^5.6.3",
 		"mongoose-autopopulate": "^0.9.1",
