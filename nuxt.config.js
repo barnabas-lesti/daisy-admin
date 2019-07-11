@@ -28,7 +28,6 @@ module.exports = {
     'plugins/filters',
     'plugins/i18n',
     'plugins/firebase',
-    'plugins/auth',
   ],
 
   modules: [
