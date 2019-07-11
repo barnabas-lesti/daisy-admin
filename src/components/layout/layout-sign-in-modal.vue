@@ -9,9 +9,11 @@
         v-form(@submit.prevent='signIn()')
           v-layout(wrap)
             v-flex(xs12)
-              v-text-field(:label="$t('email')", type='email' append-icon='account_circle')
+              v-text-field(v-model='email', :label="$t('email')", :error-messages="error ? $t('errorMessage') : ''", type='email' append-icon='account_circle')
+            v-flex(xs12)
+              v-text-field(v-model='password', :error='!!error', :label="$t('password')", type='password' append-icon='vpn_key')
             v-flex.mb-4(xs12)
-              v-text-field(:label="$t('password')", type='password' append-icon='vpn_key')
+              nuxt-link(:to="{ name: 'locale-register' }") {{ $t('registrationLink') }}
             v-flex.text-xs-right(xs12)
               v-btn.ma-0.mr-3(large, flat, @click='close()') {{ $t('cancel') }}
               v-btn.info.ma-0(type='submit', large) {{ $t('button') }}
@@ -31,9 +33,24 @@ export default {
       set (newValue) { this.$router.push({ query: { ...this.$route.query, 'sign-in': newValue || undefined } }); },
     },
   },
+  data () {
+    return {
+      email: '',
+      password: '',
+      error: null,
+    };
+  },
   methods: {
     close () {
       this.isOpen = false;
+    },
+    async signIn () {
+      try {
+        const result = await this.$firebase.auth().signInWithEmailAndPassword(this.email, this.password);
+        console.log(result);
+      } catch (ex) {
+        this.error = ex;
+      }
     },
   },
 };
@@ -46,4 +63,6 @@ en:
   password: Password
   button: Sign in
   cancel: Cancel
+  registrationLink: Don't have an account? Register!
+  errorMessage: Invalid credentials
 </i18n>
