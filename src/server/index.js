@@ -22,15 +22,16 @@ const connectToDatabase = require('./db');
     await nuxt.ready();
   }
 
-  if (appConfig.ACCESS_USERNAME && appConfig.ACCESS_PASSWORD) {
+  const { username, password } = appConfig.access;
+  if (username && password) {
     app.use(basicAuth({
       challenge: true,
-      users: { [appConfig.ACCESS_USERNAME]: appConfig.ACCESS_PASSWORD },
+      users: { [username]: password },
     }));
   }
 
-  if (appConfig.RESPONSE_DELAY) {
-    app.use((req, res, next) => setTimeout(next, appConfig.RESPONSE_DELAY));
+  if (appConfig.debug.responseDelay) {
+    app.use((req, res, next) => setTimeout(next, appConfig.debug.responseDelay));
   }
 
   app.use(bodyParser.json());
@@ -42,6 +43,6 @@ const connectToDatabase = require('./db');
 
   const server = app.listen(port, () => {
     const { address, port } = server.address();
-    consola.ready({ message: `Server listening on http://${address}:${port} (BASE_URL: ${appConfig.BASE_URL})`, badge: true });
+    consola.ready({ message: `Server listening on http://${address}:${port} (baseUrl: ${appConfig.baseUrl})`, badge: true });
   });
 })();

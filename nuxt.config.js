@@ -7,10 +7,10 @@ module.exports = {
   loading: '~/components/base/base-loader.vue',
 
   server: {
-    port: appConfig.PORT,
+    port: appConfig.port,
   },
 
-  dev: !appConfig.IS_PRODUCTION,
+  dev: !appConfig.isProd,
 
   head: {
     titleTemplate: '%s | Daisy',
@@ -20,9 +20,13 @@ module.exports = {
     ],
   },
 
+  env: {
+    firebase: appConfig.firebase,
+  },
+
   plugins: [
-    'plugins/auth',
     'plugins/filters',
+    'plugins/firebase',
     'plugins/i18n',
   ],
 
@@ -33,16 +37,16 @@ module.exports = {
   ],
 
   axios: {
-    baseURL: appConfig.BASE_URL,
+    baseURL: appConfig.baseUrl,
   },
 
   sentry: {
-    dsn: appConfig.SENTRY_DSN,
+    dsn: appConfig.sentry.dsn,
   },
 
   vuetify: {
     materialIcons: true,
-    treeShake: appConfig.IS_PRODUCTION,
+    treeShake: appConfig.isProd,
   },
 
   router: {

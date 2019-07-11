@@ -1,8 +1,25 @@
-APP_NAME: 'daisy-web-app_default'
-PORT: 3000
-BASE_URL: 'http://localhost:3000'
-MONGO_URI: 'mongodb://localhost/daisy'
-SENTRY_DSN: ''
-RESPONSE_DELAY: 0
-ACCESS_USERNAME: ''
-ACCESS_PASSWORD: ''
+appName: 'daisy-web-app_default'
+port: 3000
+baseUrl: 'http://localhost:3000'
+
+debug:
+  responseDelay: 0
+
+mongo:
+  uri: 'mongodb://localhost/daisy'
+
+sentry:
+  dsn: ''
+
+access:
+  username: ''
+  password: ''
+
+firebase:
+  apiKey: ''
+  authDomain: ''
+  databaseURL: ''
+  projectId: ''
+  storageBucket: ''
+  messagingSenderId: ''
+  appId: ''

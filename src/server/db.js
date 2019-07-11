@@ -8,7 +8,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.Promise = Promise;
 
-module.exports = async (mongoUri = appConfig.MONGO_URI) => {
+module.exports = async (mongoUri = appConfig.mongo.uri) => {
   try {
     await mongoose.connect(mongoUri);
     consola.ready({ message: 'Connected to MongoDB', badge: true });

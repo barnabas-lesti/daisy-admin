@@ -10,14 +10,23 @@ const configLib = require('config');
  * Application configuration object.
  */
 module.exports = {
-  APP_NAME: process.env.APP_NAME || configLib.get('APP_NAME'),
-  ENV: process.env.NODE_ENV,
-  IS_PRODUCTION: process.env.NODE_ENV === 'production',
-  MONGO_URI: process.env.MONGO_URI || configLib.get('MONGO_URI'),
-  PORT: process.env.PORT || configLib.get('PORT'),
-  BASE_URL: process.env.BASE_URL || configLib.get('BASE_URL'),
-  SENTRY_DSN: process.env.SENTRY_DSN || configLib.get('SENTRY_DSN'),
-  RESPONSE_DELAY: process.env.RESPONSE_DELAY || configLib.get('RESPONSE_DELAY'),
-  ACCESS_USERNAME: process.env.ACCESS_USERNAME || configLib.get('ACCESS_USERNAME'),
-  ACCESS_PASSWORD: process.env.ACCESS_PASSWORD || configLib.get('ACCESS_PASSWORD'),
+  env: process.env.NODE_ENV,
+  isProd: process.env.NODE_ENV === 'production',
+  appName: process.env.APP_NAME || configLib.get('appName'),
+  port: process.env.PORT || configLib.get('port'),
+  baseUrl: process.env.BASE_URL || configLib.get('baseUrl'),
+  debug: {
+    responseDelay: configLib.get('debug.responseDelay'),
+  },
+  mongo: {
+    uri: configLib.get('mongo.uri'),
+  },
+  sentry: {
+    dsn: configLib.get('sentry.dsn'),
+  },
+  access: {
+    username: configLib.get('access.username'),
+    password: configLib.get('access.password'),
+  },
+  firebase: configLib.get('firebase'),
 };
