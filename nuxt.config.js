@@ -26,8 +26,9 @@ module.exports = {
 
   plugins: [
     'plugins/filters',
-    'plugins/firebase',
     'plugins/i18n',
+    'plugins/firebase',
+    'plugins/auth',
   ],
 
   modules: [

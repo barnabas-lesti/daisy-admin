@@ -1,28 +1,15 @@
 <template lang="pug">
   .layout-header
-    base-modal(:value='modalMode', :title="$t('modal.title')",
-      @accept='signIn()', @discard='closeModal()')
-      template(v-slot:content)
-        v-card-text
-          v-form(@submit.prevent='signIn()')
-            v-text-field(v-model='modal.email', :label="$t('modal.email')", type='email')
-            v-text-field(v-model='modal.password', :label="$t('modal.password')", type='password')
-            v-btn.info(type='submit') {{ $t('modal.signIn') }}
-
     v-navigation-drawer.hidden-md-and-up(v-model='sidebar', :hide-overlay='this.$vuetify.breakpoint.mdAndUp', app, temporary)
       v-toolbar.transparent(flat)
-        v-toolbar-title Daisy
-        template(v-slot:extension)
+        v-toolbar-title {{ $t('brand') }}
+        template(v-if='user', v-slot:extension)
           v-list
-            v-list-tile(v-if='user', avatar)
+            v-list-tile(avatar)
               v-list-tile-avatar
                 img(:src='user.imageUrl')
               v-list-tile-content
                 v-list-tile-title {{ user.fullName }}
-            v-list-tile.layout-header_sign-in(v-else, @click='openModal()')
-              v-list-tile-content {{ $t('signIn') }}
-              v-list-tile-action
-                v-icon account_box
       v-divider
 
       v-list
@@ -32,18 +19,26 @@
           v-list-tile-content
             v-list-tile-title {{ $t(item.labelKey) }}
 
+      v-divider
+      v-list(v-if='!user')
+        v-list-tile(@click='openSignInModal()')
+          v-list-tile-action
+            v-icon account_circle
+          v-list-tile-content
+            v-list-tile-title {{ $t('signIn') }}
+
     v-toolbar(app, dense)
       v-toolbar-side-icon.hidden-md-and-up(@click='sidebar = !sidebar;')
+      v-toolbar-title {{ $t('brand') }}
       v-spacer
-      v-toolbar-items.hidden-sm-and-down
-        v-btn(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }', :exact='item.exact', flat, nuxt)
+      v-toolbar-items
+        v-btn.hidden-sm-and-down(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }', :exact='item.exact', flat, nuxt)
           | {{ $t(item.labelKey) }}
+        v-btn(flat, @click='openSignInModal()') {{ $t('signIn') }}
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
-import BaseModal from '../base/base-modal';
 
 const menuItems = [
   {
@@ -76,34 +71,21 @@ const menuItems = [
 
 export default {
   name: 'LayoutHeader',
-  components: {
-    BaseModal,
-  },
   computed: {
     ...mapState('user', [ 'user' ]),
-
-    modalMode: {
-      get () { return this.$route.query['modal']; },
-      set (newValue) { this.$router.push({ query: { ...this.$route.query, 'modal': newValue || undefined } }); },
-    },
   },
   data () {
     return {
       sidebar: false,
       menuItems,
-      modal: {
-        email: '',
-        password: '',
-      },
     };
   },
   methods: {
-    signIn () {},
-    openModal () {
-      this.modalMode = 'sign-in';
+    openSignInModal () {
+      this.$router.push({ query: { ...this.$route.query, 'sign-in': true } });
     },
-    closeModal () {
-      this.modalMode = undefined;
+    closeSignInModal () {
+      this.$router.push({ query: { ...this.$route.query, 'sign-in': false } });
     },
   },
 };
@@ -118,9 +100,8 @@ export default {
 
 <i18n>
 en:
-  signIn: Click here to log in
-  modal:
-    title: Sign in
+  brand: Daisy
+  signIn: Sign in
   menuItems:
     home: Home
     calculator: Calculator
