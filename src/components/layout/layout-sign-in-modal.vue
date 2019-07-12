@@ -8,13 +8,13 @@
       v-card-text
         v-form(@submit.prevent='onSubmit()')
           v-layout(wrap)
-            v-flex(xs12).mb-2
-              .red--text(v-for='error of errors', :key='error') {{ error }}
-            v-flex(xs12)
-              v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!errors.length', :error-messages="localErrors.email",
-                type='email', append-icon='account_circle', @change='updateEmailErrors()')
             v-flex.mb-2(xs12)
-              v-text-field(v-model='$v.form.password.$model', :error='!!errors.length', :error-messages="localErrors.password",
+              .red--text(v-for='error of serverErrors', :key='error') {{ error }}
+            v-flex(xs12)
+              v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
+                :error-messages="fieldErrors.email", type='email', append-icon='account_circle', @change='updateEmailErrors()')
+            v-flex.mb-2(xs12)
+              v-text-field(v-model='$v.form.password.$model', :error='!!serverErrors.length', :error-messages="fieldErrors.password",
                 :label="$t('password')", type='password', append-icon='vpn_key', @change='updatePasswordErrors()')
             v-flex.mb-4(xs12)
               nuxt-link(:to="{ name: 'locale-register' }") {{ $t('registrationLink') }}
@@ -35,7 +35,7 @@ export default {
       type: Boolean,
       default: () => false,
     },
-    errors: {
+    serverErrors: {
       type: Array,
       default: () => [],
     },
@@ -46,7 +46,7 @@ export default {
         email: '',
         password: '',
       },
-      localErrors: {
+      fieldErrors: {
         email: [],
         password: [],
       },
@@ -73,14 +73,14 @@ export default {
     },
     updateEmailErrors () {
       const { email } = this.$v.form;
-      this.localErrors.email = email.$dirty ? [
+      this.fieldErrors.email = email.$dirty ? [
         ...(email.required ? [] : [this.$t('errors.email.required')]),
         ...(email.email ? [] : [this.$t('errors.email.email')]),
       ] : [];
     },
     updatePasswordErrors () {
       const { password } = this.$v.form;
-      this.localErrors.password = password.$dirty ? [ ...(password.required ? [] : [this.$t('errors.password.required')]) ] : [];
+      this.fieldErrors.password = password.$dirty ? [ ...(password.required ? [] : [this.$t('errors.password.required')]) ] : [];
     },
     updateErrors () {
       this.updateEmailErrors();

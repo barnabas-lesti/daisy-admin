@@ -9,7 +9,8 @@
         nuxt
     layout-footer(:social-items='socialItems')
     layout-notifications(v-model='notification')
-    layout-sign-in-modal(v-model='isSignInModalActive', :errors='signInErrors', ref='signInModalRef', @cancel='isSignInModalActive = false', @submit='signIn($event)')
+    layout-sign-in-modal(v-model='isSignInModalActive', :server-errors='serverErrors', ref='signInModalRef', @cancel='isSignInModalActive = false',
+      @submit='signIn($event)')
 </template>
 
 <script>
@@ -34,7 +35,7 @@ export default {
       menuItems: this.$store.state.navigation.menuItems.map(item => ({ ...item, label: this.$t(item.labelKey) })),
       socialItems: this.$store.state.navigation.socialItems,
 
-      signInErrors: [],
+      serverErrors: [],
     };
   },
   computed: {
@@ -57,6 +58,7 @@ export default {
   methods: {
     async signIn ({ email, password }) {
       this.$nuxt.$loading.start();
+      this.serverErrors.splice(0);
       try {
         await this.$firebase.auth().signInWithEmailAndPassword(email, password);
         this.isSignInModalActive = false;
@@ -64,15 +66,13 @@ export default {
         this.$store.commit('notifications/showInfo', { html: this.$t('notifications.signInSuccessful', { email }) });
       } catch (ex) {
         if (ex.code === 'auth/wrong-password' || ex.code === 'auth/user-not-found') {
-          this.signInErrors = [this.$t('notifications.authenticationFailed')];
-          console.log(this.signInErrors);
+          this.serverErrors.splice(0, 1, this.$t('errors.authenticationFailed'));
         } else {
-          this.$store.commit('notifications/showError', this.$t('notifications.serverError'));
+          this.$store.commit('notifications/showError', this.$t('errors.serverError'));
           this.$sentry ? this.$sentry.captureException(ex) : console.error(ex);
         }
       }
       this.$nuxt.$loading.finish();
-      this.signInErrors = [];
     },
 
     async signOut () {
@@ -94,7 +94,8 @@ en:
     recipes: Recipes
     exercises: Exercises
   notifications:
+    signInSuccessful: "Signed in as <strong>{email}</strong>"
+  errors:
     authenticationFailed: Sign in failed, invalid credentials
     serverError: Sorry, an unexpected error occurred
-    signInSuccessful: "Signed in as <strong>{email}</strong>"
 </i18n>

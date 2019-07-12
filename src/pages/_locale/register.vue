@@ -11,17 +11,19 @@
         v-card-text
           v-form(@submit.prevent='register()')
             v-layout(wrap)
+              v-flex.mb-2(xs12)
+                .red--text(v-for='error of serverErrors', :key='error') {{ error }}
               v-flex(xs12)
-                v-text-field(v-model='$v.model.email.$model', :label="$t('email')", :error-messages='emailErrors', type='email',
-                  append-icon='account_circle')
+                v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
+                  :error-messages='fieldErrors.email', type='email' append-icon='account_circle', @change='updateEmailErrors()')
               v-flex(xs12)
-                v-text-field(v-model='$v.model.password.$model', :label="$t('password')", :error-messages='passwordErrors',
-                  type='password', append-icon='vpn_key')
-              v-flex(xs12)
-                v-text-field(v-model='$v.model.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error-messages='passwordConfirmationErrors',
-                  type='password' append-icon='vpn_key')
+                v-text-field(v-model='$v.form.password.$model', :label="$t('password')", :error='!!serverErrors.length',
+                  :error-messages='fieldErrors.password', type='password', append-icon='vpn_key', @change='updatePasswordErrors()')
+              v-flex.mb-2(xs12)
+                v-text-field(v-model='$v.form.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error='!!serverErrors.length',
+                  :error-messages='fieldErrors.passwordConfirmation', type='password' append-icon='vpn_key', @change='updatePasswordConfirmationErrors()')
               v-flex.mb-4(xs12)
-                //- nuxt-link(:to="{ name: 'locale-signIn' }") {{ $t('signInLink') }}
+                nuxt-link(:to="{ query: { 'sign-in': true } }") {{ $t('signInLink') }}
               v-flex.text-xs-right(xs12)
                 v-btn.info.ma-0(type='submit', large) {{ $t('button') }}
 </template>
@@ -41,56 +43,78 @@ export default {
   },
   data () {
     return {
-      model: {
+      form: {
         email: '',
         password: '',
         passwordConfirmation: '',
       },
+      fieldErrors: {
+        email: [],
+        password: [],
+        passwordConfirmation: [],
+      },
+      serverErrors: [],
     };
   },
   validations () {
     return {
-      model: {
+      form: {
         email: { required, email },
         password: { required, minLength: minLength(6), maxLength: maxLength(22) },
         passwordConfirmation: { required, sameAs: sameAs(model => model.password) },
       },
     };
   },
-  computed: {
-    emailErrors () {
-      const { email } = this.$v.model;
-      return email.$dirty ? [
+  methods: {
+    updateEmailErrors () {
+      const { email } = this.$v.form;
+      this.fieldErrors.email = email.$dirty ? [
         ...(email.required ? [] : [this.$t('errors.email.required')]),
         ...(email.email ? [] : [this.$t('errors.email.email')]),
       ] : [];
     },
-    passwordErrors () {
-      const { password } = this.$v.model;
-      return password.$dirty ? [
+    updatePasswordErrors () {
+      const { password } = this.$v.form;
+      this.fieldErrors.password = password.$dirty ? [
         ...(password.required ? [] : [this.$t('errors.password.required')]),
         ...(password.minLength && password.maxLength ? [] : [this.$t('errors.password.length',
           { min: password.$params.minLength.min, max: password.$params.maxLength.max })]),
       ] : [];
     },
-    passwordConfirmationErrors () {
-      const { passwordConfirmation } = this.$v.model;
-      return passwordConfirmation.$dirty ? [
+    updatePasswordConfirmationErrors () {
+      const { passwordConfirmation } = this.$v.form;
+      this.fieldErrors.passwordConfirmation = passwordConfirmation.$dirty ? [
         ...(passwordConfirmation.required ? [] : [this.$t('errors.passwordConfirmation.required')]),
         ...(passwordConfirmation.sameAs ? [] : [this.$t('errors.passwordConfirmation.sameAs')]),
       ] : [];
     },
-  },
-  methods: {
+    updateErrors () {
+      this.updateEmailErrors();
+      this.updatePasswordErrors();
+      this.updatePasswordConfirmationErrors();
+    },
     async register () {
-      const { model } = this.$v;
-      model.$touch();
-      if (!model.$anyError) {
+      this.$nuxt.$loading.start();
+      this.$v.form.$touch();
+      this.updateErrors();
+      if (!this.$v.form.$anyError) {
+        this.$v.$reset();
+        this.serverErrors.splice(0);
+        const { email, password } = this.form;
         try {
-          await this.$firebase.auth().createUserWithEmailAndPassword(model.email.$model, model.password.$model);
+          await this.$firebase.auth().createUserWithEmailAndPassword(email, password);
+          this.form.email = this.form.password = this.form.passwordConfirmation = '';
+          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.registrationSuccessful', { email }) });
+          this.$router.push({ name: 'locale' });
         } catch (ex) {
-          console.log(ex);
+          if (ex.code === 'auth/email-already-in-use') {
+            this.serverErrors.splice(0, 1, this.$t('errors.emailTaken'));
+          } else {
+            this.$store.commit('notifications/showError', this.$t('errors.serverError'));
+            this.$sentry ? this.$sentry.captureException(ex) : console.error(ex);
+          }
         }
+        this.$nuxt.$loading.finish();
       }
     },
   },
@@ -114,10 +138,15 @@ en:
   passwordConfirmation: Confirm your password
   button: Register
   signInLink: Already have an account? Sign in!
+  notifications:
+    registrationSuccessful: Registration successful, signed in as <strong>{email}</strong>
   errors:
+    emailTaken: Email already in use
+    serverError: Sorry, an unexpected error occurred
     email:
       required: Email is required
       email: Email format is invalid
+      taken: Email already in use
     password:
       required: Password is required
       length: Password must be between {min} and {max} characters

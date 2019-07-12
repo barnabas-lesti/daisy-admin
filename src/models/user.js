@@ -5,7 +5,6 @@ export default class User {
     const skeletonClone = _.cloneDeep(skeleton);
 
     const { email, photoURL } = skeletonClone;
-    console.log(skeletonClone);
     this.email = email;
     this.photoURL = photoURL;
   }
