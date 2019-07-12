@@ -2,28 +2,28 @@ export const state = () => ({
   menuItems: [
     {
       routeName: 'locale',
-      labelKey: 'navigationItems.home',
+      labelKey: 'menuItems.home',
       icon: 'home',
       exact: true,
     },
     {
       routeName: 'locale-calculator',
-      labelKey: 'navigationItems.calculator',
+      labelKey: 'menuItems.calculator',
       icon: 'grid_on',
     },
     {
       routeName: 'locale-recipes',
-      labelKey: 'navigationItems.recipes',
+      labelKey: 'menuItems.recipes',
       icon: 'book',
     },
     {
       routeName: 'locale-food',
-      labelKey: 'navigationItems.food',
+      labelKey: 'menuItems.food',
       icon: 'fastfood',
     },
     {
       routeName: 'locale-exercises',
-      labelKey: 'navigationItems.exercises',
+      labelKey: 'menuItems.exercises',
       icon: 'directions_run',
     },
   ],
