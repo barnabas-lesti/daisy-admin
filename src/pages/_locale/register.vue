@@ -12,13 +12,13 @@
           v-form(@submit.prevent='register()')
             v-layout(wrap)
               v-flex(xs12)
-                v-text-field(v-model='$v.model.email.$model', :label="$t('email')", :error-messages='errors.email', type='email',
+                v-text-field(v-model='$v.model.email.$model', :label="$t('email')", :error-messages='emailErrors', type='email',
                   append-icon='account_circle')
               v-flex(xs12)
-                v-text-field(v-model='$v.model.password.$model', :label="$t('password')", :error-messages='errors.password',
+                v-text-field(v-model='$v.model.password.$model', :label="$t('password')", :error-messages='passwordErrors',
                   type='password', append-icon='vpn_key')
               v-flex(xs12)
-                v-text-field(v-model='$v.model.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error-messages='errors.passwordConfirmation',
+                v-text-field(v-model='$v.model.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error-messages='passwordConfirmationErrors',
                   type='password' append-icon='vpn_key')
               v-flex.mb-4(xs12)
                 //- nuxt-link(:to="{ name: 'locale-signIn' }") {{ $t('signInLink') }}
@@ -31,7 +31,7 @@ import { validationMixin } from 'vuelidate';
 import { required, email, minLength, maxLength, sameAs } from 'vuelidate/lib/validators';
 
 export default {
-  name: 'PagesIndex',
+  name: 'PagesRegister',
   mixins: [ validationMixin ],
   head () {
     return {
@@ -58,29 +58,40 @@ export default {
     };
   },
   computed: {
-    errors () {
-      const { email, password, passwordConfirmation } = this.$v.model;
-      console.log(this.$v.model.$anyError);
-      return this.$v.model.$anyError ? {
-        email: [
-          ...(email.required ? [] : [this.$t('errors.email.required')]),
-          ...(email.email ? [] : [this.$t('errors.email.email')]),
-        ],
-        password: [
-          ...(password.required ? [] : [this.$t('errors.password.required')]),
-          ...(password.minLength && password.maxLength ? [] : [this.$t('errors.password.length',
-            { min: password.$params.minLength.min, max: password.$params.maxLength.max })]),
-        ],
-        passwordConfirmation: [
-          ...(passwordConfirmation.required ? [] : [this.$t('errors.passwordConfirmation.required')]),
-          ...(passwordConfirmation.sameAs ? [] : [this.$t('errors.passwordConfirmation.sameAs')]),
-        ],
-      } : null;
+    emailErrors () {
+      const { email } = this.$v.model;
+      return email.$dirty ? [
+        ...(email.required ? [] : [this.$t('errors.email.required')]),
+        ...(email.email ? [] : [this.$t('errors.email.email')]),
+      ] : [];
+    },
+    passwordErrors () {
+      const { password } = this.$v.model;
+      return password.$dirty ? [
+        ...(password.required ? [] : [this.$t('errors.password.required')]),
+        ...(password.minLength && password.maxLength ? [] : [this.$t('errors.password.length',
+          { min: password.$params.minLength.min, max: password.$params.maxLength.max })]),
+      ] : [];
+    },
+    passwordConfirmationErrors () {
+      const { passwordConfirmation } = this.$v.model;
+      return passwordConfirmation.$dirty ? [
+        ...(passwordConfirmation.required ? [] : [this.$t('errors.passwordConfirmation.required')]),
+        ...(passwordConfirmation.sameAs ? [] : [this.$t('errors.passwordConfirmation.sameAs')]),
+      ] : [];
     },
   },
   methods: {
-    register () {
-
+    async register () {
+      const { model } = this.$v;
+      model.$touch();
+      if (!model.$anyError) {
+        try {
+          await this.$firebase.auth().createUserWithEmailAndPassword(model.email.$model, model.password.$model);
+        } catch (ex) {
+          console.log(ex);
+        }
+      }
     },
   },
 };

@@ -27,5 +27,28 @@ export default {
   computed: {
     ...mapState([ 'isLoading' ]),
   },
+  methods: {
+    listenToUserState () {
+      this.$firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.$store.commit('notifications/showInfo', this.$t('notifications.signedInAs', { email: user.email }));
+        } else {
+          this.$store.commit('notifications/showInfo', this.$t('notifications.signedOut'));
+        }
+        // this.$router.push({ query: { ...this.$route.query, 'sidebar': undefined } });
+        this.$store.commit('user/setUser', user);
+      });
+    },
+  },
+  mounted () {
+    this.listenToUserState();
+  },
 };
 </script>
+
+<i18n>
+en:
+  notifications:
+    signedInAs: "Signed in as <strong>{email}</strong>"
+    signedOut: Signed out
+</i18n>

@@ -1,7 +1,7 @@
 <template lang="pug">
   v-snackbar.layout-notifications(v-if='notification', v-model='notification', :color='notification.type',
     :timeout='timeout', :bottom='$vuetify.breakpoint.smAndUp', :right='$vuetify.breakpoint.smAndUp')
-    span {{ notification.text }}
+    span(v-html='notification.text')
 </template>
 
 <script>

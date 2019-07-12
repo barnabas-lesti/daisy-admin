@@ -3,14 +3,16 @@
     v-navigation-drawer.hidden-md-and-up(v-model='sidebar', :hide-overlay='this.$vuetify.breakpoint.mdAndUp', app, temporary)
       v-toolbar.transparent(flat)
         v-toolbar-title {{ $t('brand') }}
-        template(v-if='user', v-slot:extension)
-          v-list
-            v-list-tile(avatar)
-              v-list-tile-avatar
-                img(:src='user.imageUrl')
-              v-list-tile-content
-                v-list-tile-title {{ user.fullName }}
       v-divider
+
+      template(v-if='user')
+        v-list
+          v-list-tile(avatar)
+            v-list-tile-avatar
+              img(:src="user.photoURL || '/images/no-profile-picture.png'")
+            v-list-tile-content
+              v-list-tile-title {{ user.email }}
+        v-divider
 
       v-list
         v-list-tile(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }', :exact='item.exact', nuxt)
@@ -19,13 +21,18 @@
           v-list-tile-content
             v-list-tile-title {{ $t(item.labelKey) }}
 
-      v-divider
-      v-list(v-if='!user')
-        v-list-tile(@click='openSignInModal()')
-          v-list-tile-action
-            v-icon account_circle
-          v-list-tile-content
-            v-list-tile-title {{ $t('signIn') }}
+        v-divider
+        v-list
+          v-list-tile(v-if='!user', @click='openSignInModal()')
+            v-list-tile-action
+              v-icon account_circle
+            v-list-tile-content
+              v-list-tile-title {{ $t('signIn') }}
+          v-list-tile(v-else, @click='signOut()')
+            v-list-tile-action
+              v-icon account_circle
+            v-list-tile-content
+              v-list-tile-title {{ $t('signOut') }}
 
     v-toolbar(app, dense)
       v-toolbar-side-icon.hidden-md-and-up(@click='sidebar = !sidebar;')
@@ -34,7 +41,7 @@
       v-toolbar-items
         v-btn.hidden-sm-and-down(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }', :exact='item.exact', flat, nuxt)
           | {{ $t(item.labelKey) }}
-        v-btn(flat, @click='openSignInModal()') {{ $t('signIn') }}
+        v-btn(v-if='!user', flat, @click='openSignInModal()') {{ $t('signIn') }}
 </template>
 
 <script>
@@ -81,6 +88,10 @@ export default {
     };
   },
   methods: {
+    async signOut () {
+      await this.$firebase.auth().signOut();
+      // this.$router.push({ query: { ...this.$route.query, 'sign-in': newValue || undefined } });
+    },
     openSignInModal () {
       this.$router.push({ query: { ...this.$route.query, 'sign-in': true } });
     },
@@ -102,6 +113,7 @@ export default {
 en:
   brand: Daisy
   signIn: Sign in
+  signOut: Sign out
   menuItems:
     home: Home
     calculator: Calculator
