@@ -53,7 +53,7 @@ export default {
 
     isOpen: {
       get () { return !this.user && this.$route.query['sign-in']; },
-      set (newValue) { this.$router.push({ query: { ...this.$route.query, 'sign-in': newValue || undefined } }); },
+      set (newValue) { this.$utils.pushRouteQuery({ 'sign-in': newValue || undefined }); },
     },
   },
   methods: {
@@ -79,10 +79,12 @@ export default {
       if (!this.$v.form.$anyError) {
         this.$store.commit('startLoading');
         try {
-          await this.$firebase.auth().signInWithEmailAndPassword(this.form.email, this.form.password);
+          const { user: { email } } = await this.$firebase.auth().signInWithEmailAndPassword(this.form.email, this.form.password);
+          console.log(email);
           this.isOpen = false;
           this.form.email = this.form.password = '';
           this.$v.$reset();
+          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.signIn', { email }) });
         } catch (ex) {
           if (ex.code === 'auth/wrong-password' || ex.code === 'auth/user-not-found') {
             this.errors.email = [this.$t('errors.email.authenticationFailed')];
@@ -107,6 +109,7 @@ en:
   cancel: Cancel
   registrationLink: Don't have an account? Register!
   notifications:
+    signIn: "Signed in as <strong>{email}</strong>."
     serverError: Sorry, something went wrong
   errors:
     email:

@@ -7,6 +7,11 @@ export default (context) => {
   if (!firebase.apps.length) {
     firebase.initializeApp(context.env.firebase);
     firebase.auth().languageCode = store.state.i18n.locale;
+
+    firebase.auth().onAuthStateChanged((user) => {
+      // this.$router.push({ query: { ...this.$route.query, 'sidebar': undefined } });
+      store.commit('user/setUser', user);
+    });
   }
   context.$firebase = firebase;
   Vue.prototype.$firebase = firebase;

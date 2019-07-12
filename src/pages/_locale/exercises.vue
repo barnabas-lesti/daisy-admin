@@ -79,15 +79,15 @@ export default {
 
     selection: {
       get () { return this.$route.query['selection']; },
-      set (newValue) { this.$router.push({ query: { ...this.$route.query, 'selection': newValue || undefined } }); },
+      set (newValue) { this.$utils.pushRouteQuery({ 'selection': newValue }); },
     },
     modalMode: {
       get () { return this.$route.query['modal']; },
-      set (newValue) { this.$router.push({ query: { ...this.$route.query, 'modal': newValue || undefined } }); },
+      set (newValue) { this.$utils.pushRouteQuery({ 'modal': newValue }); },
     },
     searchString: {
       get () { return this.$route.query['search']; },
-      set (newValue) { this.$router.push({ query: { ...this.$route.query, 'search': newValue || undefined } }); },
+      set (newValue) { this.$utils.pushRouteQuery({ 'search': newValue }); },
     },
     selectedExercise: {
       get () { return this.exercises.filter(item => item._id === this.selection)[0]; },

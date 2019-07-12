@@ -47,7 +47,7 @@ export default {
 
     searchString: {
       get () { return this.$route.query['search']; },
-      set (newValue) { this.$router.push({ query: { ...this.$route.query, 'search': newValue || undefined } }); },
+      set (newValue) { this.$utils.pushRouteQuery({ 'search': newValue }); },
     },
     computedRecipes () {
       return this.recipes.map(recipe => new Recipe({
