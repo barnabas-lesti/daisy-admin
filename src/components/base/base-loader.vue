@@ -19,7 +19,7 @@ export default {
 
 <style>
 .base-loader {
-	position: absolute !important;
+	position: fixed !important;
 	margin: 0 !important;
 	top: 0;
 	left: 0;

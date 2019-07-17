@@ -1,39 +1,34 @@
 <template lang="pug">
-  v-layout.pages-register(row, wrap, justify-space-around)
+  v-layout.pages-reset-password(row, wrap, justify-space-around)
     v-flex.mt-4.text-xs-center(xs12)
       h1 {{ $t('title') }}
 
     v-flex.text-xs-center(xs12)
-      .pb-3(v-html="$t('descriptionHtml')")
+      .pb-3(v-html="$t('description')")
 
     v-flex(shrink)
-      v-card.pages-register_card.pa-3
+      v-card.pages-reset-password_card.pa-3
         v-card-text
-          v-form(@submit.prevent='register()')
+          v-form(@submit.prevent='resetPassword()')
             v-layout(wrap)
               v-flex.mb-2(xs12)
                 .red--text(v-for='error of serverErrors', :key='error') {{ error }}
-              v-flex(xs12)
-                v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
-                  :error-messages='fieldErrors.email', type='email' append-icon='account_circle', @change='updateEmailErrors()')
               v-flex(xs12)
                 v-text-field(v-model='$v.form.password.$model', :label="$t('password')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.password', type='password', append-icon='vpn_key', @change='updatePasswordErrors()')
               v-flex.mb-2(xs12)
                 v-text-field(v-model='$v.form.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.passwordConfirmation', type='password' append-icon='vpn_key', @change='updatePasswordConfirmationErrors()')
-              v-flex.mb-4(xs12)
-                nuxt-link(:to="{ name: 'locale-sign-in' }") {{ $t('signInLink') }}
               v-flex.text-xs-right(xs12)
                 v-btn.info.ma-0(type='submit', large) {{ $t('button') }}
 </template>
 
 <script>
 import { validationMixin } from 'vuelidate';
-import { required, email, minLength, maxLength, sameAs } from 'vuelidate/lib/validators';
+import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators';
 
 export default {
-  name: 'PagesRegister',
+  name: 'PagesVerifyEmail',
   mixins: [ validationMixin ],
   head () {
     return {
@@ -44,12 +39,10 @@ export default {
   data () {
     return {
       form: {
-        email: '',
         password: '',
         passwordConfirmation: '',
       },
       fieldErrors: {
-        email: [],
         password: [],
         passwordConfirmation: [],
       },
@@ -59,20 +52,12 @@ export default {
   validations () {
     return {
       form: {
-        email: { required, email },
         password: { required, minLength: minLength(6), maxLength: maxLength(22) },
         passwordConfirmation: { required, sameAs: sameAs(model => model.password) },
       },
     };
   },
   methods: {
-    updateEmailErrors () {
-      const { email } = this.$v.form;
-      this.fieldErrors.email = email.$dirty ? [
-        ...(email.required ? [] : [this.$t('errors.email.required')]),
-        ...(email.email ? [] : [this.$t('errors.email.email')]),
-      ] : [];
-    },
     updatePasswordErrors () {
       const { password } = this.$v.form;
       this.fieldErrors.password = password.$dirty ? [
@@ -89,29 +74,28 @@ export default {
       ] : [];
     },
     updateErrors () {
-      this.updateEmailErrors();
       this.updatePasswordErrors();
       this.updatePasswordConfirmationErrors();
     },
-    async register () {
+    async resetPassword () {
       this.$v.form.$touch();
       this.updateErrors();
       if (!this.$v.form.$anyError) {
         this.$nuxt.$loading.start();
         this.$v.$reset();
         this.serverErrors.splice(0);
-        const { email, password } = this.form;
         try {
-          await this.$auth.register({ email, password });
-          this.form.email = this.form.password = this.form.passwordConfirmation = '';
-          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.registrationSuccessful', { email }) });
-          this.$router.push({ name: this.$route.query['referer'] || 'locale' });
+          await this.$axios.$post('/api/auth/reset-password', { token: this.$route.query['token'], password: this.form.password });
+          this.form.password = this.form.passwordConfirmation = '';
+          this.$store.commit('notifications/showSuccess', this.$t('notifications.resetSuccessful'));
+          this.$router.push({ name: 'locale-sign-in' });
         } catch (ex) {
-          if (ex.response && ex.response.data.code === 'EMAIL_ALREADY_IN_USE') {
-            this.serverErrors.splice(0, 1, this.$t('errors.emailAlreadyInUse'));
+          const error = ex.response || ex;
+          if (error.status === 401) {
+            this.serverErrors.splice(0, 1, this.$t('errors.invalidToken'));
           } else {
             this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-            this.$sentry ? this.$sentry.captureException(ex) : console.error(ex);
+            this.$sentry ? this.$sentry.captureException(error) : console.error(error);
           }
         }
         this.$nuxt.$loading.finish();
@@ -122,7 +106,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.pages-register
+.pages-reset-password
   &_card
     max-width: 600px;
 
@@ -130,22 +114,16 @@ export default {
 
 <i18n>
 en:
-  title: Register
-  description: Register an account to access the cool features of Daisy!
-  descriptionHtml: "Register an account to access the cool features of <strong>Daisy</strong>!"
-  email: Email
+  title: Reset your password
+  description: Please provide a new password for your account
   password: Password
   passwordConfirmation: Confirm your password
-  button: Register
-  signInLink: Already have an account? Sign in!
+  button: Reset password
   notifications:
-    registrationSuccessful: Registration successful, please check your inbox to verify your email address.
+    resetSuccessful: Password changed, please sign in to your account
   errors:
-    emailAlreadyInUse: Email already in use
+    invalidToken: Reset failed, invalid token
     serverError: Sorry, an unexpected error occurred
-    email:
-      required: Email is required
-      email: Email format is invalid
     password:
       required: Password is required
       length: Password must be between {min} and {max} characters

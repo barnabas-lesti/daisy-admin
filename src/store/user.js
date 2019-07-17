@@ -5,17 +5,10 @@ export const state = () => ({
 });
 
 export const mutations = {
-  setUser (state, user) {
-    state.user = user ? new User(user) : null;
+  signIn (state, user) {
+    state.user = new User(user);
   },
-  login (state) {
-    state.user = {
-      imageUrl: 'https://randomuser.me/api/portraits/men/85.jpg',
-      fullName: 'Jon Snow',
-      isLoggedIn: true,
-    };
-  },
-  logout (state) {
-    state.user = {};
+  signOut (state) {
+    state.user = null;
   },
 };

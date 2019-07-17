@@ -15,11 +15,17 @@
               v-list-tile-title {{ user.email }}
         v-list-tile(@click="$emit('sign-out')")
           v-list-tile-content {{ $t('signOut') }}
-      v-list-tile(v-else, @click="$emit('request-sign-in')")
-        v-list-tile-action
-          v-icon account_circle
-        v-list-tile-content
-          v-list-tile-title {{ $t('signIn') }}
+      template(v-else)
+        v-list-tile(:to="{ name: 'locale-register', query: { 'referer': $route.name } }", nuxt)
+          v-list-tile-action
+            v-icon account_circle
+          v-list-tile-content
+            v-list-tile-title {{ $t('register') }}
+        v-list-tile(:to="{ name: 'locale-sign-in', query: { 'referer': $route.name } }", nuxt)
+          v-list-tile-action
+            v-icon exit_to_app
+          v-list-tile-content
+            v-list-tile-title {{ $t('signIn') }}
       v-divider
 
       v-list-tile(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }', :exact='item.exact', nuxt)
@@ -56,11 +62,13 @@ export default {
 .v-list__group--active
   &::before, &::after
     background: initial !important;
+
 </style>
 
 <i18n>
 en:
   brand: Daisy
   signIn: Sign in
+  register: Register
   signOut: Sign out
 </i18n>

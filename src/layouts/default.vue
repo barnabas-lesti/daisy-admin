@@ -1,16 +1,12 @@
 <template lang="pug">
   v-app
-    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true', @request-sign-in='isSignInModalActive = true',
-      @sign-out='signOut()')
-    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems', :user='user', @request-sign-in='isSignInModalActive = true',
-      @sign-out='signOut()')
+    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true', @sign-out='signOut()')
+    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems', :user='user', @sign-out='signOut()')
     v-content
       v-container(grid-list-xl)
         nuxt
     layout-footer(:social-items='socialItems')
     layout-notifications(v-model='notification')
-    layout-sign-in-modal(v-model='isSignInModalActive', :server-errors='serverErrors', ref='signInModalRef', @cancel='isSignInModalActive = false',
-      @submit='signIn($event)')
 </template>
 
 <script>
@@ -20,7 +16,6 @@ import LayoutToolbar from '../components/layout/layout-toolbar';
 import LayoutSidebar from '../components/layout/layout-sidebar';
 import LayoutFooter from '../components/layout/layout-footer';
 import LayoutNotifications from '../components/layout/layout-notifications';
-import LayoutSignInModal from '../components/layout/layout-sign-in-modal';
 
 export default {
   components: {
@@ -28,14 +23,11 @@ export default {
     LayoutSidebar,
     LayoutFooter,
     LayoutNotifications,
-    LayoutSignInModal,
   },
   data () {
     return {
       menuItems: this.$store.state.navigation.menuItems.map(item => ({ ...item, label: this.$t(item.labelKey) })),
       socialItems: this.$store.state.navigation.socialItems,
-
-      serverErrors: [],
     };
   },
   computed: {
@@ -45,41 +37,15 @@ export default {
       get () { return !!this.$route.query['sidebar']; },
       set (newValue) { this.$utils.pushRouteQuery({ 'sidebar': newValue }); },
     },
-    isSignInModalActive: {
-      get () { return !!this.$route.query['sign-in']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'sign-in': newValue }); },
-    },
-
     notification: {
       get () { return this.$store.state.notifications.notification; },
       set (newValue) { this.$store.commit('notifications/clear'); },
     },
   },
   methods: {
-    async signIn ({ email, password }) {
-      this.$nuxt.$loading.start();
-      this.serverErrors.splice(0);
-      try {
-        await this.$firebase.auth().signInWithEmailAndPassword(email, password);
-        this.isSignInModalActive = false;
-        this.$refs.signInModalRef.reset();
-        this.$store.commit('notifications/showInfo', { html: this.$t('notifications.signInSuccessful', { email }) });
-      } catch (ex) {
-        if (ex.code === 'auth/wrong-password' || ex.code === 'auth/user-not-found') {
-          this.serverErrors.splice(0, 1, this.$t('errors.authenticationFailed'));
-        } else {
-          this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-          this.$sentry ? this.$sentry.captureException(ex) : console.error(ex);
-        }
-      }
-      this.$nuxt.$loading.finish();
-    },
-
-    async signOut () {
-      this.$nuxt.$loading.start();
-      await this.$firebase.auth().signOut();
+    signOut () {
+      this.$auth.signOut();
       this.isSidebarOpen = false;
-      this.$nuxt.$loading.finish();
     },
   },
 };
@@ -93,9 +59,4 @@ en:
     food: Food
     recipes: Recipes
     exercises: Exercises
-  notifications:
-    signInSuccessful: "Signed in as <strong>{email}</strong>"
-  errors:
-    authenticationFailed: Sign in failed, invalid credentials
-    serverError: Sorry, an unexpected error occurred
 </i18n>

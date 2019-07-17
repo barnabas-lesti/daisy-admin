@@ -1,5 +1,6 @@
 # Links and other useful things
 
+## Stack
 - https://nodejs.org/en/
 - https://expressjs.com/
 - https://www.mongodb.com/
@@ -19,3 +20,6 @@
 
 ## Design
  - https://materialdesignkit.com/templates/ (Cooking)
+
+## Other
+- https://medium.com/swlh/a-practical-guide-for-jwt-authentication-using-nodejs-and-express-d48369e7e6d4

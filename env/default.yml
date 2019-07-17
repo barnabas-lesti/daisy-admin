@@ -1,25 +1,13 @@
-appName: 'daisy-web-app_default'
-port: 3000
-baseUrl: 'http://localhost:3000'
-
-debug:
-  responseDelay: 0
-
-mongo:
-  uri: 'mongodb://localhost/daisy'
-
-sentry:
-  dsn: ''
-
-access:
-  username: ''
-  password: ''
-
-firebase:
-  apiKey: ''
-  authDomain: ''
-  databaseURL: ''
-  projectId: ''
-  storageBucket: ''
-  messagingSenderId: ''
-  appId: ''
+PORT: 3000
+BASE_URL: 'http://localhost:3000'
+AUTH_SECRET: 'someRandomThingsHere1234'
+AUTH_SALT_ROUNDS: 10
+DEBUG_RESPONSE_DELAY: 0
+DEBUG_NO_CLIENT: false
+MONGO_URI: 'mongodb://localhost/daisy'
+SENTRY_DSN: ''
+EMAIL_FROM_ADDRESS: 'no-reply@dev.daisy.com'
+EMAIL_MAILGUN_API_KEY: ''
+EMAIL_MAILGUN_DOMAIN: ''
+HTTP_ACCESS_USERNAME: ''
+HTTP_ACCESS_PASSWORD: ''

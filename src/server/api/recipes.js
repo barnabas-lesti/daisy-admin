@@ -1,6 +1,6 @@
 const { Types } = require('mongoose');
 
-const Recipe = require('../models/Recipe');
+const Recipe = require('../models/recipe');
 
 const convertReqBodyToDocument = (params) => {
   const items = params.items;
