@@ -1,4 +1,4 @@
-const appConfig = require('./app.config');
+const envConfig = require('./env.config');
 
 module.exports = {
   mode: 'universal',
@@ -7,10 +7,10 @@ module.exports = {
   loading: '~/components/base/base-loader.vue',
 
   server: {
-    port: appConfig.PORT,
+    port: envConfig.PORT,
   },
 
-  dev: !appConfig.IS_PRODUCTION,
+  dev: !envConfig.IS_PRODUCTION,
 
   head: {
     titleTemplate: '%s | Daisy',
@@ -20,33 +20,41 @@ module.exports = {
     ],
   },
 
+  env: {
+    baseUrl: envConfig.BASE_URL,
+  },
+
   plugins: [
-    'plugins/auth',
+    'plugins/utils',
     'plugins/filters',
     'plugins/i18n',
+    'plugins/auth',
   ],
 
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/sentry',
     '@nuxtjs/vuetify',
+    'cookie-universal-nuxt',
   ],
 
   axios: {
-    baseURL: appConfig.BASE_URL,
+    baseURL: envConfig.BASE_URL,
   },
 
   sentry: {
-    dsn: appConfig.SENTRY_DSN,
+    dsn: envConfig.SENTRY_DSN,
   },
 
   vuetify: {
     materialIcons: true,
-    treeShake: appConfig.IS_PRODUCTION,
+    treeShake: envConfig.IS_PRODUCTION,
   },
 
   router: {
-    middleware: 'i18n',
+    middleware: [
+      'i18n',
+    ],
   },
 
   build: {

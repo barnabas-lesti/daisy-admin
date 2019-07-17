@@ -1,28 +1,62 @@
 <template lang="pug">
   v-app
-    layout-header
+    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true', @sign-out='signOut()')
+    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems', :user='user', @sign-out='signOut()')
     v-content
       v-container(grid-list-xl)
         nuxt
-    layout-footer
-    layout-notifications
+    layout-footer(:social-items='socialItems')
+    layout-notifications(v-model='notification')
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
-import LayoutHeader from '../components/layout/layout-header';
+import LayoutToolbar from '../components/layout/layout-toolbar';
+import LayoutSidebar from '../components/layout/layout-sidebar';
 import LayoutFooter from '../components/layout/layout-footer';
 import LayoutNotifications from '../components/layout/layout-notifications';
 
 export default {
   components: {
-    LayoutHeader,
+    LayoutToolbar,
+    LayoutSidebar,
     LayoutFooter,
     LayoutNotifications,
   },
+  data () {
+    return {
+      menuItems: this.$store.state.navigation.menuItems.map(item => ({ ...item, label: this.$t(item.labelKey) })),
+      socialItems: this.$store.state.navigation.socialItems,
+    };
+  },
   computed: {
-    ...mapState([ 'isLoading' ]),
+    ...mapState('user', [ 'user' ]),
+
+    isSidebarOpen: {
+      get () { return !!this.$route.query['sidebar']; },
+      set (newValue) { this.$utils.pushRouteQuery({ 'sidebar': newValue }); },
+    },
+    notification: {
+      get () { return this.$store.state.notifications.notification; },
+      set (newValue) { this.$store.commit('notifications/clear'); },
+    },
+  },
+  methods: {
+    signOut () {
+      this.$auth.signOut();
+      this.isSidebarOpen = false;
+    },
   },
 };
 </script>
+
+<i18n>
+en:
+  menuItems:
+    home: Home
+    calculator: Calculator
+    food: Food
+    recipes: Recipes
+    exercises: Exercises
+</i18n>

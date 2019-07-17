@@ -1,6 +1,6 @@
 const { Types } = require('mongoose');
 
-const Food = require('../models/Food');
+const Food = require('../models/food');
 
 module.exports = (router) => {
   router.route('/food')

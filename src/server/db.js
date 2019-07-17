@@ -1,14 +1,14 @@
 const consola = require('consola');
 const mongoose = require('mongoose');
 
-const appConfig = require('../../app.config');
+const envConfig = require('../../env.config');
 
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.Promise = Promise;
 
-module.exports = async (mongoUri = appConfig.MONGO_URI) => {
+module.exports = async (mongoUri = envConfig.MONGO_URI) => {
   try {
     await mongoose.connect(mongoUri);
     consola.ready({ message: 'Connected to MongoDB', badge: true });

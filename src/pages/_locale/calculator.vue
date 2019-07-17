@@ -100,7 +100,7 @@ export default {
 
     modalMode: {
       get () { return this.$route.query['modal']; },
-      set (newValue) { this.$router.push({ query: { ...this.$route.query, 'modal': newValue || undefined } }); },
+      set (newValue) { this.$utils.pushRouteQuery({ 'modal': newValue }); },
     },
     summary () {
       return CalculatorItem.getNutrientSummary(this.items);

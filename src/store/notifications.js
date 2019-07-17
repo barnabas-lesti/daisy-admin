@@ -1,18 +1,20 @@
+import Notification from '../models/notification';
+
 export const state = () => ({
-  notification: undefined,
+  notification: null,
 });
 
 export const mutations = {
-  showInfo (state, text) {
-    state.notification = { type: 'info', text };
+  showInfo (state, payload) {
+    state.notification = new Notification(Notification.Types.INFO, payload);
   },
-  showError (state, text) {
-    state.notification = { type: 'error', text };
+  showSuccess (state, payload) {
+    state.notification = new Notification(Notification.Types.SUCCESS, payload);
   },
-  showSuccess (state, text) {
-    state.notification = { type: 'success', text };
+  showError (state, payload) {
+    state.notification = new Notification(Notification.Types.ERROR, payload);
   },
   clear (state) {
-    state.notification = undefined;
+    state.notification = null;
   },
 };
