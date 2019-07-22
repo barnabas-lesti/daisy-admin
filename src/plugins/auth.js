@@ -1,11 +1,11 @@
 import Vue from 'vue';
 
 class Auth {
-  constructor ({ $axios, $sentry, store, app: { $cookies } }) {
+  constructor ({ $axios, $logger, store, app: { $cookies } }) {
     this.$axios = $axios;
     this.$store = store;
     this.$cookies = $cookies;
-    this.$sentry = $sentry;
+    this.$logger = $logger;
   }
 
   async register (user) {
@@ -21,31 +21,31 @@ class Auth {
   }
 
   async signIn (email, password) {
-    const { user, authToken } = await this.$axios.$post('/api/auth/create-auth-token', { email, password });
+    const { user, accessToken } = await this.$axios.$post('/api/auth/sign-in', { email, password });
     this.$store.commit('user/signIn', user);
-    this.$cookies.set('auth-token', authToken);
-    this.$axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
+    this.$cookies.set('access-token', accessToken);
+    this.$axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
   }
 
   signOut () {
     this.$store.commit('user/signOut');
-    this.$cookies.remove('auth-token');
+    this.$cookies.remove('access-token');
     this.$axios.defaults.headers.common['Authorization'] = null;
   }
 
   async checkAuthState () {
-    const token = this.$cookies.get('auth-token');
+    const token = this.$cookies.get('access-token');
     if (!this.$store.state.user.user && token) {
       try {
-        const user = await this.$axios.$post('/api/auth/get-user-from-auth-token', { token });
+        const user = await this.$axios.$post('/api/auth/verify-auth-token', { token });
         this.$store.commit('user/signIn', user);
         this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       } catch (ex) {
         const error = ex.response || ex;
         if (error.status === 401) {
-          this.$cookies.remove('auth-token');
+          this.$cookies.remove('access-token');
         } else {
-          this.$sentry ? this.$sentry.captureException(error) : console.error(error);
+          this.$logger.error(error);
         }
       }
     }

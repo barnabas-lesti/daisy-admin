@@ -1,7 +1,6 @@
 const { Types } = require('mongoose');
 
 const User = require('../models/user');
-const ApiError = require('../utils/api-error');
 
 module.exports = (router) => {
   router.route('/users')
@@ -17,7 +16,7 @@ module.exports = (router) => {
         const { passwordHash, ...user } = doc.toObject();
         return res.send(user);
       } catch (ex) {
-        if (ex.code === 11000) { return res.status(409).send(new ApiError({ code: 'EMAIL_ALREADY_IN_USE' })); }
+        if (ex.code === 11000) { return res.sendStatus(409); }
         return res.status(500).send(ex);
       }
     });

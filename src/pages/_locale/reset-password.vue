@@ -11,12 +11,12 @@
         v-card-text
           v-form(@submit.prevent='resetPassword()')
             v-layout(wrap)
-              v-flex.mb-2(xs12)
-                .red--text(v-for='error of serverErrors', :key='error') {{ error }}
+              v-flex.py-0(xs12)
+                v-scroll-y-transition(group)
+                  .red--text.mt-2(v-for='error of serverErrors', :key='error') {{ error }}
               v-flex(xs12)
                 v-text-field(v-model='$v.form.password.$model', :label="$t('password')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.password', type='password', append-icon='vpn_key', @change='updatePasswordErrors()')
-              v-flex.mb-2(xs12)
                 v-text-field(v-model='$v.form.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.passwordConfirmation', type='password' append-icon='vpn_key', @change='updatePasswordConfirmationErrors()')
               v-flex.text-xs-right(xs12)
@@ -95,7 +95,7 @@ export default {
             this.serverErrors.splice(0, 1, this.$t('errors.invalidToken'));
           } else {
             this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-            this.$sentry ? this.$sentry.captureException(error) : console.error(error);
+            this.$logger.error(error);
           }
         }
         this.$nuxt.$loading.finish();

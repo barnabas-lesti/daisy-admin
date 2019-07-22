@@ -15,6 +15,8 @@ module.exports = {
   PORT: process.env.PORT || configLib.get('PORT'),
   BASE_URL: process.env.BASE_URL || configLib.get('BASE_URL'),
   AUTH_SECRET: process.env.AUTH_SECRET || configLib.get('AUTH_SECRET'),
+  AUTH_ACCESS_TOKEN_EXPIRATION: process.env.AUTH_ACCESS_TOKEN_EXPIRATION || configLib.get('AUTH_ACCESS_TOKEN_EXPIRATION'),
+  AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES: process.env.AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES || configLib.get('AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES'),
   AUTH_SALT_ROUNDS: process.env.AUTH_SALT_ROUNDS || configLib.get('AUTH_SALT_ROUNDS'),
   DEBUG_RESPONSE_DELAY: process.env.DEBUG_RESPONSE_DELAY || configLib.get('DEBUG_RESPONSE_DELAY'),
   DEBUG_NO_CLIENT: process.env.DEBUG_NO_CLIENT || configLib.get('DEBUG_NO_CLIENT'),

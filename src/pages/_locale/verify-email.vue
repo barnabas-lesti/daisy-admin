@@ -29,7 +29,7 @@ export default {
           this.$store.commit('notifications/showError', this.$t('invalidToken'));
         } else {
           this.$store.commit('notifications/showError', this.$t('serverError'));
-          this.$sentry ? this.$sentry.captureException(error) : console.error(error);
+          this.$logger.error(error);
         }
       }
       this.$nextTick(() => this.$nuxt.$loading.finish());

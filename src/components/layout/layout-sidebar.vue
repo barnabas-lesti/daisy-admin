@@ -10,9 +10,9 @@
         template(v-slot:activator).layout-header_user
           v-list-tile(avatar)
             v-list-tile-avatar
-              img(:src="user.photoURL || '/images/no-profile-picture.png'")
+              img(:src="user.profileImageUrl || '/images/no-profile-picture.png'")
             v-list-tile-content
-              v-list-tile-title {{ user.email }}
+              v-list-tile-title {{ user.nickname || user.email }}
         v-list-tile(@click="$emit('sign-out')")
           v-list-tile-content {{ $t('signOut') }}
       template(v-else)
