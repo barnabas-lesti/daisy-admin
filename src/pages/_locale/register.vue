@@ -11,18 +11,17 @@
         v-card-text
           v-form(@submit.prevent='register()')
             v-layout(wrap)
-              v-flex.mb-2(xs12)
-                .red--text(v-for='error of serverErrors', :key='error') {{ error }}
+              v-flex.py-0(xs12)
+                v-scroll-y-transition(group)
+                  .red--text.mt-2(v-for='error of serverErrors', :key='error') {{ error }}
               v-flex(xs12)
                 v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.email', type='email' append-icon='account_circle', @change='updateEmailErrors()')
-              v-flex(xs12)
                 v-text-field(v-model='$v.form.password.$model', :label="$t('password')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.password', type='password', append-icon='vpn_key', @change='updatePasswordErrors()')
-              v-flex.mb-2(xs12)
                 v-text-field(v-model='$v.form.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.passwordConfirmation', type='password' append-icon='vpn_key', @change='updatePasswordConfirmationErrors()')
-              v-flex.mb-4(xs12)
+              v-flex(xs12)
                 nuxt-link(:to="{ name: 'locale-sign-in' }") {{ $t('signInLink') }}
               v-flex.text-xs-right(xs12)
                 v-btn.info.ma-0(type='submit', large) {{ $t('button') }}
@@ -107,11 +106,12 @@ export default {
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.registrationSuccessful', { email }) });
           this.$router.push({ name: this.$route.query['referer'] || 'locale' });
         } catch (ex) {
-          if (ex.response && ex.response.data.code === 'EMAIL_ALREADY_IN_USE') {
+          const error = ex.response || ex;
+          if (error.status === 409) {
             this.serverErrors.splice(0, 1, this.$t('errors.emailAlreadyInUse'));
           } else {
             this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-            this.$sentry ? this.$sentry.captureException(ex) : console.error(ex);
+            this.$logger.error(error);
           }
         }
         this.$nuxt.$loading.finish();

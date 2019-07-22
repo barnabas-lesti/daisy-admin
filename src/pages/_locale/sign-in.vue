@@ -11,18 +11,17 @@
         v-card-text
           v-form(@submit.prevent='signIn()')
             v-layout(wrap)
-              v-flex.mb-2(xs12)
-                .red--text(v-for='error of serverErrors', :key='error') {{ error }}
+              v-flex.py-0(xs12)
+                v-scroll-y-transition(group)
+                  .red--text.mt-2(v-for='error of serverErrors', :key='error') {{ error }}
               v-flex(xs12)
                 v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
                   :error-messages="fieldErrors.email", type='email', append-icon='account_circle', name='email', @change='updateEmailErrors()')
-              v-flex.mb-2(xs12)
                 v-text-field(v-model='$v.form.password.$model', :error='!!serverErrors.length', :error-messages="fieldErrors.password",
                   :label="$t('password')", type='password', append-icon='vpn_key', name='password', @change='updatePasswordErrors()')
               v-flex(xs12)
                 nuxt-link.d-block.mb-2(:to="{ name: 'locale-register' }") {{ $t('registrationLink') }}
                 a.d-block(href='#', @click.prevent='sendPasswordResetEmail()') {{ $t('forgotPassword') }}
-              v-flex.mb-4(xs12)
               v-flex.text-xs-right(xs12)
                 v-btn.info.ma-0(type='submit', large) {{ $t('button') }}
 </template>
@@ -97,7 +96,7 @@ export default {
             this.serverErrors.splice(0, 1, this.$t('errors.authenticationFailed'));
           } else {
             this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-            this.$sentry ? this.$sentry.captureException(error) : console.error(error);
+            this.$logger.error(error);
           }
         }
         this.$nuxt.$loading.finish();
@@ -119,7 +118,7 @@ export default {
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.passwordResetEmailSent', { email }) });
         } catch (ex) {
           this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-          this.$sentry ? this.$sentry.captureException(ex) : console.error(ex);
+          this.$logger.error(ex);
         }
         this.$nuxt.$loading.finish();
       }

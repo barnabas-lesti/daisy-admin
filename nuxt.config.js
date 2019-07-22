@@ -27,13 +27,14 @@ module.exports = {
   plugins: [
     'plugins/utils',
     'plugins/filters',
+    'plugins/logger',
     'plugins/i18n',
     'plugins/auth',
   ],
 
   modules: [
-    '@nuxtjs/axios',
     '@nuxtjs/sentry',
+    '@nuxtjs/axios',
     '@nuxtjs/vuetify',
     'cookie-universal-nuxt',
   ],
