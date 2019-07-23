@@ -1,5 +1,6 @@
 const { Types } = require('mongoose');
 
+const { AUTH_REGISTRATION_DISABLED } = require('../../../env.config');
 const User = require('../models/user');
 
 module.exports = (router) => {
@@ -9,6 +10,10 @@ module.exports = (router) => {
       return res.send(docs);
     })
     .put(async (req, res) => {
+      if (AUTH_REGISTRATION_DISABLED) {
+        return res.sendStatus(403);
+      }
+
       const { password, ...skeleton } = req.body;
       skeleton.passwordHash = await User.hashPassword(password);
       try {

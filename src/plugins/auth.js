@@ -24,13 +24,13 @@ class Auth {
     const { user, accessToken } = await this.$axios.$post('/api/auth/sign-in', { email, password });
     this.$store.commit('user/signIn', user);
     this.$cookies.set('access-token', accessToken);
-    this.$axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    this.$axios.setHeader('Authorization', `Bearer ${accessToken}`);
   }
 
   signOut () {
     this.$store.commit('user/signOut');
     this.$cookies.remove('access-token');
-    this.$axios.defaults.headers.common['Authorization'] = null;
+    this.$axios.setHeader('Authorization', null);
   }
 
   async checkAuthState () {
@@ -39,7 +39,7 @@ class Auth {
       try {
         const user = await this.$axios.$post('/api/auth/verify-auth-token', { token });
         this.$store.commit('user/signIn', user);
-        this.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        this.$axios.setHeader('Authorization', `Bearer ${token}`);
       } catch (ex) {
         const error = ex.response || ex;
         if (error.status === 401) {

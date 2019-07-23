@@ -1,44 +1,28 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const basicAuth = require('express-basic-auth');
 const { Nuxt, Builder } = require('nuxt');
 
-const nuxtConfig = require('../../nuxt.config');
-const envConfig = require('../../env.config');
-
+const { PORT, BASE_URL, DEBUG_NO_CLIENT, IS_PRODUCTION } = require('../../env.config');
 const { logger, Database } = require('./utils');
-
-const {
-  PORT,
-  BASE_URL,
-  DEBUG_RESPONSE_DELAY,
-  DEBUG_NO_CLIENT,
-  HTTP_ACCESS_USERNAME,
-  HTTP_ACCESS_PASSWORD,
-} = envConfig;
 
 (async () => {
   const app = express();
-  const nuxt = new Nuxt(nuxtConfig);
-
-  if (HTTP_ACCESS_USERNAME && HTTP_ACCESS_PASSWORD) {
-    app.use(basicAuth({
-      challenge: true,
-      users: { [HTTP_ACCESS_USERNAME]: HTTP_ACCESS_PASSWORD },
-    }));
-  }
-
-  if (DEBUG_RESPONSE_DELAY) {
-    app.use((req, res, next) => setTimeout(next, DEBUG_RESPONSE_DELAY));
-  }
+  const nuxt = new Nuxt(require('../../nuxt.config'));
 
   app.use(bodyParser.json());
-  app.use('/api', require('./api').map(routeFactory => routeFactory(express.Router())));
+
+  app.use(require('./middlewares/http-access')());
+
+  app.use('/api', [
+    require('./middlewares/response-delay')(),
+    require('./middlewares/populate-user')(),
+    ...require('./api').map(routeFactory => routeFactory(express.Router())),
+  ]);
 
   if (DEBUG_NO_CLIENT) {
     logger.info('DEBUG_NO_CLIENT is enabled, skipping client setup');
   } else {
-    if (nuxtConfig.dev) {
+    if (!IS_PRODUCTION) {
       const builder = new Builder(nuxt);
       await builder.build();
     } else {
