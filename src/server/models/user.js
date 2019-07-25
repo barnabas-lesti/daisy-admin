@@ -16,10 +16,6 @@ const userDbSchema = new mongoose.Schema({
   profileImageUrl: {
     type: String,
   },
-  fullName: {
-    type: String,
-    trim: true,
-  },
   nickname: {
     type: String,
     trim: true,
@@ -27,6 +23,11 @@ const userDbSchema = new mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false,
+  },
+  rank: {
+    type: String,
+    enum: [ 'user', 'admin' ],
+    default: 'user',
   },
 }, {
   id: false,

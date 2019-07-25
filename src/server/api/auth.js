@@ -14,7 +14,7 @@ module.exports = (router) => {
           if (await User.comparePasswords(password, userDoc.passwordHash)) {
             const { passwordHash, ...user } = userDoc.toObject();
             try {
-              const accessToken = await jwt.sign({ _id: user._id, email }, envConfig.AUTH_SECRET, {
+              const accessToken = await jwt.sign({ _id: user._id, email, rank: user.rank }, envConfig.AUTH_SECRET, {
                 expiresIn: envConfig.AUTH_ACCESS_TOKEN_EXPIRATION,
               });
               return res.send({ user, accessToken });

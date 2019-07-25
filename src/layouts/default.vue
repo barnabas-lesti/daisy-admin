@@ -26,6 +26,7 @@ export default {
   },
   data () {
     return {
+      isSidebarOpen: false,
       menuItems: this.$store.state.navigation.menuItems.map(item => ({ ...item, label: this.$t(item.labelKey) })),
       socialItems: this.$store.state.navigation.socialItems,
     };
@@ -33,10 +34,6 @@ export default {
   computed: {
     ...mapState('user', [ 'user' ]),
 
-    isSidebarOpen: {
-      get () { return !!this.$route.query['sidebar']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'sidebar': newValue }); },
-    },
     notification: {
       get () { return this.$store.state.notifications.notification; },
       set (newValue) { this.$store.commit('notifications/clear'); },

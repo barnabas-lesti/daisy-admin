@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Ingredient = require('./ingredient');
+
 const recipeSchema = new mongoose.Schema({
   content: {
     description: {
@@ -11,15 +13,16 @@ const recipeSchema = new mongoose.Schema({
       type: String,
     },
   },
-  items: {
+  ingredients: {
     default: [],
     type: [
       {
-        food: {
-          ref: 'Food',
+        ingredient: {
+          ref: 'Ingredient',
           type: mongoose.SchemaTypes.ObjectId,
           autopopulate: true,
         },
+        customIngredient: Ingredient.schema,
         serving: {
           value: {
             default: 0,

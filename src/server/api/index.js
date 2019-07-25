@@ -1,6 +1,6 @@
 module.exports = [
-  require('./food'),
   require('./exercises'),
+  require('./ingredients'),
   require('./recipes'),
   require('./users'),
   require('./auth'),

@@ -9,7 +9,7 @@ const nutrientDescription = {
   value: valueDescription,
 };
 
-const foodSchema = new mongoose.Schema({
+const ingredientSchema = new mongoose.Schema({
   content: {
     description: {
       trim: true,
@@ -23,13 +23,8 @@ const foodSchema = new mongoose.Schema({
   nutrients: {
     calories: nutrientDescription,
     carbs: nutrientDescription,
-    energy: nutrientDescription,
     fat: nutrientDescription,
-    fiber: nutrientDescription,
     protein: nutrientDescription,
-    salt: nutrientDescription,
-    saturatedFat: nutrientDescription,
-    sugar: nutrientDescription,
   },
   serving: {
     unit: {
@@ -37,6 +32,10 @@ const foodSchema = new mongoose.Schema({
       type: String,
     },
     value: valueDescription,
+  },
+  creator: {
+    ref: 'User',
+    type: mongoose.SchemaTypes.ObjectId,
   },
 }, {
   id: false,
@@ -50,11 +49,11 @@ const foodSchema = new mongoose.Schema({
   },
 });
 
-for (const nutrientKey of Object.keys(foodSchema.obj.nutrients)) {
-  foodSchema.virtual(`nutrients.${nutrientKey}.servingMultiplier`).get(function () {
+for (const nutrientKey of Object.keys(ingredientSchema.obj.nutrients)) {
+  ingredientSchema.virtual(`nutrients.${nutrientKey}.servingMultiplier`).get(function () {
     const servingValue = this.serving.value;
     return servingValue === 0 ? 0 : this.nutrients[nutrientKey].value / servingValue;
   });
 }
 
-module.exports = mongoose.model('Food', foodSchema);
+module.exports = mongoose.model('Ingredient', ingredientSchema);
