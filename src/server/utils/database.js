@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const envConfig = require('../../../env.config');
+const { MONGO_URI } = require('../../../env.config');
 const logger = require('./logger');
 
 mongoose.set('useFindAndModify', false);
@@ -9,15 +9,18 @@ mongoose.set('useNewUrlParser', true);
 mongoose.Promise = Promise;
 
 class Database {
-  constructor (mongoUri = envConfig.MONGO_URI) {
+  constructor () {
     this._connection = null;
-    this._mongoUri = mongoUri;
   }
 
   async connect () {
     try {
-      ({ connection: this._connection } = await mongoose.connect(this._mongoUri));
-      logger.success('Connected to MongoDB');
+      if (MONGO_URI) {
+        ({ connection: this._connection } = await mongoose.connect(MONGO_URI));
+        logger.success('Connected to MongoDB');
+      } else {
+        logger.info('MONGO_URI not set, skipping MongoDB connection');
+      }
     } catch (error) {
       logger.error(error);
       throw error;

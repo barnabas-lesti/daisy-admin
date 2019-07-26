@@ -2,6 +2,8 @@ module.exports = {
   verbose: true,
   globalSetup: './test/global-setup.js',
   globalTeardown: './test/global-teardown.js',
+  testEnvironment: 'node',
+
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',

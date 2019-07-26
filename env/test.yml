@@ -1,5 +1,4 @@
 PORT: 7000
 BASE_URL: 'http://localhost:7000'
-MONGO_URI: 'mongodb://localhost/daisy-test'
-
+MONGO_URI: null
 DEBUG_NO_CLIENT: true

@@ -8,17 +8,19 @@ module.exports = (router) => {
   router.route('/auth/sign-in')
     .post(async (req, res) => {
       const { email, password } = req.body;
+      if (!email || !password) return res.sendStatus(400);
+
       try {
+        console.log(User.findOne());
         const userDoc = await User.findOne({ email });
+        console.log(userDoc);
         if (userDoc) {
           if (await User.comparePasswords(password, userDoc.passwordHash)) {
             const { passwordHash, ...user } = userDoc.toObject();
-            try {
-              const accessToken = await jwt.sign({ _id: user._id, email, rank: user.rank }, envConfig.AUTH_SECRET, {
-                expiresIn: envConfig.AUTH_ACCESS_TOKEN_EXPIRATION,
-              });
-              return res.send({ user, accessToken });
-            } catch (jwtError) {}
+            const accessToken = await jwt.sign({ _id: user._id, email, rank: user.rank }, envConfig.AUTH_SECRET, {
+              expiresIn: envConfig.AUTH_ACCESS_TOKEN_EXPIRATION,
+            });
+            return res.send({ user, accessToken });
           }
         }
         return res.sendStatus(401);
