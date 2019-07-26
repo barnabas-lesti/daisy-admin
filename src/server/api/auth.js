@@ -48,6 +48,8 @@ module.exports = (router) => {
   router.route('/auth/send-verification-email')
     .post(async (req, res) => {
       const { email, locale = 'en' } = req.body;
+      if (!email) return res.sendStatus(400);
+
       const expiresInMinutes = envConfig.AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
       const expiresInHours = expiresInMinutes / 60;
       try {

@@ -3,7 +3,9 @@ yarn-debug.log*
 yarn-error.log*
 
 env/local.yml
+env/development.yml
 env/production.yml
 
 .nuxt/
 node_modules/
+coverage/

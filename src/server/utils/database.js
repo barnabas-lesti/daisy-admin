@@ -10,18 +10,28 @@ mongoose.Promise = Promise;
 
 class Database {
   constructor (mongoUri = envConfig.MONGO_URI) {
+    this._connection = null;
     this._mongoUri = mongoUri;
   }
 
   async connect () {
     try {
-      await mongoose.connect(this._mongoUri);
+      ({ connection: this._connection } = await mongoose.connect(this._mongoUri));
       logger.success('Connected to MongoDB');
     } catch (error) {
       logger.error(error);
       throw error;
     }
   };
+
+  async disconnect () {
+    if (this._connection) {
+      await this._connection.close();
+      logger.success('Disconnected from MongoDB');
+    } else {
+      logger.info("No active MongoDB connection, can't disconnect");
+    }
+  }
 }
 
 module.exports = Database;
