@@ -1,4 +1,4 @@
-const app = require('../src/server/app');
+const app = require('../../src/server/app');
 
 beforeAll(async () => {
   await app.start();
