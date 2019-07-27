@@ -1,6 +1,8 @@
 import consola from 'consola';
 import Vue from 'vue';
 
+const consolaWithScope = consola.withScope('daisy:web');
+
 class Logger {
   constructor ($sentry) {
     this.$sentry = $sentry;
@@ -8,7 +10,7 @@ class Logger {
 
   error (error, ...options) {
     this.$sentry && this.$sentry.captureException(error);
-    consola.error({ message: error, ...options });
+    consolaWithScope.error({ message: error, ...options });
   }
 }
 

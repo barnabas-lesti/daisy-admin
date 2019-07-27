@@ -8,17 +8,15 @@ module.exports = (router) => {
   router.route('/auth/sign-in')
     .post(async (req, res) => {
       const { email, password } = req.body;
+      if (!email || !password) return res.sendStatus(400);
+
       try {
         const userDoc = await User.findOne({ email });
         if (userDoc) {
           if (await User.comparePasswords(password, userDoc.passwordHash)) {
             const { passwordHash, ...user } = userDoc.toObject();
-            try {
-              const accessToken = await jwt.sign({ _id: user._id, email, rank: user.rank }, envConfig.AUTH_SECRET, {
-                expiresIn: envConfig.AUTH_ACCESS_TOKEN_EXPIRATION,
-              });
-              return res.send({ user, accessToken });
-            } catch (jwtError) {}
+            const accessToken = await User.createAccessToken(user);
+            return res.send({ user, accessToken });
           }
         }
         return res.sendStatus(401);
@@ -31,10 +29,15 @@ module.exports = (router) => {
   router.route('/auth/verify-auth-token')
     .post(async (req, res) => {
       const { token } = req.body;
+      if (!token) return res.sendStatus(400);
+
       try {
-        const { _id } = await jwt.verify(token, envConfig.AUTH_SECRET);
+        const { email } = await jwt.verify(token, envConfig.AUTH_SECRET);
         try {
-          const user = await User.findById(_id).select('-passwordHash');
+          const doc = await User.findOne({ email });
+          if (!doc) return res.sendStatus(401);
+
+          const { passwordHash, ...user } = doc.toObject();
           return res.send(user);
         } catch (unknownError) {
           logger.error(unknownError);
@@ -48,6 +51,8 @@ module.exports = (router) => {
   router.route('/auth/send-verification-email')
     .post(async (req, res) => {
       const { email, locale = 'en' } = req.body;
+      if (!email) return res.sendStatus(400);
+
       const expiresInMinutes = envConfig.AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
       const expiresInHours = expiresInMinutes / 60;
       try {

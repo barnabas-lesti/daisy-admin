@@ -1,4 +1,4 @@
-const consola = require('consola');
+const consola = require('consola').withScope('daisy:api');
 const Sentry = require('@sentry/node');
 
 const envConfig = require('../../../env.config');
@@ -13,6 +13,7 @@ if (dsn) {
 
 class Logger {
   success (message, ...options) { consola.success({ message, ...options }); }
+  log (message, ...options) { consola.log({ message, ...options }); }
   info (message, ...options) { consola.info({ message, ...options }); }
   error (error, ...options) {
     Sentry.captureException(error);

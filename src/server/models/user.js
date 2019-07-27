@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
-const envConfig = require('../../../env.config');
+const { AUTH_SALT_ROUNDS, AUTH_SECRET, AUTH_ACCESS_TOKEN_EXPIRATION } = require('../../../env.config');
 
 const userDbSchema = new mongoose.Schema({
   email: {
@@ -35,14 +36,23 @@ const userDbSchema = new mongoose.Schema({
   toObject: { versionKey: false },
 });
 
-userDbSchema.statics.hashPassword = async function (password) {
-  const passwordHash = await bcrypt.hash(`${password}`, envConfig.AUTH_SALT_ROUNDS);
+userDbSchema.statics.hashPassword = async (password) => {
+  const passwordHash = await bcrypt.hash(`${password}`, AUTH_SALT_ROUNDS);
   return passwordHash;
 };
 
-userDbSchema.statics.comparePasswords = async function (password, passwordHash) {
+userDbSchema.statics.comparePasswords = async (password, passwordHash) => {
   const result = await bcrypt.compare(`${password}`, passwordHash);
   return result;
+};
+
+userDbSchema.statics.createAccessToken = async ({ _id, email, rank }) => {
+  const accessToken = await jwt.sign(
+    { _id, email, rank },
+    AUTH_SECRET,
+    { expiresIn: AUTH_ACCESS_TOKEN_EXPIRATION }
+  );
+  return accessToken;
 };
 
 module.exports = mongoose.model('User', userDbSchema);
