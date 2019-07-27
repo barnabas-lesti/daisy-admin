@@ -2,9 +2,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-env/local.yml
-env/development.yml
-env/production.yml
+env/*
+!env/default.yml
 
 .nuxt/
 node_modules/
