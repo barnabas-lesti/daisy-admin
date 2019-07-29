@@ -20,6 +20,8 @@ describe('auth', () => {
   });
 
   describe('POST /api/auth/send-registration-email', () => {
+    test.todo('should return with 403 if registration is disabled');
+
     test('should return with 400 if email is not provided', async () => {
       try {
         await http.post('/api/auth/send-registration-email', { nickname: 'nicky', password: '123456' });
@@ -45,10 +47,13 @@ describe('auth', () => {
     });
 
     test.todo('should return with 404 if email could not be sent');
-    test.todo('should return with 200 and send an email to the given address with a registration token');
+    test.todo('should return with 200 and send an email in english to the given address with a registration token');
+    test.todo('if locale is provided should return with 200 and send an email in given locale to the given address with a registration token');
   });
 
   describe('POST /api/auth/register', () => {
+    test.todo('should return with 403 if registration is disabled');
+
     test('should return with 400 if token is not provided', async () => {
       try {
         await http.post('/api/auth/register', {});
@@ -90,7 +95,7 @@ describe('auth', () => {
     });
 
 
-    test('should return with 401 if user is not found', async () => {
+    test('should return with 401 if user was not found', async () => {
       try {
         await http.post('/api/auth/sign-in', { email: 'foo.bar@test.com', password: '123456' });
       } catch (error) {

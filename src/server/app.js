@@ -1,9 +1,13 @@
+const path = require('path');
+const fs = require('fs-extra');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Nuxt, Builder } = require('nuxt');
 
 const { PORT, BASE_URL, DEBUG_NO_CLIENT, IS_PRODUCTION } = require('../../env.config');
 const { logger, Database } = require('./utils');
+
+const TEMP_DIR_PATH = path.join(__dirname, '../../temp');
 
 class App {
   constructor () {
@@ -34,6 +38,8 @@ class App {
       this._app.use(this._nuxt.render);
     }
 
+    await this._createTempDir();
+
     await this._db.connect();
     this._server = await this._app.listen(PORT);
     const { address } = this._server.address();
@@ -48,6 +54,19 @@ class App {
     } else {
       logger.info("No running servers, can't exit");
     }
+    await this._removeTempDir();
+  }
+
+  async _createTempDir () {
+    if (await fs.pathExists(TEMP_DIR_PATH)) await fs.remove(TEMP_DIR_PATH);
+
+    await fs.ensureDir(TEMP_DIR_PATH);
+    logger.success('TEMP directory created (<rootDir>/temp)');
+  }
+
+  async _removeTempDir () {
+    if (await fs.pathExists(TEMP_DIR_PATH)) await fs.remove(TEMP_DIR_PATH);
+    logger.success('TEMP directory removed (<rootDir>/temp)');
   }
 }
 
