@@ -12,6 +12,8 @@ const configLib = require('config');
 module.exports = {
   NODE_ENV: process.env.NODE_ENV,
   IS_PRODUCTION: process.env.NODE_ENV === 'production',
+  TEMP_FOLDER_PATH: path.join(__dirname, './temp'),
+
   PORT: process.env.PORT || configLib.get('PORT'),
   BASE_URL: process.env.BASE_URL || configLib.get('BASE_URL'),
   MONGO_URI: process.env.MONGO_URI || configLib.get('MONGO_URI'),
@@ -21,7 +23,7 @@ module.exports = {
   AUTH_ACCESS_TOKEN_EXPIRATION: process.env.AUTH_ACCESS_TOKEN_EXPIRATION || configLib.get('AUTH_ACCESS_TOKEN_EXPIRATION'),
   AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES: process.env.AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES || configLib.get('AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES'),
   AUTH_SALT_ROUNDS: process.env.AUTH_SALT_ROUNDS || configLib.get('AUTH_SALT_ROUNDS'),
-  AUTH_REGISTRATION_DISABLED: process.env.AUTH_REGISTRATION_DISABLED || configLib.get('AUTH_REGISTRATION_DISABLED'),
+  AUTH_REGISTRATION_DISABLED: process.env.AUTH_REGISTRATION_DISABLED !== undefined ? process.env.AUTH_REGISTRATION_DISABLED : configLib.get('AUTH_REGISTRATION_DISABLED'),
   AUTH_HTTP_ACCESS_USERNAME: process.env.AUTH_HTTP_ACCESS_USERNAME || configLib.get('AUTH_HTTP_ACCESS_USERNAME'),
   AUTH_HTTP_ACCESS_PASSWORD: process.env.AUTH_HTTP_ACCESS_PASSWORD || configLib.get('AUTH_HTTP_ACCESS_PASSWORD'),
 

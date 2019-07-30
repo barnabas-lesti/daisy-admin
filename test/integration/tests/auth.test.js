@@ -1,10 +1,15 @@
+const path = require('path');
+const fs = require('fs-extra');
 const jwt = require('jsonwebtoken');
 
 const http = require('../http');
 const { users } = require('../mocks/users.json');
 const [ mockUser ] = users;
+const envConfig = require('../../../env.config');
 
 const User = require('../../../src/server/models/user');
+
+const EMAIL_FOLDER_PATH = path.join(envConfig.TEMP_FOLDER_PATH, './email');
 
 describe('auth', () => {
   beforeAll(async () => {
@@ -20,7 +25,16 @@ describe('auth', () => {
   });
 
   describe('POST /api/auth/send-registration-email', () => {
-    test.todo('should return with 403 if registration is disabled');
+    test('should return with 403 if registration is disabled', async () => {
+      const originalEnvValue = envConfig.AUTH_REGISTRATION_DISABLED;
+      envConfig.AUTH_REGISTRATION_DISABLED = true;
+      try {
+        await http.post('/api/auth/send-registration-email', {});
+      } catch (error) {
+        expect(error.response.status).toBe(403);
+      }
+      envConfig.AUTH_REGISTRATION_DISABLED = originalEnvValue;
+    });
 
     test('should return with 400 if email is not provided', async () => {
       try {
@@ -46,9 +60,20 @@ describe('auth', () => {
       }
     });
 
-    test.todo('should return with 404 if email could not be sent');
-    test.todo('should return with 200 and send an email in english to the given address with a registration token');
+    test('should return with 200 and send an email in english to the given address with a registration token', async () => {
+      try {
+        const locale = 'en';
+        await http.post('/api/auth/send-registration-email', { ...mockUser, locale });
+        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}.html`), 'utf-8');
+        expect(content).toMatch(/Locale: en/g);
+        expect(content).toMatch(/<a[^>]* href="([^"]*)"/g);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      }
+    });
     test.todo('if locale is provided should return with 200 and send an email in given locale to the given address with a registration token');
+
+    test.todo('should return with 404 if email could not be sent');
   });
 
   describe('POST /api/auth/register', () => {
