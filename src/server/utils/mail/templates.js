@@ -16,7 +16,7 @@ const templates = {
           <body>
             Hi there,<br>
             <br>
-            To finish your registration click <a href="${link}" target="_blank">here</a>.<br>
+            To finish your registration click <a href="${link}" target="_blank" data-registration-link>here</a>.<br>
             <br>
             <i>The above link expires in ${expiresInMinutes} minutes from the sending of this mail.</i><br>
             <br>
@@ -37,7 +37,7 @@ const templates = {
         <body>
           Hi there,<br>
           <br>
-          To reset your password, click <a href="${link}" target="_blank">here</a><br>
+          To reset your password, click <a href="${link}" target="_blank" data-password-reset-link>here</a><br>
           <br>
           <i>The above link expires in ${expiresInMinutes} minutes from the sending of this mail.</i><br>
           <br>

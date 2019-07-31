@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const jwt = require('jsonwebtoken');
+const { JSDOM } = require('jsdom');
 
 const http = require('../http');
 const { users } = require('../mocks/users.json');
@@ -60,27 +61,55 @@ describe('auth', () => {
       }
     });
 
-    test('should return with 200 and send an email to the given address with a registration token', async () => {
+    test('should return with 200 and send a Registration email to the given address', async () => {
       try {
         const locale = 'en';
         await http.post('/api/auth/send-registration-email', { ...mockUser, locale });
-        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}`), 'utf-8');
-        expect(content).toMatch(/lang="en"/g);
-        expect(content).toMatch(/<a[^>]* href="([^"]*)"/g);
+        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}.html`), 'utf-8');
+        expect(content).toBeDefined();
       } catch (error) {
         expect(error).toBeUndefined();
       }
     });
 
-    test('should return with 200 and send an email in given locale if locale is provided', async () => {
-      try {
-        const locale = 'hu';
-        await http.post('/api/auth/send-registration-email', { ...mockUser, locale });
-        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}`), 'utf-8');
-        expect(content).toMatch(/lang="hu"/g);
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+    describe('Registration email', () => {
+      test('should be in english if no "locale" was provided', async () => {
+        try {
+          const locale = 'en';
+          await http.post('/api/auth/send-registration-email', { ...mockUser });
+          const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}.html`), 'utf-8');
+          const { window: { document } } = new JSDOM(content);
+          expect(document.querySelector('html').getAttribute('lang')).toMatch('en');
+        } catch (error) {
+          expect(error).toBeUndefined();
+        }
+      });
+
+      test('should be in the language that was requested with the "locale"', async () => {
+        try {
+          const locale = 'hu';
+          await http.post('/api/auth/send-registration-email', { ...mockUser, locale });
+          const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}.html`), 'utf-8');
+          const { window: { document } } = new JSDOM(content);
+          expect(document.querySelector('html').getAttribute('lang')).toMatch('hu');
+        } catch (error) {
+          expect(error).toBeUndefined();
+        }
+      });
+
+      test('should contain a link pointing to the token decorated registration page', async () => {
+        try {
+          const locale = 'en';
+          await http.post('/api/auth/send-registration-email', { ...mockUser, locale });
+          const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}.html`), 'utf-8');
+          const { window: { document } } = new JSDOM(content);
+          const linkElement = document.querySelector('a[data-registration-link]');
+          expect(linkElement).not.toBeNull();
+          expect(linkElement.getAttribute('href')).toMatch(/register\?token=?/g);
+        } catch (error) {
+          expect(error).toBeUndefined();
+        }
+      });
     });
   });
 
@@ -268,27 +297,55 @@ describe('auth', () => {
       }
     });
 
-    test('should return with 200 and send an email to the given address with a reset token', async () => {
+    test('should return with 200 and send a Password reset email to the given address', async () => {
       try {
         const locale = 'en';
         await http.post('/api/auth/send-password-reset-email', { email: mockUser.email });
-        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}`), 'utf-8');
-        expect(content).toMatch(/lang="en"/g);
-        expect(content).toMatch(/<a[^>]* href="([^"]*)"/g);
+        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}.html`), 'utf-8');
+        expect(content).toBeDefined();
       } catch (error) {
         expect(error).toBeUndefined();
       }
     });
 
-    test('should return with 200 and send an email in given locale if locale is provided', async () => {
-      try {
-        const locale = 'hu';
-        await http.post('/api/auth/send-password-reset-email', { email: mockUser.email, locale });
-        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}`), 'utf-8');
-        expect(content).toMatch(/lang="hu"/g);
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+    describe('Password reset email', () => {
+      test('should be in english if no "locale" was provided', async () => {
+        try {
+          const locale = 'en';
+          await http.post('/api/auth/send-password-reset-email', { ...mockUser });
+          const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}.html`), 'utf-8');
+          const { window: { document } } = new JSDOM(content);
+          expect(document.querySelector('html').getAttribute('lang')).toMatch('en');
+        } catch (error) {
+          expect(error).toBeUndefined();
+        }
+      });
+
+      test('should be in the language that was requested with the "locale"', async () => {
+        try {
+          const locale = 'hu';
+          await http.post('/api/auth/send-password-reset-email', { ...mockUser, locale });
+          const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}.html`), 'utf-8');
+          const { window: { document } } = new JSDOM(content);
+          expect(document.querySelector('html').getAttribute('lang')).toMatch('hu');
+        } catch (error) {
+          expect(error).toBeUndefined();
+        }
+      });
+
+      test('should contain a link pointing to the token decorated password reset page', async () => {
+        try {
+          const locale = 'en';
+          await http.post('/api/auth/send-password-reset-email', { ...mockUser });
+          const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}.html`), 'utf-8');
+          const { window: { document } } = new JSDOM(content);
+          const linkElement = document.querySelector('a[data-password-reset-link]');
+          expect(linkElement).not.toBeNull();
+          expect(linkElement.getAttribute('href')).toMatch(/reset-password\?token=?/g);
+        } catch (error) {
+          expect(error).toBeUndefined();
+        }
+      });
     });
   });
 
