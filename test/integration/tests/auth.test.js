@@ -60,24 +60,41 @@ describe('auth', () => {
       }
     });
 
-    test('should return with 200 and send an email in english to the given address with a registration token', async () => {
+    test('should return with 200 and send an email to the given address with a registration token', async () => {
       try {
         const locale = 'en';
         await http.post('/api/auth/send-registration-email', { ...mockUser, locale });
-        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}.html`), 'utf-8');
-        expect(content).toMatch(/Locale: en/g);
+        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}`), 'utf-8');
+        expect(content).toMatch(/lang="en"/g);
         expect(content).toMatch(/<a[^>]* href="([^"]*)"/g);
       } catch (error) {
         expect(error).toBeUndefined();
       }
     });
-    test.todo('if locale is provided should return with 200 and send an email in given locale to the given address with a registration token');
 
-    test.todo('should return with 404 if email could not be sent');
+    test('should return with 200 and send an email in given locale if locale is provided', async () => {
+      try {
+        const locale = 'hu';
+        await http.post('/api/auth/send-registration-email', { ...mockUser, locale });
+        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_registration_${locale}`), 'utf-8');
+        expect(content).toMatch(/lang="hu"/g);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      }
+    });
   });
 
   describe('POST /api/auth/register', () => {
-    test.todo('should return with 403 if registration is disabled');
+    test('should return with 403 if registration is disabled', async () => {
+      const originalEnvValue = envConfig.AUTH_REGISTRATION_DISABLED;
+      envConfig.AUTH_REGISTRATION_DISABLED = true;
+      try {
+        await http.post('/api/auth/register', {});
+      } catch (error) {
+        expect(error.response.status).toBe(403);
+      }
+      envConfig.AUTH_REGISTRATION_DISABLED = originalEnvValue;
+    });
 
     test('should return with 400 if token is not provided', async () => {
       try {
@@ -96,10 +113,56 @@ describe('auth', () => {
       }
     });
 
-    test.todo('should return with 400 if token does not contain the email');
-    test.todo('should return with 400 if token does not contain the password');
-    test.todo('should return with 400 if token does not contain the nickname');
-    test.todo('should return with 200 and register a new user');
+    test('should return with 400 if token does not contain the email', async () => {
+      try {
+        const token = await User.createRegistrationToken({ password: mockUser.password, nickname: mockUser.nickname });
+        await http.post('/api/auth/register', { token });
+      } catch (error) {
+        expect(error.response.status).toBe(400);
+      }
+    });
+
+    test('should return with 400 if token does not contain the password', async () => {
+      try {
+        const token = await User.createRegistrationToken({ email: mockUser.email, nickname: mockUser.nickname });
+        await http.post('/api/auth/register', { token });
+      } catch (error) {
+        expect(error.response.status).toBe(400);
+      }
+    });
+
+    test('should return with 400 if token does not contain the nickname', async () => {
+      try {
+        const token = await User.createRegistrationToken({ email: mockUser.email, password: mockUser.password });
+        await http.post('/api/auth/register', { token });
+      } catch (error) {
+        expect(error.response.status).toBe(400);
+      }
+    });
+
+    test('should return with 409 if the email address is already taken', async () => {
+      try {
+        const token = await User.createRegistrationToken(mockUser);
+        await http.post('/api/auth/register', { token });
+      } catch (error) {
+        expect(error.response.status).toBe(409);
+      }
+    });
+
+    test('should return with 200 register a new user and return it without the "passwordHash"', async () => {
+      try {
+        const newUser = { email: 'some.random.dude@test.com', password: '123456', nickname: 'RandomDude' };
+        const token = await User.createRegistrationToken(newUser);
+        const { status, data } = await http.post('/api/auth/register', { token });
+        const createdUser = await User.findOne({ email: newUser.email });
+        expect(createdUser).not.toBeNull();
+        expect(data).toBeDefined();
+        expect(data.passwordHash).not.toBeDefined();
+        expect(status).toBe(200);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      }
+    });
   });
 
   describe('POST /api/auth/sign-in', () => {
@@ -197,8 +260,36 @@ describe('auth', () => {
       }
     });
 
-    test.todo('should return with 404 if user with given email is not registered');
-    test.todo('should return with 200 and send an email to the given address with a reset token');
+    test('should return with 404 if user with given email is not registered', async () => {
+      try {
+        await http.post('/api/auth/send-password-reset-email', { email: 'not.existing.user@test.com' });
+      } catch (error) {
+        expect(error.response.status).toBe(404);
+      }
+    });
+
+    test('should return with 200 and send an email to the given address with a reset token', async () => {
+      try {
+        const locale = 'en';
+        await http.post('/api/auth/send-password-reset-email', { email: mockUser.email });
+        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}`), 'utf-8');
+        expect(content).toMatch(/lang="en"/g);
+        expect(content).toMatch(/<a[^>]* href="([^"]*)"/g);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      }
+    });
+
+    test('should return with 200 and send an email in given locale if locale is provided', async () => {
+      try {
+        const locale = 'hu';
+        await http.post('/api/auth/send-password-reset-email', { email: mockUser.email, locale });
+        const content = await fs.readFile(path.join(EMAIL_FOLDER_PATH, `${mockUser.email}_passwordReset_${locale}`), 'utf-8');
+        expect(content).toMatch(/lang="hu"/g);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      }
+    });
   });
 
   describe('POST /api/auth/reset-password', () => {
@@ -227,7 +318,36 @@ describe('auth', () => {
       }
     });
 
-    test.todo('should return with 400 if token does not contain the email');
-    test.todo('should return with 200 and update the users password');
+    test('should return with 400 if token does not contain the email', async () => {
+      try {
+        const token = await User.createPasswordResetToken({});
+        await http.post('/api/auth/reset-password', { password: '123456', token });
+      } catch (error) {
+        expect(error.response.status).toBe(400);
+      }
+    });
+
+    test('should return with 404 if user with given email is not registered', async () => {
+      try {
+        const token = await User.createPasswordResetToken({ email: 'not.here@gmail.com' });
+        await http.post('/api/auth/reset-password', { password: '123456', token });
+      } catch (error) {
+        expect(error.response.status).toBe(404);
+      }
+    });
+
+    test('should return with 200 and update the users password', async () => {
+      try {
+        const newPassword = 'notTheOriginal';
+        const token = await User.createPasswordResetToken({ email: mockUser.email });
+        const { status } = await http.post('/api/auth/reset-password', { password: newPassword, token });
+        const updatedUser = await User.findOne({ email: mockUser.email });
+        expect(await User.comparePasswords(mockUser.password, updatedUser.passwordHash)).toBe(false);
+        expect(await User.comparePasswords(newPassword, updatedUser.passwordHash)).toBe(true);
+        expect(status).toBe(200);
+      } catch (error) {
+        expect(error).toBeUndefined();
+      }
+    });
   });
 });
