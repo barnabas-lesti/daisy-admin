@@ -36,8 +36,8 @@ class App {
     }
 
     await this._createTempDir();
+    this._db.connect();
 
-    await this._db.connect();
     this._server = await this._app.listen(PORT);
     const { address } = this._server.address();
     logger.success(`Server running at http://${address}:${PORT} (BASE_URL: ${BASE_URL})`);
