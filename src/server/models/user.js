@@ -26,10 +26,6 @@ const userDbSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
   rank: {
     type: String,
     enum: [ 'user', 'admin' ],

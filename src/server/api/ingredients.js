@@ -15,6 +15,9 @@ module.exports = (router) => {
     .put(async (req, res) => {
       if (!req.user) return res.sendStatus(401);
 
+      const { content = {} } = req.body;
+      if (content.name) return res.sendStatus(400);
+
       const { _id } = await Ingredient.create({ ...req.body, creator: { _id: req.user._id } });
       const doc = await Ingredient.findById(_id).populate('creator', '_id, nickname');
       return res.send(doc);

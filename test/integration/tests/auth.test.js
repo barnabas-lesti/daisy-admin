@@ -1,20 +1,12 @@
-const path = require('path');
-const fs = require('fs-extra');
 const jwt = require('jsonwebtoken');
 const { JSDOM } = require('jsdom');
 
-const http = require('../http');
 const envConfig = require('../../../env.config');
 const User = require('../../../src/server/models/user');
+const { http, readEmailFile, createFakeUser } = require('../utils');
 
-const readEmailFile = async (email, type, locale) => {
-  const emailFolderPath = path.join(envConfig.TEMP_FOLDER_PATH, './email');
-  const content = await fs.readFile(path.join(emailFolderPath, `${email}_${type}_${locale}.html`), 'utf-8');
-  return content;
-};
-
-const existingUser = { email: 'existing@mail.com', password: 'exist1234', nickname: 'Existing' };
-const notExistingUser = { email: 'not.existing@mail.com', password: 'n.exist1234', nickname: 'Not Existing' };
+const existingUser = createFakeUser();
+const notExistingUser = createFakeUser();
 
 describe('auth', () => {
   beforeAll(async () => {
@@ -77,8 +69,9 @@ describe('auth', () => {
     });
 
     test('should respond with 200 and send a Registration email to the given "email"', async () => {
-      await http.post('/api/auth/send-registration-email', { ...notExistingUser });
+      const { status } = await http.post('/api/auth/send-registration-email', { ...notExistingUser });
       const content = await readEmailFile(notExistingUser.email, 'registration', 'en');
+      expect(status).toBe(200);
       expect(content).toBeDefined();
     });
   });
@@ -153,17 +146,13 @@ describe('auth', () => {
     });
 
     test('should respond with 200 register a new user and return it without the "passwordHash"', async () => {
-      try {
-        const token = await User.createRegistrationToken(notExistingUser);
-        const { status, data } = await http.post('/api/auth/register', { token });
-        const createdUser = await User.findOne({ email: notExistingUser.email });
-        expect(createdUser).not.toBeNull();
-        expect(data).toBeDefined();
-        expect(data.passwordHash).not.toBeDefined();
-        expect(status).toBe(200);
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      const token = await User.createRegistrationToken(notExistingUser);
+      const { status, data } = await http.post('/api/auth/register', { token });
+      const createdUser = await User.findOne({ email: notExistingUser.email });
+      expect(status).toBe(200);
+      expect(createdUser).not.toBeNull();
+      expect(data).toBeDefined();
+      expect(data.passwordHash).not.toBeDefined();
     });
   });
 
@@ -202,15 +191,11 @@ describe('auth', () => {
     });
 
     test('should respond with 200, send the "user" and "accessToken" in the response', async () => {
-      try {
-        const { email, password } = existingUser;
-        const { status, data: { user, accessToken } } = await http.post('/api/auth/sign-in', { email, password });
-        expect(status).toBe(200);
-        expect(user).toBeDefined();
-        expect(accessToken).toBeDefined();
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      const { email, password } = existingUser;
+      const { status, data: { user, accessToken } } = await http.post('/api/auth/sign-in', { email, password });
+      expect(status).toBe(200);
+      expect(user).toBeDefined();
+      expect(accessToken).toBeDefined();
     });
   });
 
@@ -242,14 +227,10 @@ describe('auth', () => {
     });
 
     test('should respond with 200 if "token" is valid and return the user', async () => {
-      try {
-        const token = await User.createAccessToken(existingUser);
-        const { status, data } = await http.post('/api/auth/verify-access-token', { token });
-        expect(status).toBe(200);
-        expect(data).toBeDefined();
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      const token = await User.createAccessToken(existingUser);
+      const { status, data } = await http.post('/api/auth/verify-access-token', { token });
+      expect(status).toBe(200);
+      expect(data).toBeDefined();
     });
   });
 
@@ -271,13 +252,10 @@ describe('auth', () => {
     });
 
     test('should respond with 200 and send a Password reset email to the given "email"', async () => {
-      try {
-        await http.post('/api/auth/send-password-reset-email', { email: existingUser.email });
-        const content = await readEmailFile(existingUser.email, 'passwordReset', 'en');
-        expect(content).toBeDefined();
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      const { status } = await http.post('/api/auth/send-password-reset-email', { email: existingUser.email });
+      const content = await readEmailFile(existingUser.email, 'passwordReset', 'en');
+      expect(status).toBe(200);
+      expect(content).toBeDefined();
     });
   });
 
@@ -326,93 +304,65 @@ describe('auth', () => {
     });
 
     test('should respond with 200 and update the users password', async () => {
-      try {
-        const newPassword = 'newPassword1234';
-        const token = await User.createPasswordResetToken({ email: existingUser.email });
-        const { status } = await http.post('/api/auth/reset-password', { password: newPassword, token });
-        const updatedUser = await User.findOne({ email: existingUser.email });
-        expect(await User.comparePasswords(existingUser.password, updatedUser.passwordHash)).toBe(false);
-        expect(await User.comparePasswords(newPassword, updatedUser.passwordHash)).toBe(true);
-        expect(status).toBe(200);
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      const newPassword = 'newPassword1234';
+      const token = await User.createPasswordResetToken({ email: existingUser.email });
+      const { status } = await http.post('/api/auth/reset-password', { password: newPassword, token });
+      const updatedUser = await User.findOne({ email: existingUser.email });
+      expect(status).toBe(200);
+      expect(await User.comparePasswords(existingUser.password, updatedUser.passwordHash)).toBe(false);
+      expect(await User.comparePasswords(newPassword, updatedUser.passwordHash)).toBe(true);
     });
   });
 
   describe('Registration email', () => {
     test('should be in english if no "locale" was provided', async () => {
-      try {
-        await http.post('/api/auth/send-registration-email', { ...notExistingUser });
-        const content = await readEmailFile(notExistingUser.email, 'registration', 'en');
-        const { window: { document } } = new JSDOM(content);
-        expect(document.querySelector('html').getAttribute('lang')).toMatch('en');
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      await http.post('/api/auth/send-registration-email', { ...notExistingUser });
+      const content = await readEmailFile(notExistingUser.email, 'registration', 'en');
+      const { window: { document } } = new JSDOM(content);
+      expect(document.querySelector('html').getAttribute('lang')).toMatch('en');
     });
 
     test('should be in the language that was requested with the "locale"', async () => {
-      try {
-        const locale = 'hu';
-        await http.post('/api/auth/send-registration-email', { ...notExistingUser, locale });
-        const content = await readEmailFile(notExistingUser.email, 'registration', locale);
-        const { window: { document } } = new JSDOM(content);
-        expect(document.querySelector('html').getAttribute('lang')).toMatch('hu');
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      const locale = 'hu';
+      await http.post('/api/auth/send-registration-email', { ...notExistingUser, locale });
+      const content = await readEmailFile(notExistingUser.email, 'registration', locale);
+      const { window: { document } } = new JSDOM(content);
+      expect(document.querySelector('html').getAttribute('lang')).toMatch('hu');
     });
 
     test('should contain a link pointing to the token decorated registration page', async () => {
-      try {
-        await http.post('/api/auth/send-registration-email', { ...notExistingUser });
-        const content = await readEmailFile(notExistingUser.email, 'registration', 'en');
-        const { window: { document } } = new JSDOM(content);
-        const linkElement = document.querySelector('a[data-registration-link]');
-        expect(linkElement).not.toBeNull();
-        expect(linkElement.getAttribute('href')).toMatch(/register\?token=?/g);
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      await http.post('/api/auth/send-registration-email', { ...notExistingUser });
+      const content = await readEmailFile(notExistingUser.email, 'registration', 'en');
+      const { window: { document } } = new JSDOM(content);
+      const linkElement = document.querySelector('a[data-registration-link]');
+      expect(linkElement).not.toBeNull();
+      expect(linkElement.getAttribute('href')).toMatch(/register\?token=?/g);
     });
   });
 
   describe('Password reset email', () => {
     test('should be in english if no "locale" was provided', async () => {
-      try {
-        await http.post('/api/auth/send-password-reset-email', { ...existingUser });
-        const content = await readEmailFile(existingUser.email, 'passwordReset', 'en');
-        const { window: { document } } = new JSDOM(content);
-        expect(document.querySelector('html').getAttribute('lang')).toMatch('en');
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      await http.post('/api/auth/send-password-reset-email', { ...existingUser });
+      const content = await readEmailFile(existingUser.email, 'passwordReset', 'en');
+      const { window: { document } } = new JSDOM(content);
+      expect(document.querySelector('html').getAttribute('lang')).toMatch('en');
     });
 
     test('should be in the language that was requested with the "locale"', async () => {
-      try {
-        const locale = 'hu';
-        await http.post('/api/auth/send-password-reset-email', { ...existingUser, locale });
-        const content = await readEmailFile(existingUser.email, 'passwordReset', locale);
-        const { window: { document } } = new JSDOM(content);
-        expect(document.querySelector('html').getAttribute('lang')).toMatch('hu');
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      const locale = 'hu';
+      await http.post('/api/auth/send-password-reset-email', { ...existingUser, locale });
+      const content = await readEmailFile(existingUser.email, 'passwordReset', locale);
+      const { window: { document } } = new JSDOM(content);
+      expect(document.querySelector('html').getAttribute('lang')).toMatch('hu');
     });
 
     test('should contain a link pointing to the token decorated password reset page', async () => {
-      try {
-        await http.post('/api/auth/send-password-reset-email', { ...existingUser });
-        const content = await readEmailFile(existingUser.email, 'passwordReset', 'en');
-        const { window: { document } } = new JSDOM(content);
-        const linkElement = document.querySelector('a[data-password-reset-link]');
-        expect(linkElement).not.toBeNull();
-        expect(linkElement.getAttribute('href')).toMatch(/reset-password\?token=?/g);
-      } catch (error) {
-        expect(error).toBeUndefined();
-      }
+      await http.post('/api/auth/send-password-reset-email', { ...existingUser });
+      const content = await readEmailFile(existingUser.email, 'passwordReset', 'en');
+      const { window: { document } } = new JSDOM(content);
+      const linkElement = document.querySelector('a[data-password-reset-link]');
+      expect(linkElement).not.toBeNull();
+      expect(linkElement.getAttribute('href')).toMatch(/reset-password\?token=?/g);
     });
   });
 });
