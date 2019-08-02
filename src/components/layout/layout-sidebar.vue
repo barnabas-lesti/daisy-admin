@@ -7,12 +7,14 @@
 
     v-list.pt-0
       v-list-group(v-if='user', no-action)
-        template(v-slot:activator).layout-header_user
+        template(v-slot:activator)
           v-list-tile(avatar)
             v-list-tile-avatar
               img(:src="user.profileImageUrl || '/images/no-profile-picture.png'")
             v-list-tile-content
               v-list-tile-title {{ user.nickname || user.email }}
+        v-list-tile(:to="{ name: 'locale-profile' }", nuxt)
+          v-list-tile-content {{ $t('profile') }}
         v-list-tile(@click="$emit('sign-out')")
           v-list-tile-content {{ $t('signOut') }}
       template(v-else)
@@ -56,6 +58,10 @@ export default {
 </script>
 
 <style lang="stylus">
+.layout-sidebar
+  &_sign-out-icon
+    transform rotate(180deg)
+
 .v-list__group__header--active
   background: initial !important;
 
@@ -69,6 +75,7 @@ export default {
 en:
   brand: Daisy
   signIn: Sign in
+  profile: Profile
   register: Register
   signOut: Sign out
 </i18n>

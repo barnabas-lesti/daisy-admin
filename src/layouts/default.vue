@@ -1,6 +1,6 @@
 <template lang="pug">
   v-app
-    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true', @sign-out='signOut()')
+    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true')
     layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems', :user='user', @sign-out='signOut()')
     v-content
       v-container(grid-list-xl)
