@@ -32,7 +32,7 @@ class Database {
       await this._connection.close();
       logger.success('Disconnected from MongoDB');
     } else {
-      logger.info("No active MongoDB connection, can't disconnect");
+      logger.info('No active MongoDB connection, can\'t disconnect');
     }
   }
 }

@@ -3,7 +3,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Nuxt, Builder } = require('nuxt');
 
-const { PORT, BASE_URL, DEBUG_NO_CLIENT, IS_PRODUCTION, TEMP_FOLDER_PATH } = require('../../env.config');
+const {
+  NODE_ENV,
+  PORT,
+  BASE_URL,
+  DEBUG_NO_CLIENT,
+  IS_PRODUCTION,
+  TEMP_FOLDER_PATH,
+  AUTH_HTTP_ACCESS_USERNAME,
+  AUTH_HTTP_ACCESS_PASSWORD,
+  DEBUG_RESPONSE_DELAY,
+} = require('../../env.config');
 const { logger, Database } = require('./utils');
 
 class App {
@@ -14,15 +24,26 @@ class App {
     this._db = new Database();
 
     this._app.use(bodyParser.json());
-    this._app.use(require('./middlewares/http-access')());
+
+    if (AUTH_HTTP_ACCESS_USERNAME && AUTH_HTTP_ACCESS_PASSWORD) {
+      this._app.use(require('./middlewares/http-access')());
+      logger.info('Using http-access middleware');
+    }
+
+    if (DEBUG_RESPONSE_DELAY) {
+      this._app.use('/api', require('./middlewares/debug-response-delay')());
+      logger.info(`Using debug-response-delay middleware on /api (timeout: ${DEBUG_RESPONSE_DELAY})`);
+    }
+
     this._app.use('/api', [
-      require('./middlewares/response-delay')(),
       require('./middlewares/populate-user')(),
       ...require('./api').map(routeFactory => routeFactory(express.Router())),
     ]);
   }
 
   async start () {
+    logger.info(`Using configuration: "${NODE_ENV}"`);
+
     if (DEBUG_NO_CLIENT) {
       logger.info('DEBUG_NO_CLIENT is enabled, skipping client setup');
     } else {

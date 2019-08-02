@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { JSDOM } = require('jsdom');
 
 const envConfig = require('../../../env.config');
-const User = require('../../../src/server/models/user');
+const { User } = require('../../../src/server/models');
 const { http, readEmailFile, createFakeUser } = require('../utils');
 
 const existingUser = createFakeUser();

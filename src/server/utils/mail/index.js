@@ -19,7 +19,7 @@ if (EMAIL_MAILGUN_API_KEY && EMAIL_MAILGUN_DOMAIN) {
   });
   logger.success('Mailgun setup successful');
 } else {
-  logger.info('Mailgun "apiKey" and/or "domain" not set, email sending prevented');
+  logger.info('EMAIL_MAILGUN_API_KEY and/or EMAIL_MAILGUN_DOMAIN not set, skipping Mailgun setup');
 }
 
 class Mail {

@@ -16,7 +16,7 @@ module.exports = (router) => {
       if (!req.user) return res.sendStatus(401);
 
       const { content = {} } = req.body;
-      if (content.name) return res.sendStatus(400);
+      if (!content.name) return res.sendStatus(400);
 
       const { _id } = await Ingredient.create({ ...req.body, creator: { _id: req.user._id } });
       const doc = await Ingredient.findById(_id).populate('creator', '_id, nickname');
@@ -42,21 +42,22 @@ module.exports = (router) => {
       const doc = await Ingredient.findById(_id);
       if (!doc) return res.sendStatus(404);
 
-      if (user.rank !== 'admin' && doc.creator !== user._id) { return res.sendStatus(403); }
+      if (`${doc.creator._id}` !== user._id) return res.sendStatus(403);
+
       const { creator, ...skeleton } = req.body;
       await Ingredient.findOneAndUpdate({ _id }, skeleton);
       return res.sendStatus(200);
     })
     .delete(async (req, res) => {
-      if (!req.user) return res.sendStatus(401);
+      const { user, params: { _id } } = req;
+      if (!user) return res.sendStatus(401);
 
-      const { _id } = req.params;
       if (!Types.ObjectId.isValid(_id)) return res.sendStatus(404);
 
       const doc = await Ingredient.findById(_id);
       if (!doc) return res.sendStatus(404);
 
-      if (doc.creator._id !== req.user._id) return res.sendStatus(403);
+      if (`${doc.creator._id}` !== user._id) return res.sendStatus(403);
 
       await Ingredient.deleteOne({ _id });
       return res.sendStatus(200);
