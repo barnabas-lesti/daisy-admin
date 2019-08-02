@@ -59,10 +59,6 @@ export default {
     },
   },
   methods: {
-    reset () {
-      this.form.email = this.form.password = '';
-      this.$v.$reset();
-    },
     updateEmailErrors () {
       const { email } = this.$v.form;
       this.fieldErrors.email = email.$dirty ? [
@@ -86,8 +82,12 @@ export default {
         this.$nuxt.$loading.start();
         this.serverErrors.splice(0);
         try {
-          await this.$auth.signIn(email, password);
-          this.reset();
+          const { user, accessToken } = await this.$axios.$post('/api/auth/sign-in', { email, password });
+          this.$store.commit('user/signIn', user);
+          this.$cookies.set('access-token', accessToken);
+          this.$axios.setHeader('Authorization', `Bearer ${accessToken}`);
+          this.form.email = this.form.password = '';
+          this.$v.$reset();
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.signInSuccessful', { email }) });
           this.$router.push({ name: this.$route.query['referer'] || 'locale' });
         } catch (ex) {
@@ -109,16 +109,20 @@ export default {
         this.$nuxt.$loading.start();
         this.serverErrors.splice(0);
         const { email } = this.form;
+        const { locale } = this.$store.state.i18n;
         try {
-          await this.$axios.$post('/api/auth/send-password-reset-email', {
-            email,
-            locale: this.$store.state.i18n.locale,
-          });
-          this.reset();
+          await this.$axios.$post('/api/auth/send-password-reset-email', { email, locale });
+          this.form.email = this.form.password = '';
+          this.$v.$reset();
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.passwordResetEmailSent', { email }) });
         } catch (ex) {
-          this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-          this.$logger.error(ex);
+          const error = ex.response || ex;
+          if (error.status === 404) {
+            this.serverErrors.splice(0, 1, this.$t('errors.userNotFound'));
+          } else {
+            this.$store.commit('notifications/showError', this.$t('errors.serverError'));
+            this.$logger.error(ex);
+          }
         }
         this.$nuxt.$loading.finish();
       }
@@ -148,6 +152,7 @@ en:
   errors:
     authenticationFailed: Sign in failed, invalid credentials
     serverError: Sorry, an unexpected error occurred
+    userNotFound: User with given email address does not exist
     email:
       required: Email is required
       email: Email format is invalid
