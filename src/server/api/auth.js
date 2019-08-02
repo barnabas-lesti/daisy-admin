@@ -86,20 +86,22 @@ module.exports = (router) => {
       const { token } = req.body;
       if (!token) return res.sendStatus(400);
 
+      let email;
       try {
-        const { email } = await jwt.verify(token, envConfig.AUTH_SECRET);
-        try {
-          const doc = await User.findOne({ email });
-          if (!doc) return res.sendStatus(401);
-
-          const { passwordHash, ...user } = doc.toObject();
-          return res.send(user);
-        } catch (unknownError) {
-          logger.error(unknownError);
-          return res.sendStatus(500);
-        }
+        ({ email } = await jwt.verify(token, envConfig.AUTH_SECRET));
       } catch (jwtError) {
         return res.sendStatus(401);
+      }
+
+      try {
+        const doc = await User.findOne({ email });
+        if (!doc) return res.sendStatus(401);
+
+        const { passwordHash, ...user } = doc.toObject();
+        return res.send(user);
+      } catch (unknownError) {
+        logger.error(unknownError);
+        return res.sendStatus(500);
       }
     });
 

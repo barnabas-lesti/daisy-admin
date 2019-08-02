@@ -9,12 +9,14 @@
     v-flex(shrink)
       v-card.pages-register_card.pa-3
         v-card-text
-          v-form(@submit.prevent='register()')
+          v-form(@submit.prevent='sendRegistrationEmail()')
             v-layout(wrap)
               v-flex.py-0(xs12)
                 v-scroll-y-transition(group)
                   .red--text.mt-2(v-for='error of serverErrors', :key='error') {{ error }}
               v-flex(xs12)
+                v-text-field(v-model='$v.form.nickname.$model', :label="$t('nickname')", :error='!!serverErrors.length',
+                  :error-messages='fieldErrors.nickname', type='text' append-icon='face', @change='updateNicknameErrors()')
                 v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
                   :error-messages='fieldErrors.email', type='email' append-icon='account_circle', @change='updateEmailErrors()')
                 v-text-field(v-model='$v.form.password.$model', :label="$t('password')", :error='!!serverErrors.length',
@@ -43,11 +45,13 @@ export default {
   data () {
     return {
       form: {
+        nickname: '',
         email: '',
         password: '',
         passwordConfirmation: '',
       },
       fieldErrors: {
+        nickname: [],
         email: [],
         password: [],
         passwordConfirmation: [],
@@ -58,6 +62,7 @@ export default {
   validations () {
     return {
       form: {
+        nickname: { required },
         email: { required, email },
         password: { required, minLength: minLength(6), maxLength: maxLength(22) },
         passwordConfirmation: { required, sameAs: sameAs(model => model.password) },
@@ -65,6 +70,12 @@ export default {
     };
   },
   methods: {
+    updateNicknameErrors () {
+      const { nickname } = this.$v.form;
+      this.fieldErrors.nickname = nickname.$dirty ? [
+        ...(nickname.required ? [] : [this.$t('errors.nickname.required')]),
+      ] : [];
+    },
     updateEmailErrors () {
       const { email } = this.$v.form;
       this.fieldErrors.email = email.$dirty ? [
@@ -88,27 +99,31 @@ export default {
       ] : [];
     },
     updateErrors () {
+      this.updateNicknameErrors();
       this.updateEmailErrors();
       this.updatePasswordErrors();
       this.updatePasswordConfirmationErrors();
     },
-    async register () {
+    async sendRegistrationEmail () {
       this.$v.form.$touch();
       this.updateErrors();
       if (!this.$v.form.$anyError) {
         this.$nuxt.$loading.start();
         this.$v.$reset();
         this.serverErrors.splice(0);
-        const { email, password } = this.form;
+        const { email, password, nickname } = this.form;
+        const { locale } = this.$store.state.i18n;
         try {
-          await this.$auth.register({ email, password });
-          this.form.email = this.form.password = this.form.passwordConfirmation = '';
-          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.registrationSuccessful', { email }) });
+          await this.$axios.$post('/api/auth/send-registration-email', { email, password, nickname, locale });
+          this.form.nickname = this.form.email = this.form.password = this.form.passwordConfirmation = '';
+          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.registrationEmailSent', { email }) });
           this.$router.push({ name: this.$route.query['referer'] || 'locale' });
         } catch (ex) {
           const error = ex.response || ex;
           if (error.status === 409) {
             this.serverErrors.splice(0, 1, this.$t('errors.emailAlreadyInUse'));
+          } else if (error.status === 400) {
+            this.serverErrors.splice(0, 1, this.$t('errors.badRequest'));
           } else {
             this.$store.commit('notifications/showError', this.$t('errors.serverError'));
             this.$logger.error(error);
@@ -117,6 +132,32 @@ export default {
         this.$nuxt.$loading.finish();
       }
     },
+    async register (token) {
+      this.$nextTick(() => this.$nuxt.$loading.start());
+      try {
+        await this.$axios.$post('/api/auth/register', { token });
+        this.$store.commit('notifications/showSuccess', { html: this.$t('notifications.registrationSuccessful') });
+        this.$router.push({ name: 'locale-sign-in' });
+      } catch (ex) {
+        const error = ex.response || ex;
+        if (error.status === 401 || error.status === 400) {
+          this.$store.commit('notifications/showError', this.$t('errors.tokenInvalid'));
+        } else if (error.status === 409) {
+          this.$store.commit('notifications/showError', this.$t('errors.emailAlreadyInUse'));
+        } else {
+          this.$store.commit('notifications/showError', this.$t('errors.serverError'));
+          this.$logger.error(error);
+        }
+        this.$utils.pushRouteQuery({ 'token': undefined });
+      }
+      this.$nuxt.$loading.finish();
+    },
+  },
+  mounted () {
+    const token = this.$route.query['token'];
+    if (token) {
+      this.register(token);
+    }
   },
 };
 </script>
@@ -133,16 +174,22 @@ en:
   title: Register
   description: Register an account to access the cool features of Daisy!
   descriptionHtml: "Register an account to access the cool features of <strong>Daisy</strong>!"
+  nickname: Nickname
   email: Email
   password: Password
   passwordConfirmation: Confirm your password
   button: Register
   signInLink: Already have an account? Sign in!
   notifications:
-    registrationSuccessful: Registration successful, please check your inbox to verify your email address.
+    registrationEmailSent: "Registration email sent to <strong>{email}</strong>, please check your inbox"
+    registrationSuccessful: Registration successful, please sign in
   errors:
     emailAlreadyInUse: Email already in use
     serverError: Sorry, an unexpected error occurred
+    tokenInvalid: Token invalid, maybe you waited for too long?
+    badRequest: Some information is invalid, is the email address valid?
+    nickname:
+      required: Nickname is required
     email:
       required: Email is required
       email: Email format is invalid

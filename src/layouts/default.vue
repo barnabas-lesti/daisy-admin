@@ -41,7 +41,9 @@ export default {
   },
   methods: {
     signOut () {
-      this.$auth.signOut();
+      this.$store.commit('user/signOut');
+      this.$cookies.remove('access-token');
+      this.$axios.setHeader('Authorization', null);
       this.isSidebarOpen = false;
     },
   },
