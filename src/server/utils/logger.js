@@ -1,11 +1,10 @@
 const consola = require('consola').withScope('daisy:api');
 const Sentry = require('@sentry/node');
 
-const envConfig = require('../../../env.config');
+const { SENTRY_DSN } = require('../../../env.config');
 
-const dsn = envConfig.SENTRY_DSN;
-if (dsn) {
-  Sentry.init({ dsn });
+if (SENTRY_DSN) {
+  Sentry.init({ SENTRY_DSN });
   consola.success('SENTRY_DSN set, logging API errors to Sentry');
 } else {
   consola.info('SENTRY_DSN not set, will not log API errors to Sentry');

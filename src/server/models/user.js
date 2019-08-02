@@ -2,7 +2,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
-const { AUTH_SALT_ROUNDS, AUTH_SECRET, AUTH_ACCESS_TOKEN_EXPIRATION } = require('../../../env.config');
+const {
+  AUTH_SALT_ROUNDS,
+  AUTH_SECRET,
+  AUTH_ACCESS_TOKEN_EXPIRATION_IN_MINUTES,
+  AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
+} = require('../../../env.config');
 
 const userDbSchema = new mongoose.Schema({
   email: {
@@ -21,10 +26,6 @@ const userDbSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
   rank: {
     type: String,
     enum: [ 'user', 'admin' ],
@@ -36,23 +37,43 @@ const userDbSchema = new mongoose.Schema({
   toObject: { versionKey: false },
 });
 
-userDbSchema.statics.hashPassword = async (password) => {
+const User = mongoose.model('User', userDbSchema);
+
+User.hashPassword = async (password) => {
   const passwordHash = await bcrypt.hash(`${password}`, AUTH_SALT_ROUNDS);
   return passwordHash;
 };
 
-userDbSchema.statics.comparePasswords = async (password, passwordHash) => {
+User.comparePasswords = async (password, passwordHash) => {
   const result = await bcrypt.compare(`${password}`, passwordHash);
   return result;
 };
 
-userDbSchema.statics.createAccessToken = async ({ _id, email, rank }) => {
-  const accessToken = await jwt.sign(
+User.createAccessToken = async ({ _id, email, rank }) => {
+  const token = await jwt.sign(
     { _id, email, rank },
     AUTH_SECRET,
-    { expiresIn: AUTH_ACCESS_TOKEN_EXPIRATION }
+    { expiresIn: `${AUTH_ACCESS_TOKEN_EXPIRATION_IN_MINUTES}m` }
   );
-  return accessToken;
+  return token;
 };
 
-module.exports = mongoose.model('User', userDbSchema);
+User.createRegistrationToken = async ({ email, password, nickname }) => {
+  const token = await jwt.sign(
+    { email, password, nickname },
+    AUTH_SECRET,
+    { expiresIn: `${AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
+  );
+  return token;
+};
+
+User.createPasswordResetToken = async ({ email }) => {
+  const token = await jwt.sign(
+    { email },
+    AUTH_SECRET,
+    { expiresIn: `${AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
+  );
+  return token;
+};
+
+module.exports = User;
