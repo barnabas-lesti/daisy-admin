@@ -1,46 +1,81 @@
 <template lang="pug">
   v-layout.pages-profile(row, wrap, justify-space-around)
-    v-flex.mt-4.text-xs-center(xs12)
-      h1 {{ $t('title') }}
+    v-flex.text-xs-center(xs12)
+      h1 {{ $t('title', { nickname: user.nickname }) }}
 
     v-flex(xs12)
-      v-form(@submit.prevent='updateProfile()')
-        v-text-field(v-model='$v.forms.profile.nickname.$model', :label="$t('forms.profile.nickname')",
-          :error-messages='errors.profile.nickname', type='text' @change='updateErrors("nickname")')
-        v-text-field(v-model='$v.forms.profile.profileImageUrl.$model', :label="$t('forms.profile.profileImageUrl')",
-          type='text')
-        .text-xs-right(xs12)
-          v-btn.info.ma-0(type='submit') {{ $t('forms.profile.submit') }}
+      v-card
+        v-card-title.title {{ $t('general') }}
+        v-card-text
+          .text-xs-center
+            v-avatar.elevation-3.mb-3(size='240', @click='isModalOpen = true;')
+              v-img(:src='getProfileImagePath')
+
+          v-form(@submit.prevent='updateProfile()')
+            v-text-field(:value='user.email', :label="$t('forms.profile.email')",
+              type='email', disabled)
+            v-text-field(v-model='$v.forms.profile.nickname.$model', :label="$t('forms.profile.nickname')",
+              :error-messages='errors.profile.nickname', type='text', @change='updateErrors("nickname")')
+            .text-xs-right(xs12)
+              v-btn.info.ma-0(type='submit') {{ $t('forms.profile.submit') }}
 
     v-flex(xs12)
-      v-form(@submit.prevent='changePassword()')
-        v-text-field(v-model='$v.forms.password.password.$model', :label="$t('forms.password.password')",
-          :error-messages='errors.password.password',
-          type='password', @change='updateErrors("password")')
-        v-text-field(v-model='$v.forms.password.passwordConfirmation.$model', :label="$t('forms.password.passwordConfirmation')",
-          :error-messages='errors.password.passwordConfirmation',
-          type='password' @change='updateErrors("passwordConfirmation")')
-        .text-xs-right(xs12)
-          v-btn.info.ma-0(type='submit') {{ $t('forms.password.submit') }}
+      v-card
+        v-card-title.title {{ $t('changePassword') }}
+        v-card-text
+          v-form(@submit.prevent='changePassword()')
+            v-text-field(v-model='$v.forms.password.password.$model', :label="$t('forms.password.password')",
+              :error-messages='errors.password.password',
+              type='password', @change='updateErrors("password")')
+            v-text-field(v-model='$v.forms.password.passwordConfirmation.$model', :label="$t('forms.password.passwordConfirmation')",
+              :error-messages='errors.password.passwordConfirmation',
+              type='password' @change='updateErrors("passwordConfirmation")')
+            .text-xs-right(xs12)
+              v-btn.info.ma-0(type='submit') {{ $t('forms.password.submit') }}
+
+    base-modal(v-model='isModalOpen', :title="$t('modal.title')", @accept='confirmProfileImageUpdate()',
+      @discard='discardProfileImageUpdate()')
+      v-container(grid-list-xl)
+        v-layout(row, wrap)
+          v-flex(xs12)
+            v-img(:src='modal.imageSrc || "/images/no-profile-picture.png"')
+          v-flex(xs12)
+            v-text-field(v-model='modal.profileImageUrl', :label="$t('modal.profileImageUrl')",
+              type='text', @change='modal.imageSrc = modal.profileImageUrl;')
+          v-flex.text-xs-right(xs12)
+            v-btn.ma-0.mr-2(@click='discardProfileImageUpdate()') {{ $t('modal.discard') }}
+            v-btn.info.ma-0(@click='confirmProfileImageUpdate()') {{ $t('modal.confirm') }}
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators';
+
+import BaseModal from '../../components/base/base-modal';
 
 export default {
   name: 'PagesProfile',
   mixins: [ validationMixin ],
   middleware: 'signed-in',
+  components: {
+    BaseModal,
+  },
   head () {
+    const { nickname } = this.user;
     return {
-      title: this.$t('title'),
-      meta: [ { name: 'description', content: this.$t('description') } ],
+      title: this.$t('title', { nickname }),
+      meta: [ { name: 'description', content: this.$t('description', { nickname }) } ],
     };
   },
   data () {
     const { nickname, profileImageUrl } = this.$store.state.user.user;
     return {
+      isModalOpen: false,
+      modal: {
+        imageSrc: profileImageUrl,
+        profileImageUrl,
+      },
       forms: {
         profile: { nickname, profileImageUrl },
         password: { password: '', passwordConfirmation: '' },
@@ -62,7 +97,20 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState('user', [ 'user', 'accessToken' ]),
+    ...mapGetters('user', [ 'getProfileImagePath' ]),
+  },
   methods: {
+    confirmProfileImageUpdate () {
+      this.forms.profile.profileImageUrl = this.modal.profileImageUrl;
+      this.$store.commit('user/updateUser', { profileImageUrl: this.modal.profileImageUrl || null });
+      this.isModalOpen = false;
+    },
+    discardProfileImageUpdate () {
+      this.modal.imageSrc = this.modal.profileImageUrl = this.forms.profile.profileImageUrl;
+      this.isModalOpen = false;
+    },
     updateErrors (args = [ 'nickname', 'password', 'passwordConfirmation' ]) {
       const fields = Array.isArray(args) ? args : [ args ];
       if (fields.includes('nickname')) {
@@ -112,7 +160,7 @@ export default {
         this.$v.forms.password.$reset();
         const { password } = this.forms.password;
         try {
-          await this.$axios.$patch('/api/auth/password', { token: this.$store.state.user.accessToken, password });
+          await this.$axios.$patch('/api/auth/password', { token: this.accessToken, password });
           this.forms.password.password = this.forms.password.passwordConfirmation = '';
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.password.updated') });
         } catch (ex) {
@@ -128,17 +176,24 @@ export default {
 
 <i18n>
 en:
-  title: Profile
-  description: Here you can update your profile information and change your password
+  title: "{nickname}'s profile"
+  description: "{nickname}'s profile page"
+  general: General
+  changePassword: Change password
   forms:
     profile:
+      email: Email
       nickname: Nickname
-      profileImageUrl: Profile Image URL
       submit: Update profile
     password:
       password: Password
       passwordConfirmation: Confirm your password
       submit: Change password
+  modal:
+    title: Update profile image
+    profileImageUrl: Profile Image URL
+    confirm: Change image
+    discard: Discard
   notifications:
     profile:
       updated: Profile successfully updated

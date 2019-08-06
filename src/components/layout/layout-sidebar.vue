@@ -10,7 +10,7 @@
         template(v-slot:activator)
           v-list-tile(avatar)
             v-list-tile-avatar
-              img.elevation-3(:src='profileImagePath')
+              img.elevation-3(:src='getProfileImagePath')
             v-list-tile-content
               v-list-tile-title {{ user.nickname || user.email }}
         v-list-tile(:to="{ name: 'locale-profile' }", nuxt)
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'LayoutSidebar',
   props: {
@@ -55,12 +57,7 @@ export default {
     },
   },
   computed: {
-    profileImagePath () {
-      const { avatar, profileImageUrl } = this.user;
-      if (profileImageUrl) return profileImageUrl;
-      if (avatar) return `/images/avatars/${avatar}`;
-      return '/images/no-profile-picture.png';
-    },
+    ...mapGetters('user', [ 'getProfileImagePath' ]),
   },
 };
 </script>

@@ -8,11 +8,12 @@
         v-toolbar-title(v-if='title') {{ title }}
         v-spacer
         v-toolbar-items
-          v-btn(:loading='isLoading', icon, @click="$emit('accept')")
+          v-btn(:loading='isLoading', icon, @click="emitAccept()")
             v-icon done
-          v-btn(icon, @click="$emit('discard')")
+          v-btn(icon, @click="emitDiscard()")
             v-icon close
-      slot(name='content')
+      v-card-text
+        slot
 </template>
 
 <script>
@@ -33,9 +34,21 @@ export default {
       type: String,
       default: () => 'auto',
     },
+    closeOnAccept: Boolean,
+    closeOnDiscard: Boolean,
   },
   computed: {
     ...mapState([ 'isLoading' ]),
+  },
+  methods: {
+    emitAccept () {
+      this.$emit('accept');
+      if (this.closeOnAccept) this.$emit('input', false);
+    },
+    emitDiscard () {
+      this.$emit('discard');
+      if (this.closeOnDiscard) this.$emit('input', false);
+    },
   },
 };
 </script>
