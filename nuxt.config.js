@@ -54,6 +54,7 @@ module.exports = {
 
   router: {
     middleware: [
+      'auth',
       'i18n',
     ],
   },

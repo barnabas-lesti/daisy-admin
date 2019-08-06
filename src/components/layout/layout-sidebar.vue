@@ -10,7 +10,7 @@
         template(v-slot:activator)
           v-list-tile(avatar)
             v-list-tile-avatar
-              img(:src="user.profileImageUrl || '/images/no-profile-picture.png'")
+              img.elevation-3(:src="user.avatar ? `/images/avatars/${user.avatar}` : '/images/no-profile-picture.png'")
             v-list-tile-content
               v-list-tile-title {{ user.nickname || user.email }}
         v-list-tile(:to="{ name: 'locale-profile' }", nuxt)

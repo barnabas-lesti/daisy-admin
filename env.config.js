@@ -13,6 +13,7 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV,
   IS_PRODUCTION: process.env.NODE_ENV === 'production',
   TEMP_FOLDER_PATH: path.join(__dirname, './temp'),
+  STATIC_FOLDER_PATH: path.join(__dirname, './src/static'),
 
   PORT: process.env.PORT || configLib.get('PORT'),
   BASE_URL: process.env.BASE_URL || configLib.get('BASE_URL'),

@@ -1,16 +1,16 @@
-export default (context) => {
-  if (context.isHMR) { return; }
+export default ({ isHMR, params, store, redirect, route, app }) => {
+  if (isHMR) return;
 
-  const requestedLocale = context.params.locale;
-  if (context.store.state.i18n.locales.indexOf(requestedLocale) === -1) {
-    context.redirect({
+  const requestedLocale = params.locale;
+  if (store.state.i18n.locales.indexOf(requestedLocale) === -1) {
+    redirect({
       name: 'locale',
-      params: { locale: context.app.i18n.fallbackLocale },
-      query: { ...context.route.query },
+      params: { locale: app.i18n.fallbackLocale },
+      query: { ...route.query },
     });
     return;
   }
 
-  context.store.commit('i18n/setLocale', requestedLocale);
-  context.app.i18n.locale = requestedLocale;
+  store.commit('i18n/setLocale', requestedLocale);
+  app.i18n.locale = requestedLocale;
 };

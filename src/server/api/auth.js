@@ -48,7 +48,8 @@ module.exports = (router) => {
 
       let passwordHash = await User.hashPassword(password);
       try {
-        const doc = await User.create({ email, passwordHash, nickname });
+        const avatar = await User.getRandomAvatar();
+        const doc = await User.create({ email, passwordHash, nickname, avatar });
         let user;
         ({ passwordHash, ...user } = doc.toObject());
         return res.send(user);
@@ -130,8 +131,8 @@ module.exports = (router) => {
       }
     });
 
-  router.route('/auth/reset-password')
-    .post(async (req, res) => {
+  router.route('/auth/password')
+    .patch(async (req, res) => {
       const { token, password } = req.body;
       if (!token || !password) return res.sendStatus(400);
 
@@ -148,6 +149,21 @@ module.exports = (router) => {
 
       try {
         await User.findOneAndUpdate({ email }, { passwordHash: await User.hashPassword(password) });
+        return res.sendStatus(200);
+      } catch (unknownError) {
+        logger.error(unknownError);
+        return res.sendStatus(500);
+      }
+    });
+
+  router.route('/auth/profile')
+    .patch(async (req, res) => {
+      const { user, body: { nickname } } = req;
+      if (!user) return res.sendStatus(401);
+      if (!nickname) return res.sendStatus(400);
+
+      try {
+        await User.findOneAndUpdate({ _id: user._id }, { nickname });
         return res.sendStatus(200);
       } catch (unknownError) {
         logger.error(unknownError);

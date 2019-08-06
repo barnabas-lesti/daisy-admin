@@ -1,12 +1,15 @@
+const path = require('path');
+const fs = require('fs-extra');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
 
 const {
   AUTH_SALT_ROUNDS,
   AUTH_SECRET,
   AUTH_ACCESS_TOKEN_EXPIRATION_IN_MINUTES,
   AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
+  STATIC_FOLDER_PATH,
 } = require('../../../env.config');
 
 const userDbSchema = new mongoose.Schema({
@@ -19,8 +22,9 @@ const userDbSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  profileImageUrl: {
+  avatar: {
     type: String,
+    required: true,
   },
   nickname: {
     type: String,
@@ -74,6 +78,12 @@ User.createPasswordResetToken = async ({ email }) => {
     { expiresIn: `${AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
   );
   return token;
+};
+
+User.getRandomAvatar = async () => {
+  const fileNames = await fs.readdir(path.join(STATIC_FOLDER_PATH, './images/avatars'));
+  const avatar = fileNames[Math.floor(Math.random() * fileNames.length)];
+  return avatar;
 };
 
 module.exports = User;

@@ -4,13 +4,13 @@ class User {
   constructor (skeleton = {}) {
     const {
       email,
-      profileImageUrl,
+      avatar,
       fullName,
       nickname,
     } = _.cloneDeep(skeleton);
 
     this.email = email;
-    this.profileImageUrl = profileImageUrl;
+    this.avatar = avatar;
     this.fullName = fullName;
     this.nickname = nickname;
   }

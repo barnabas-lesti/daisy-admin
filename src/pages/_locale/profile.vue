@@ -3,40 +3,28 @@
     v-flex.mt-4.text-xs-center(xs12)
       h1 {{ $t('title') }}
 
-    v-flex.text-xs-center(xs12)
-      .pb-3(v-html="$t('descriptionHtml')")
+    v-flex(xs12)
+      v-form(@submit.prevent='updateProfile()')
+        v-layout(wrap)
+          v-flex.py-0(xs12)
+            v-text-field(v-model='$v.profileForm.nickname.$model', :label="$t('nickname')",
+              :error-messages='fieldErrors.nickname', type='text' @change='updateNicknameErrors()')
+          v-flex.text-xs-right(xs12)
+            v-btn.info.ma-0(type='submit', large) {{ $t('updateProfile') }}
 
     v-flex(xs12)
-      //- v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
-      //-   :error-messages='fieldErrors.email', type='email' append-icon='account_circle', readonly, @change='updateEmailErrors()')
-      v-text-field(v-model='$v.form.nickname.$model', :label="$t('nickname')", :error='!!serverErrors.length',
-        :error-messages='fieldErrors.nickname', type='text' @change='updateNicknameErrors()')
-      v-text-field(v-model='$v.form.password.$model', :label="$t('password')", :error='!!serverErrors.length',
-        :error-messages='fieldErrors.password', type='password', @change='updatePasswordErrors()')
-      v-text-field(v-model='$v.form.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error='!!serverErrors.length',
-        :error-messages='fieldErrors.passwordConfirmation', type='password' @change='updatePasswordConfirmationErrors()')
-
-    //- v-flex(shrink)
-    //-   v-card.pages-register_card.pa-3
-    //-     v-card-text
-    //-       v-form(@submit.prevent='sendRegistrationEmail()')
-    //-         v-layout(wrap)
-    //-           v-flex.py-0(xs12)
-    //-             v-scroll-y-transition(group)
-    //-               .red--text.mt-2(v-for='error of serverErrors', :key='error') {{ error }}
-    //-           v-flex(xs12)
-    //-             v-text-field(v-model='$v.form.nickname.$model', :label="$t('nickname')", :error='!!serverErrors.length',
-    //-               :error-messages='fieldErrors.nickname', type='text' append-icon='face', @change='updateNicknameErrors()')
-    //-             v-text-field(v-model='$v.form.email.$model', :label="$t('email')", :error='!!serverErrors.length',
-    //-               :error-messages='fieldErrors.email', type='email' append-icon='account_circle', @change='updateEmailErrors()')
-    //-             v-text-field(v-model='$v.form.password.$model', :label="$t('password')", :error='!!serverErrors.length',
-    //-               :error-messages='fieldErrors.password', type='password', append-icon='vpn_key', @change='updatePasswordErrors()')
-    //-             v-text-field(v-model='$v.form.passwordConfirmation.$model', :label="$t('passwordConfirmation')", :error='!!serverErrors.length',
-    //-               :error-messages='fieldErrors.passwordConfirmation', type='password' append-icon='vpn_key', @change='updatePasswordConfirmationErrors()')
-    //-           v-flex(xs12)
-    //-             nuxt-link(:to="{ name: 'locale-sign-in' }") {{ $t('signInLink') }}
-    //-           v-flex.text-xs-right(xs12)
-    //-             v-btn.info.ma-0(type='submit', large) {{ $t('button') }}
+      v-form(@submit.prevent='changePassword()')
+        v-layout(wrap)
+          v-flex.py-0(xs12)
+            v-text-field(v-model='$v.passwordForm.password.$model', :label="$t('password')",
+              :error-messages='fieldErrors.password',
+              type='password', @change='updatePasswordErrors()')
+          v-flex.py-0(xs12)
+            v-text-field(v-model='$v.passwordForm.passwordConfirmation.$model', :label="$t('passwordConfirmation')",
+              :error-messages='fieldErrors.passwordConfirmation',
+              type='password' @change='updatePasswordConfirmationErrors()')
+          v-flex.text-xs-right(xs12)
+            v-btn.info.ma-0(type='submit', large) {{ $t('changePassword') }}
 </template>
 
 <script>
@@ -46,6 +34,7 @@ import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators
 export default {
   name: 'PagesProfile',
   mixins: [ validationMixin ],
+  middleware: 'signed-in',
   head () {
     return {
       title: this.$t('title'),
@@ -54,8 +43,10 @@ export default {
   },
   data () {
     return {
-      form: {
+      profileForm: {
         nickname: '',
+      },
+      passwordForm: {
         password: '',
         passwordConfirmation: '',
       },
@@ -64,13 +55,14 @@ export default {
         password: [],
         passwordConfirmation: [],
       },
-      serverErrors: [],
     };
   },
   validations () {
     return {
-      form: {
+      profileForm: {
         nickname: { required },
+      },
+      passwordForm: {
         password: { required, minLength: minLength(6), maxLength: maxLength(22) },
         passwordConfirmation: { required, sameAs: sameAs(model => model.password) },
       },
@@ -78,13 +70,13 @@ export default {
   },
   methods: {
     updateNicknameErrors () {
-      const { nickname } = this.$v.form;
+      const { nickname } = this.$v.profileForm;
       this.fieldErrors.nickname = nickname.$dirty ? [
         ...(nickname.required ? [] : [this.$t('errors.nickname.required')]),
       ] : [];
     },
     updatePasswordErrors () {
-      const { password } = this.$v.form;
+      const { password } = this.$v.passwordForm;
       this.fieldErrors.password = password.$dirty ? [
         ...(password.required ? [] : [this.$t('errors.password.required')]),
         ...(password.minLength && password.maxLength ? [] : [this.$t('errors.password.length',
@@ -92,18 +84,50 @@ export default {
       ] : [];
     },
     updatePasswordConfirmationErrors () {
-      const { passwordConfirmation } = this.$v.form;
+      const { passwordConfirmation } = this.$v.passwordForm;
       this.fieldErrors.passwordConfirmation = passwordConfirmation.$dirty ? [
         ...(passwordConfirmation.required ? [] : [this.$t('errors.passwordConfirmation.required')]),
         ...(passwordConfirmation.sameAs ? [] : [this.$t('errors.passwordConfirmation.sameAs')]),
       ] : [];
     },
-  },
-  mounted () {
-    const token = this.$route.query['token'];
-    if (token) {
-      this.register(token);
-    }
+
+    async updateProfile () {
+      this.$v.profileForm.$touch();
+      this.updateNicknameErrors();
+      if (!this.$v.profileForm.$anyError) {
+        this.$nuxt.$loading.start();
+        this.$v.profileForm.$reset();
+        const { nickname } = this.profileForm;
+        try {
+          await this.$axios.$patch('/api/auth/profile', { nickname });
+          this.profileForm.nickname = '';
+          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.profileUpdated') });
+        } catch (ex) {
+          this.$store.commit('notifications/showError', this.$t('errors.serverError'));
+          this.$logger.error(ex);
+        }
+        this.$nuxt.$loading.finish();
+      }
+    },
+    async changePassword () {
+      this.$v.passwordForm.$touch();
+      this.updatePasswordErrors();
+      this.updatePasswordConfirmationErrors();
+      if (!this.$v.passwordForm.$anyError) {
+        this.$nuxt.$loading.start();
+        this.$v.passwordForm.$reset();
+        const { password } = this.passwordForm;
+        try {
+          await this.$axios.$patch('/api/auth/password', { token: this.$store.state.user.accessToken, password });
+          this.passwordForm.password = this.passwordForm.passwordConfirmation = '';
+          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.passwordChanged') });
+        } catch (ex) {
+          this.$store.commit('notifications/showError', this.$t('errors.serverError'));
+          this.$logger.error(ex);
+        }
+        this.$nuxt.$loading.finish();
+      }
+    },
   },
 };
 </script>
@@ -119,10 +143,13 @@ export default {
 en:
   title: Profile
   description: Here you can update your profile information and change your password
-  descriptionHtml: Here you can update your profile information and change your password.
   nickname: Nickname
   password: Password
   passwordConfirmation: Confirm your password
+  updateProfile: Update profile
+  changePassword: Change password
+  notifications:
+    passwordChanged: Passowrd successfully changed
   errors:
     serverError: Sorry, an unexpected error occurred
     badRequest: Some information is invalid, is the email address valid?

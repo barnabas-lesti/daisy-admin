@@ -82,10 +82,7 @@ export default {
         this.$nuxt.$loading.start();
         this.serverErrors.splice(0);
         try {
-          const { user, accessToken } = await this.$axios.$post('/api/auth/sign-in', { email, password });
-          this.$store.commit('user/signIn', user);
-          this.$cookies.set('access-token', accessToken);
-          this.$axios.setHeader('Authorization', `Bearer ${accessToken}`);
+          await this.$auth.signIn(email, password);
           this.form.email = this.form.password = '';
           this.$v.$reset();
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.signInSuccessful', { email }) });

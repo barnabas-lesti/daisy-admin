@@ -13,6 +13,7 @@ describe('auth', () => {
     await User.create({
       ...existingUser,
       passwordHash: await User.hashPassword(existingUser.password),
+      avatar: await User.getRandomAvatar(),
     });
   });
 
@@ -259,10 +260,10 @@ describe('auth', () => {
     });
   });
 
-  describe('POST /api/auth/reset-password', () => {
+  describe('PATCH /api/auth/password', () => {
     test('should respond with 400 if "token" is not provided', async () => {
       try {
-        await http.post('/api/auth/reset-password', { password: 'newPassword1234' });
+        await http.patch('/api/auth/password', { password: 'newPassword1234' });
       } catch (error) {
         expect(error.response.status).toBe(400);
       }
@@ -270,7 +271,7 @@ describe('auth', () => {
 
     test('should respond with 400 if "password" is not provided', async () => {
       try {
-        await http.post('/api/auth/reset-password', { token: 'yupThisIsAValidToken' });
+        await http.patch('/api/auth/password', { token: 'yupThisIsAValidToken' });
       } catch (error) {
         expect(error.response.status).toBe(400);
       }
@@ -279,7 +280,7 @@ describe('auth', () => {
     test('should respond with 401 if "token" is invalid', async () => {
       try {
         const token = await jwt.sign({ email: existingUser.email }, 'invalidSecret1234');
-        await http.post('/api/auth/reset-password', { password: 'newPassword1234', token });
+        await http.patch('/api/auth/password', { password: 'newPassword1234', token });
       } catch (error) {
         expect(error.response.status).toBe(401);
       }
@@ -288,7 +289,7 @@ describe('auth', () => {
     test('should respond with 400 if "token" does not contain the "email"', async () => {
       try {
         const token = await User.createPasswordResetToken({});
-        await http.post('/api/auth/reset-password', { password: 'newPassword1234', token });
+        await http.patch('/api/auth/password', { password: 'newPassword1234', token });
       } catch (error) {
         expect(error.response.status).toBe(400);
       }
@@ -297,7 +298,7 @@ describe('auth', () => {
     test('should respond with 404 if user with given "email" is not registered', async () => {
       try {
         const token = await User.createPasswordResetToken({ email: notExistingUser.email });
-        await http.post('/api/auth/reset-password', { password: 'newPassword1234', token });
+        await http.patch('/api/auth/password', { password: 'newPassword1234', token });
       } catch (error) {
         expect(error.response.status).toBe(404);
       }
@@ -306,7 +307,7 @@ describe('auth', () => {
     test('should respond with 200 and update the users password', async () => {
       const newPassword = 'newPassword1234';
       const token = await User.createPasswordResetToken({ email: existingUser.email });
-      const { status } = await http.post('/api/auth/reset-password', { password: newPassword, token });
+      const { status } = await http.patch('/api/auth/password', { password: newPassword, token });
       const updatedUser = await User.findOne({ email: existingUser.email });
       expect(status).toBe(200);
       expect(await User.comparePasswords(existingUser.password, updatedUser.passwordHash)).toBe(false);
