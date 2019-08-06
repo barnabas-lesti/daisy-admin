@@ -5,26 +5,23 @@
 
     v-flex(xs12)
       v-form(@submit.prevent='updateProfile()')
-        v-layout(wrap)
-          v-flex.py-0(xs12)
-            v-text-field(v-model='$v.profileForm.nickname.$model', :label="$t('nickname')",
-              :error-messages='fieldErrors.nickname', type='text' @change='updateNicknameErrors()')
-          v-flex.text-xs-right(xs12)
-            v-btn.info.ma-0(type='submit', large) {{ $t('updateProfile') }}
+        v-text-field(v-model='$v.forms.profile.nickname.$model', :label="$t('forms.profile.nickname')",
+          :error-messages='errors.profile.nickname', type='text' @change='updateErrors("nickname")')
+        v-text-field(v-model='$v.forms.profile.profileImageUrl.$model', :label="$t('forms.profile.profileImageUrl')",
+          type='text')
+        .text-xs-right(xs12)
+          v-btn.info.ma-0(type='submit') {{ $t('forms.profile.submit') }}
 
     v-flex(xs12)
       v-form(@submit.prevent='changePassword()')
-        v-layout(wrap)
-          v-flex.py-0(xs12)
-            v-text-field(v-model='$v.passwordForm.password.$model', :label="$t('password')",
-              :error-messages='fieldErrors.password',
-              type='password', @change='updatePasswordErrors()')
-          v-flex.py-0(xs12)
-            v-text-field(v-model='$v.passwordForm.passwordConfirmation.$model', :label="$t('passwordConfirmation')",
-              :error-messages='fieldErrors.passwordConfirmation',
-              type='password' @change='updatePasswordConfirmationErrors()')
-          v-flex.text-xs-right(xs12)
-            v-btn.info.ma-0(type='submit', large) {{ $t('changePassword') }}
+        v-text-field(v-model='$v.forms.password.password.$model', :label="$t('forms.password.password')",
+          :error-messages='errors.password.password',
+          type='password', @change='updateErrors("password")')
+        v-text-field(v-model='$v.forms.password.passwordConfirmation.$model', :label="$t('forms.password.passwordConfirmation')",
+          :error-messages='errors.password.passwordConfirmation',
+          type='password' @change='updateErrors("passwordConfirmation")')
+        .text-xs-right(xs12)
+          v-btn.info.ma-0(type='submit') {{ $t('forms.password.submit') }}
 </template>
 
 <script>
@@ -42,66 +39,64 @@ export default {
     };
   },
   data () {
+    const { nickname, profileImageUrl } = this.$store.state.user.user;
     return {
-      profileForm: {
-        nickname: '',
+      forms: {
+        profile: { nickname, profileImageUrl },
+        password: { password: '', passwordConfirmation: '' },
       },
-      passwordForm: {
-        password: '',
-        passwordConfirmation: '',
-      },
-      fieldErrors: {
-        nickname: [],
-        password: [],
-        passwordConfirmation: [],
+      errors: {
+        profile: { nickname: [] },
+        password: { password: [], passwordConfirmation: [] },
       },
     };
   },
   validations () {
     return {
-      profileForm: {
-        nickname: { required },
-      },
-      passwordForm: {
-        password: { required, minLength: minLength(6), maxLength: maxLength(22) },
-        passwordConfirmation: { required, sameAs: sameAs(model => model.password) },
+      forms: {
+        profile: { nickname: { required }, profileImageUrl: {} },
+        password: {
+          password: { required, minLength: minLength(6), maxLength: maxLength(22) },
+          passwordConfirmation: { required, sameAs: sameAs(model => model.password) },
+        },
       },
     };
   },
   methods: {
-    updateNicknameErrors () {
-      const { nickname } = this.$v.profileForm;
-      this.fieldErrors.nickname = nickname.$dirty ? [
-        ...(nickname.required ? [] : [this.$t('errors.nickname.required')]),
-      ] : [];
+    updateErrors (args = [ 'nickname', 'password', 'passwordConfirmation' ]) {
+      const fields = Array.isArray(args) ? args : [ args ];
+      if (fields.includes('nickname')) {
+        const { nickname } = this.$v.forms.profile;
+        this.errors.profile.nickname = nickname.$dirty ? [
+          ...(nickname.required ? [] : [this.$t('errors.profile.nickname.required')]),
+        ] : [];
+      }
+      if (fields.includes('password')) {
+        const { password } = this.$v.forms.password;
+        this.errors.password.password = password.$dirty ? [
+          ...(password.required ? [] : [this.$t('errors.password.password.required')]),
+          ...(password.minLength && password.maxLength ? [] : [this.$t('errors.password.password.length',
+            { min: password.$params.minLength.min, max: password.$params.maxLength.max })]),
+        ] : [];
+      }
+      if (fields.includes('passwordConfirmation')) {
+        const { passwordConfirmation } = this.$v.forms.password;
+        this.errors.password.passwordConfirmation = passwordConfirmation.$dirty ? [
+          ...(passwordConfirmation.required ? [] : [this.$t('errors.password.passwordConfirmation.required')]),
+          ...(passwordConfirmation.sameAs ? [] : [this.$t('errors.password.passwordConfirmation.sameAs')]),
+        ] : [];
+      }
     },
-    updatePasswordErrors () {
-      const { password } = this.$v.passwordForm;
-      this.fieldErrors.password = password.$dirty ? [
-        ...(password.required ? [] : [this.$t('errors.password.required')]),
-        ...(password.minLength && password.maxLength ? [] : [this.$t('errors.password.length',
-          { min: password.$params.minLength.min, max: password.$params.maxLength.max })]),
-      ] : [];
-    },
-    updatePasswordConfirmationErrors () {
-      const { passwordConfirmation } = this.$v.passwordForm;
-      this.fieldErrors.passwordConfirmation = passwordConfirmation.$dirty ? [
-        ...(passwordConfirmation.required ? [] : [this.$t('errors.passwordConfirmation.required')]),
-        ...(passwordConfirmation.sameAs ? [] : [this.$t('errors.passwordConfirmation.sameAs')]),
-      ] : [];
-    },
-
     async updateProfile () {
-      this.$v.profileForm.$touch();
-      this.updateNicknameErrors();
-      if (!this.$v.profileForm.$anyError) {
+      this.$v.forms.profile.$touch();
+      this.updateErrors('nickname');
+      if (!this.$v.forms.profile.$anyError) {
         this.$nuxt.$loading.start();
-        this.$v.profileForm.$reset();
-        const { nickname } = this.profileForm;
+        this.$v.forms.profile.$reset();
         try {
-          await this.$axios.$patch('/api/auth/profile', { nickname });
-          this.profileForm.nickname = '';
-          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.profileUpdated') });
+          await this.$axios.$patch('/api/auth/profile', this.forms.profile);
+          this.$store.commit('user/updateUser', this.forms.profile);
+          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.profile.updated') });
         } catch (ex) {
           this.$store.commit('notifications/showError', this.$t('errors.serverError'));
           this.$logger.error(ex);
@@ -110,17 +105,16 @@ export default {
       }
     },
     async changePassword () {
-      this.$v.passwordForm.$touch();
-      this.updatePasswordErrors();
-      this.updatePasswordConfirmationErrors();
-      if (!this.$v.passwordForm.$anyError) {
+      this.$v.forms.password.$touch();
+      this.updateErrors([ 'password', 'passwordConfirmation' ]);
+      if (!this.$v.forms.password.$anyError) {
         this.$nuxt.$loading.start();
-        this.$v.passwordForm.$reset();
-        const { password } = this.passwordForm;
+        this.$v.forms.password.$reset();
+        const { password } = this.forms.password;
         try {
           await this.$axios.$patch('/api/auth/password', { token: this.$store.state.user.accessToken, password });
-          this.passwordForm.password = this.passwordForm.passwordConfirmation = '';
-          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.passwordChanged') });
+          this.forms.password.password = this.forms.password.passwordConfirmation = '';
+          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.password.updated') });
         } catch (ex) {
           this.$store.commit('notifications/showError', this.$t('errors.serverError'));
           this.$logger.error(ex);
@@ -132,33 +126,34 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-.pages-profile
-  &_todo
-    color red
-
-</style>
-
 <i18n>
 en:
   title: Profile
   description: Here you can update your profile information and change your password
-  nickname: Nickname
-  password: Password
-  passwordConfirmation: Confirm your password
-  updateProfile: Update profile
-  changePassword: Change password
+  forms:
+    profile:
+      nickname: Nickname
+      profileImageUrl: Profile Image URL
+      submit: Update profile
+    password:
+      password: Password
+      passwordConfirmation: Confirm your password
+      submit: Change password
   notifications:
-    passwordChanged: Passowrd successfully changed
+    profile:
+      updated: Profile successfully updated
+    password:
+      updated: Password successfully updated
   errors:
     serverError: Sorry, an unexpected error occurred
-    badRequest: Some information is invalid, is the email address valid?
-    nickname:
-      required: Nickname is required
+    profile:
+      nickname:
+        required: Nickname is required
     password:
-      required: Password is required
-      length: Password must be between {min} and {max} characters
-    passwordConfirmation:
-      required: Password confirmation is required
-      sameAs: Passwords must match
+      password:
+        required: Password is required
+        length: Password must be between {min} and {max} characters
+      passwordConfirmation:
+        required: Password confirmation is required
+        sameAs: Passwords must match
 </i18n>

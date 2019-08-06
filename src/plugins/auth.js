@@ -6,6 +6,9 @@ class Auth {
     this.$store = store;
     this.$cookies = $cookies;
     this.redirect = redirect;
+
+    const { accessToken } = this.$store.state.user;
+    if (accessToken) $axios.setHeader('Authorization', `Bearer ${accessToken}`);
   }
 
   async signIn (email, password) {

@@ -35,6 +35,10 @@ const userDbSchema = new mongoose.Schema({
     enum: [ 'user', 'admin' ],
     default: 'user',
   },
+  profileImageUrl: {
+    type: String,
+    default: '',
+  },
 }, {
   id: false,
   toJSON: { versionKey: false },

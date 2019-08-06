@@ -158,12 +158,12 @@ module.exports = (router) => {
 
   router.route('/auth/profile')
     .patch(async (req, res) => {
-      const { user, body: { nickname } } = req;
+      const { user, body } = req;
       if (!user) return res.sendStatus(401);
-      if (!nickname) return res.sendStatus(400);
+      if (!body.nickname) return res.sendStatus(400);
 
       try {
-        await User.findOneAndUpdate({ _id: user._id }, { nickname });
+        await User.findOneAndUpdate({ _id: user._id }, body);
         return res.sendStatus(200);
       } catch (unknownError) {
         logger.error(unknownError);

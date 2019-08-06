@@ -5,13 +5,13 @@ class User {
     const {
       email,
       avatar,
-      fullName,
+      profileImageUrl,
       nickname,
     } = _.cloneDeep(skeleton);
 
     this.email = email;
     this.avatar = avatar;
-    this.fullName = fullName;
+    this.profileImageUrl = profileImageUrl;
     this.nickname = nickname;
   }
 };

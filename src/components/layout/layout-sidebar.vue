@@ -10,7 +10,7 @@
         template(v-slot:activator)
           v-list-tile(avatar)
             v-list-tile-avatar
-              img.elevation-3(:src="user.avatar ? `/images/avatars/${user.avatar}` : '/images/no-profile-picture.png'")
+              img.elevation-3(:src='profileImagePath')
             v-list-tile-content
               v-list-tile-title {{ user.nickname || user.email }}
         v-list-tile(:to="{ name: 'locale-profile' }", nuxt)
@@ -52,6 +52,14 @@ export default {
     menuItems: {
       type: Array,
       required: true,
+    },
+  },
+  computed: {
+    profileImagePath () {
+      const { avatar, profileImageUrl } = this.user;
+      if (profileImageUrl) return profileImageUrl;
+      if (avatar) return `/images/avatars/${avatar}`;
+      return '/images/no-profile-picture.png';
     },
   },
 };

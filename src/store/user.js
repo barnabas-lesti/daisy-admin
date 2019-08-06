@@ -14,4 +14,8 @@ export const mutations = {
     state.user = null;
     state.accessToken = null;
   },
+  updateUser (state, { nickname, profileImageUrl }) {
+    if (nickname) state.user.nickname = nickname;
+    if (profileImageUrl) state.user.profileImageUrl = profileImageUrl;
+  },
 };
