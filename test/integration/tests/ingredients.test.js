@@ -14,8 +14,8 @@ describe('ingredients', () => {
     const creatorUser = createFakeUser();
     const notCreatorUser = createFakeUser();
     ([ creatorUserDoc, notCreatorUserDoc ] = await User.create([
-      { ...creatorUser, passwordHash: await User.hashPassword(creatorUser.password), avatar: await User.getRandomAvatar(), },
-      { ...notCreatorUser, passwordHash: await User.hashPassword(notCreatorUser.password), avatar: await User.getRandomAvatar(), },
+      { ...creatorUser, passwordHash: await User.hashPassword(creatorUser.password) },
+      { ...notCreatorUser, passwordHash: await User.hashPassword(notCreatorUser.password) },
     ]));
 
     creatorAccessHeader = { headers: { 'Authorization': `Bearer ${await User.createAccessToken(creatorUserDoc)}` } };

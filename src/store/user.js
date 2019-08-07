@@ -19,11 +19,3 @@ export const mutations = {
     if (profileImageUrl !== undefined) state.user.profileImageUrl = profileImageUrl;
   },
 };
-
-export const getters = {
-  getProfileImagePath ({ user: { avatar, profileImageUrl } }) {
-    if (profileImageUrl) return profileImageUrl;
-    if (avatar) return `/images/avatars/${avatar}`;
-    return '/images/no-profile-picture.png';
-  },
-};

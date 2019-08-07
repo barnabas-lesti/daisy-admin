@@ -48,8 +48,7 @@ module.exports = (router) => {
 
       let passwordHash = await User.hashPassword(password);
       try {
-        const avatar = await User.getRandomAvatar();
-        const doc = await User.create({ email, passwordHash, nickname, avatar });
+        const doc = await User.create({ email, passwordHash, nickname });
         let user;
         ({ passwordHash, ...user } = doc.toObject());
         return res.send(user);

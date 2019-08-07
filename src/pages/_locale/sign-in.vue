@@ -33,6 +33,7 @@ import { required, email } from 'vuelidate/lib/validators';
 export default {
   name: 'PagesSignIn',
   mixins: [ validationMixin ],
+  middleware: 'signed-out',
   head () {
     return {
       title: this.$t('title'),
@@ -86,7 +87,7 @@ export default {
           this.form.email = this.form.password = '';
           this.$v.$reset();
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.signInSuccessful', { email }) });
-          this.$router.push({ name: this.$route.query['referer'] || 'locale' });
+          this.$router.push({ name: this.$route.query['ref'] || 'locale' });
         } catch (ex) {
           const error = ex.response || ex;
           if (error.status === 401) {

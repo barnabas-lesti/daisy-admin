@@ -13,7 +13,6 @@ describe('auth', () => {
     await User.create({
       ...existingUser,
       passwordHash: await User.hashPassword(existingUser.password),
-      avatar: await User.getRandomAvatar(),
     });
   });
 

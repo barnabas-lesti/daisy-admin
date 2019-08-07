@@ -4,39 +4,39 @@
       h1 {{ $t('title', { nickname: user.nickname }) }}
 
     v-flex.text-xs-center.text-lg-left(xs12, lg3)
-      v-avatar.elevation-3.mb-3(size='240', @click='isModalOpen = true;')
-        v-img(:src='getProfileImagePath')
+      v-avatar.elevation-3.mb-3(size='240', @click='onProfileImageClick()')
+        v-img(:src='profileImageSrc')
       .font-italic {{ $t('clickToEdit') }}
 
     v-flex(xs12, lg9)
       h3.mb-2 {{ $t('general') }}
       v-form(@submit.prevent='updateProfile()')
-        v-text-field(:value='user.email', :label="$t('forms.profile.email')",
+        v-text-field(:value='user.email', :label='$t("forms.profile.email")',
           type='email', disabled)
-        v-text-field(v-model='$v.forms.profile.nickname.$model', :label="$t('forms.profile.nickname')",
+        v-text-field(v-model='$v.forms.profile.nickname.$model', :label='$t("forms.profile.nickname")',
           :error-messages='errors.profile.nickname', type='text', @change='updateErrors("nickname")')
         .text-xs-right(xs12)
           v-btn.info.ma-0(type='submit') {{ $t('forms.profile.submit') }}
 
       h3.mb-2 {{ $t('changePassword') }}
       v-form(@submit.prevent='changePassword()')
-        v-text-field(v-model='$v.forms.password.password.$model', :label="$t('forms.password.password')",
+        v-text-field(v-model='$v.forms.password.password.$model', :label='$t("forms.password.password")',
           :error-messages='errors.password.password',
           type='password', @change='updateErrors("password")')
-        v-text-field(v-model='$v.forms.password.passwordConfirmation.$model', :label="$t('forms.password.passwordConfirmation')",
+        v-text-field(v-model='$v.forms.password.passwordConfirmation.$model', :label='$t("forms.password.passwordConfirmation")',
           :error-messages='errors.password.passwordConfirmation',
           type='password' @change='updateErrors("passwordConfirmation")')
         .text-xs-right(xs12)
           v-btn.info.ma-0(type='submit') {{ $t('forms.password.submit') }}
 
-    base-modal(v-model='isModalOpen', :title="$t('modal.title')", width='432px', @accept='confirmProfileImageUpdate()',
+    base-modal(v-model='isModalOpen', :title='$t("modal.title")', max-width='432', @accept='confirmProfileImageUpdate()',
       @discard='discardProfileImageUpdate()')
       v-container(grid-list-xl)
         v-layout(row, wrap)
           v-flex(xs12)
-            v-img.elevation-3(:src='modal.imageSrc || "/images/no-profile-picture.png"')
+            v-img.elevation-3(:src='modal.imageSrc || "/images/no-profile-image.png"')
           v-flex(xs12)
-            v-text-field(v-model='modal.profileImageUrl', :label="$t('modal.profileImageUrl')",
+            v-text-field(v-model='modal.profileImageUrl', :label='$t("modal.profileImageUrl")',
               type='text', @change='modal.imageSrc = modal.profileImageUrl;')
           v-flex.text-xs-right(xs12)
             v-btn.ma-0.mr-3(@click='discardProfileImageUpdate()') {{ $t('modal.discard') }}
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators';
 
@@ -95,9 +95,13 @@ export default {
   },
   computed: {
     ...mapState('user', [ 'user', 'accessToken' ]),
-    ...mapGetters('user', [ 'getProfileImagePath' ]),
+    profileImageSrc () { return (this.user && this.user.profileImageUrl) || '/images/no-profile-image.png'; },
   },
   methods: {
+    onProfileImageClick () {
+      this.isModalOpen = true;
+      console.log(this.isModalOpen);
+    },
     confirmProfileImageUpdate () {
       this.forms.profile.profileImageUrl = this.modal.profileImageUrl;
       this.$store.commit('user/updateUser', { profileImageUrl: this.modal.profileImageUrl || null });

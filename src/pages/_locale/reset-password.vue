@@ -30,6 +30,7 @@ import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators
 export default {
   name: 'PagesVerifyEmail',
   mixins: [ validationMixin ],
+  middleware: 'signed-out',
   head () {
     return {
       title: this.$t('title'),

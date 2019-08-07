@@ -1,28 +1,21 @@
 <template lang="pug">
-  v-navigation-drawer.layout-sidebar.hidden-md-and-up(:value='value', :hide-overlay='this.$vuetify.breakpoint.mdAndUp',
-    app, temporary, @input='$emit("input", $event)')
+  v-navigation-drawer.layout-sidebar.hidden-md-and-up(:value='value',
+    :hide-overlay='this.$vuetify.breakpoint.mdAndUp', app, temporary, @input='$emit("input", $event)')
     v-toolbar.transparent(flat)
       v-toolbar-title {{ $t('brand') }}
     v-divider
 
     v-list.pt-0
-      v-list-group(v-if='user', no-action)
-        template(v-slot:activator)
-          v-list-tile(avatar)
-            v-list-tile-avatar
-              img.elevation-3(:src='getProfileImagePath')
-            v-list-tile-content
-              v-list-tile-title {{ $t('welcome', { nickname: user.nickname }) }}
-        v-list-tile(:to="{ name: 'locale-profile' }", nuxt)
-          v-list-tile-content {{ $t('profile') }}
-        v-list-tile(@click="onSignOutClick()")
-          v-list-tile-content {{ $t('signOut') }}
-      template(v-else)
-        v-list-tile.py-2
-          v-btn.success(:to="{ name: 'locale-register', query: { 'referer': $route.name } }", nuxt)
-            | {{ $t('register') }}
-          v-btn.info(:to="{ name: 'locale-sign-in', query: { 'referer': $route.name } }", nuxt)
-            | {{ $t('signIn') }}
+      v-list-tile(v-if='user', avatar)
+        v-list-tile-avatar
+          img.elevation-3(:src='profileImageSrc')
+        v-list-tile-content
+          v-list-tile-title {{ user.nickname }}
+          v-list-tile-sub-title {{ user.email }}
+      v-list-tile(v-else, :to="{ name: 'locale-sign-in', query: { 'ref': $route.name } }", nuxt)
+        v-list-tile-action
+          v-icon exit_to_app
+        v-list-tile-content {{ $t('signIn') }}
       v-divider
 
       v-list-tile(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }', :exact='item.exact', nuxt)
@@ -30,11 +23,20 @@
           v-icon {{ item.icon }}
         v-list-tile-content
           v-list-tile-title {{ item.label || $t(item.labelKey) }}
+
+      template(v-if='user')
+        v-divider
+        v-list-tile(:to="{ name: 'locale-profile' }", nuxt)
+          v-list-tile-action
+            v-icon account_circle
+          v-list-tile-content {{ $t('profile') }}
+        v-list-tile(:to="{ name: 'locale-sign-out', query: { 'ref': $route.name } }", nuxt)
+          v-list-tile-action
+            v-icon.layout-sidebar_sign-out-icon exit_to_app
+          v-list-tile-content {{ $t('signOut') }}
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
-
 export default {
   name: 'LayoutSidebar',
   props: {
@@ -46,29 +48,28 @@ export default {
       type: Array,
       required: true,
     },
-  },
-  data: () => ({
-    isOpen: false,
-  }),
-  computed: {
-    ...mapState('user', [ 'user' ]),
-    ...mapGetters('user', [ 'getProfileImagePath' ]),
-  },
-  methods: {
-    onSignOutClick () {
-      this.$emit('input', false);
-      this.$auth.signOut();
+    user: {
+      required: true,
+      validator: prop => typeof prop === 'object' || prop === null,
     },
+  },
+  computed: {
+    profileImageSrc () { return (this.user && this.user.profileImageUrl) || '/images/no-profile-image.png'; },
   },
 };
 </script>
+
+<style lang="stylus">
+.layout-sidebar
+  &_sign-out-icon
+    transform rotate(180deg)
+</style>
 
 <i18n>
 en:
   brand: Daisy
   register: Register
-  signIn: Sign in
+  signIn: Sign in or Register
   signOut: Sign out
   profile: Profile
-  welcome: "Hi {nickname}!"
 </i18n>

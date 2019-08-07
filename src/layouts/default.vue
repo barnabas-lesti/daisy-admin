@@ -1,7 +1,7 @@
 <template lang="pug">
   v-app.layout-default
-    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true', @sign-out='signOut()')
-    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems')
+    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true;')
+    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems', :user='user')
     v-content
       v-container.layout-default_container(grid-list-xl)
         nuxt
@@ -27,11 +27,11 @@ export default {
   data () {
     return {
       isSidebarOpen: false,
-      socialItems: this.$store.state.navigation.socialItems,
     };
   },
   computed: {
     ...mapState('user', [ 'user' ]),
+    ...mapState('navigation', [ 'socialItems' ]),
 
     menuItems () {
       const { menuItems } = this.$store.state.navigation;
@@ -47,8 +47,8 @@ export default {
   },
   methods: {
     signOut () {
-      this.$auth.signOut();
       this.isSidebarOpen = false;
+      this.$auth.signOut();
     },
   },
 };
