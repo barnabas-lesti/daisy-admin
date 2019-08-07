@@ -132,7 +132,7 @@ export default {
 <style lang="stylus">
 .pages-sign-in
   &_card
-    max-width: 600px;
+    max-width 600px
 
 </style>
 

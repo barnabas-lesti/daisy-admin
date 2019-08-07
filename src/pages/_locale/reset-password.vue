@@ -109,7 +109,7 @@ export default {
 <style lang="stylus">
 .pages-reset-password
   &_card
-    max-width: 600px;
+    max-width 600px
 
 </style>
 

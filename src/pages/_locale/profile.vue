@@ -4,7 +4,7 @@
       h1 {{ $t('title', { nickname: user.nickname }) }}
 
     v-flex.text-xs-center.text-lg-left(xs12, lg3)
-      v-avatar.elevation-3.mb-3(size='240', @click='onProfileImageClick()')
+      v-avatar.pages-profile_avatar.elevation-3.mb-3(size='240', @click='onProfileImageClick()')
         v-img(:src='profileImageSrc')
       .font-italic {{ $t('clickToEdit') }}
 
@@ -100,7 +100,6 @@ export default {
   methods: {
     onProfileImageClick () {
       this.isModalOpen = true;
-      console.log(this.isModalOpen);
     },
     confirmProfileImageUpdate () {
       this.forms.profile.profileImageUrl = this.modal.profileImageUrl;
@@ -173,6 +172,13 @@ export default {
   },
 };
 </script>
+
+<style lang="stylus">
+.pages-profile
+  &_avatar
+    cursor pointer
+
+</style>
 
 <i18n>
 en:

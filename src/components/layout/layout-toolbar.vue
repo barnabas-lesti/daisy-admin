@@ -11,7 +11,7 @@
           v-btn(v-on='on', icon)
             v-avatar(v-if='user', size='36')
               v-img.elevation-3(:src='profileImageSrc')
-            v-icon(v-else, size='36') account_circle
+            v-icon.grey--text(v-else, size='36') account_circle
         v-list(v-if='user')
           v-list-tile(avatar)
             v-list-tile-avatar

@@ -166,7 +166,7 @@ export default {
 <style lang="stylus">
 .pages-register
   &_card
-    max-width: 600px;
+    max-width 600px
 
 </style>
 

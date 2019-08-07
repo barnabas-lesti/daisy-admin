@@ -63,11 +63,11 @@ export default {
 <style lang="stylus">
 .exercises-table
   &_row
-    cursor: pointer;
+    cursor pointer
 
   @media screen and (max-width: 599px)
     &_name
-      width: 130px
+      width 130px
 </style>
 
 <i18n>

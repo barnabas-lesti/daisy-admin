@@ -63,6 +63,7 @@ export default {
 .layout-sidebar
   &_sign-out-icon
     transform rotate(180deg)
+
 </style>
 
 <i18n>
