@@ -30,6 +30,7 @@ import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators
 export default {
   name: 'PagesVerifyEmail',
   mixins: [ validationMixin ],
+  middleware: 'signed-out',
   head () {
     return {
       title: this.$t('title'),
@@ -85,7 +86,7 @@ export default {
         this.$v.$reset();
         this.serverErrors.splice(0);
         try {
-          await this.$axios.$post('/api/auth/reset-password', { token: this.$route.query['token'], password: this.form.password });
+          await this.$axios.$patch('/api/auth/password', { token: this.$route.query['token'], password: this.form.password });
           this.form.password = this.form.passwordConfirmation = '';
           this.$store.commit('notifications/showSuccess', this.$t('notifications.resetSuccessful'));
           this.$router.push({ name: 'locale-sign-in' });
@@ -108,7 +109,7 @@ export default {
 <style lang="stylus">
 .pages-reset-password
   &_card
-    max-width: 600px;
+    max-width 600px
 
 </style>
 

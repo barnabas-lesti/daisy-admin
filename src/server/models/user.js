@@ -1,6 +1,6 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
 
 const {
   AUTH_SALT_ROUNDS,
@@ -19,9 +19,6 @@ const userDbSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  profileImageUrl: {
-    type: String,
-  },
   nickname: {
     type: String,
     trim: true,
@@ -30,6 +27,10 @@ const userDbSchema = new mongoose.Schema({
     type: String,
     enum: [ 'user', 'admin' ],
     default: 'user',
+  },
+  profileImageUrl: {
+    type: String,
+    default: '',
   },
 }, {
   id: false,

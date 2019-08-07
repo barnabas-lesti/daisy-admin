@@ -36,6 +36,7 @@ import { required, email, minLength, maxLength, sameAs } from 'vuelidate/lib/val
 export default {
   name: 'PagesRegister',
   mixins: [ validationMixin ],
+  middleware: 'signed-out',
   head () {
     return {
       title: this.$t('title'),
@@ -117,7 +118,7 @@ export default {
           await this.$axios.$post('/api/auth/send-registration-email', { email, password, nickname, locale });
           this.form.nickname = this.form.email = this.form.password = this.form.passwordConfirmation = '';
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.registrationEmailSent', { email }) });
-          this.$router.push({ name: this.$route.query['referer'] || 'locale' });
+          this.$router.push({ name: this.$route.query['ref'] || 'locale' });
         } catch (ex) {
           const error = ex.response || ex;
           if (error.status === 409) {
@@ -165,7 +166,7 @@ export default {
 <style lang="stylus">
 .pages-register
   &_card
-    max-width: 600px;
+    max-width 600px
 
 </style>
 

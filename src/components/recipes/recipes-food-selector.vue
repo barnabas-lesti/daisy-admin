@@ -55,16 +55,16 @@ export default {
 <style lang="stylus">
 .recipes-food-selector
   &_row
-    cursor: pointer;
+    cursor pointer
   &_nutrition
-    min-width: 80px;
+    min-width 80px
   &_serving
-    font-size: 14px
-    min-width: 80px
+    font-size 14px
+    min-width 80px
 
   @media screen and (max-width: 599px)
     &_name
-      width: 160px
+      width 160px
 </style>
 
 <i18n>

@@ -66,17 +66,17 @@ export default {
 <style lang="stylus">
 .calculator-table
   &_row
-    cursor: pointer
+    cursor pointer
 
   &_serving
-    font-size: 14px
-    min-width: 70px
+    font-size 14px
+    min-width 70px
   &_nutrient
-    min-width: 80px
+    min-width 80px
 
   @media screen and (max-width: 599px)
     &_name
-      width: 150px
+      width 150px
 </style>
 
 <i18n>

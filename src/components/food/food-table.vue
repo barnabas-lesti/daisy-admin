@@ -69,11 +69,11 @@ export default {
 <style lang="stylus">
 .food-table
   &_row
-    cursor: pointer;
+    cursor pointer
 
   @media screen and (max-width: 599px)
     &_name
-      width: 160px
+      width 160px
 </style>
 
 <i18n>
