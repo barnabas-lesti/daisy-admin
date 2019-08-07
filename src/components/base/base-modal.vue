@@ -1,7 +1,7 @@
 <template lang="pug">
-  v-dialog.base-modal(:value='value', transition='dialog-bottom-transition', :fullscreen='$vuetify.breakpoint.smAndDown',
+  v-dialog.base-modal(:value='value', transition='dialog-bottom-transition', :fullscreen='$vuetify.breakpoint.xs',
     :hide-overlay='$vuetify.breakpoint.smAndDown', :max-width="$vuetify.breakpoint.smAndDown ? 'none' : '80%'",
-    :width="$vuetify.breakpoint.smAndDown ? 'auto' : width",
+    :width="$vuetify.breakpoint.xs ? 'auto' : width",
     lazy)
     v-card
       v-toolbar.blue.lighten-1(card, dark)

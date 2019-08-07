@@ -1,9 +1,9 @@
 <template lang="pug">
-  v-app
-    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true')
-    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems', :user='user', @sign-out='signOut()')
+  v-app.layout-default
+    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true', @sign-out='signOut()')
+    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems')
     v-content
-      v-container(grid-list-xl)
+      v-container.layout-default_container(grid-list-xl)
         nuxt
     layout-footer(:social-items='socialItems')
     layout-notifications(v-model='notification')
@@ -27,13 +27,19 @@ export default {
   data () {
     return {
       isSidebarOpen: false,
-      menuItems: this.$store.state.navigation.menuItems.map(item => ({ ...item, label: this.$t(item.labelKey) })),
       socialItems: this.$store.state.navigation.socialItems,
     };
   },
   computed: {
     ...mapState('user', [ 'user' ]),
 
+    menuItems () {
+      const { menuItems } = this.$store.state.navigation;
+      return menuItems.map(item => ({
+        ...item,
+        label: this.$t(item.labelKey),
+      }));
+    },
     notification: {
       get () { return this.$store.state.notifications.notification; },
       set (newValue) { this.$store.commit('notifications/clear'); },
@@ -47,6 +53,14 @@ export default {
   },
 };
 </script>
+
+<style lang="stylus">
+.layout-default
+  &_container
+    @media only screen and (min-width: 1264px)
+      max-width 1185px
+
+</style>
 
 <i18n>
 en:

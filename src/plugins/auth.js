@@ -19,10 +19,10 @@ class Auth {
   }
 
   signOut () {
+    this.redirect({ name: 'locale' });
     this.$store.commit('user/signOut');
     this.$cookies.remove('access-token');
     this.$axios.setHeader('Authorization', null);
-    this.redirect({ name: 'locale' });
   }
 }
 

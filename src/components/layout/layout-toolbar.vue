@@ -4,13 +4,32 @@
     v-toolbar-title {{ $t('brand') }}
     v-spacer
     v-toolbar-items
-      v-scroll-y-transition.layout-toolbar_transition(group, hide-on-leave)
-        v-btn.hidden-sm-and-down(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }',
-          :exact='item.exact', flat, nuxt) {{ item.label || $t(item.labelKey) }}
-        v-btn(v-if='!user', :to="{ name: 'locale-register', query: { 'referer': $route.name } }", key='register', flat, nuxt) {{ $t('register') }}
+      v-btn.hidden-sm-and-down(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }',
+        :exact='item.exact', flat, nuxt) {{ item.label || $t(item.labelKey) }}
+      v-menu(min-width='192px', offset-y)
+        template(v-slot:activator='{ on }')
+          v-btn(v-on='on', icon)
+            v-avatar(v-if='user', size='36')
+              v-img.elevation-3(:src='getProfileImagePath')
+            v-icon(v-else, size='36') account_circle
+        v-list(v-if='user')
+          v-list-tile
+            v-list-tile-content.font-weight-bold {{ $t('welcome', { nickname: user.nickname }) }}
+          v-divider
+          v-list-tile(:to="{ name: 'locale-profile' }", nuxt)
+            v-list-tile-content {{ $t('profile') }}
+          v-list-tile(@click="$emit('sign-out')")
+            v-list-tile-content {{ $t('signOut') }}
+        v-list(v-else)
+          v-list-tile(:to="{ name: 'locale-register', query: { 'referer': $route.name } }", nuxt)
+            v-list-tile-content {{ $t('register') }}
+          v-list-tile(:to="{ name: 'locale-sign-in', query: { 'referer': $route.name } }", nuxt)
+            v-list-tile-content {{ $t('signIn') }}
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+
 export default {
   name: 'LayoutToolbar',
   props: {
@@ -18,14 +37,10 @@ export default {
       type: Array,
       required: true,
     },
-    user: {
-      required: true,
-      validator: prop => typeof prop === 'object' || prop === null,
-    },
-    sidebarOpen: {
-      type: Boolean,
-      default: () => false,
-    },
+  },
+  computed: {
+    ...mapState('user', [ 'user' ]),
+    ...mapGetters('user', [ 'getProfileImagePath' ]),
   },
 };
 </script>
@@ -42,5 +57,8 @@ export default {
 en:
   brand: Daisy
   register: Register
+  signIn: Sign in
   signOut: Sign out
+  profile: Profile
+  welcome: "Hi {nickname}!"
 </i18n>
