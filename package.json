@@ -6,13 +6,16 @@
   "license": "MIT",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon ./src/server --watch ./src/server --watch ./env --ext js,yml",
+    "start:test": "cross-env NODE_ENV=test nodemon ./src/server --watch ./src/server --watch ./env --ext js,yml",
     "start:prod": "cross-env NODE_ENV=production node ./src/server",
-    "build": "nuxt build",
-    "lint": "eslint --ext .js,.vue .",
     "test": "npm run test:integration",
     "test:integration": "jest --config ./test/integration/jest.config.js",
-    "test:e2e": "cypress run",
-    "test:e2e:open": "cypress open"
+    "test:e2e": "start-server-and-test start:test 7000 test:cy:run",
+    "test:e2e:open": "start-server-and-test start:test 7000 test:cy:open",
+    "test:cy:run": "cypress run",
+    "test:cy:open": "cypress open",
+    "build": "nuxt build",
+    "lint": "eslint --ext .js,.vue ."
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
@@ -59,6 +62,7 @@
     "nodemon": "^1.18.9",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
+    "start-server-and-test": "^1.9.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-jest": "^3.0.3",
