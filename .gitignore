@@ -2,10 +2,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-env/*
+/env/*
 !env/default.yml
 
-.nuxt/
-temp/
+/.nuxt/
+/temp/
+/coverage/
+/cypress/
+
 node_modules/
-coverage/
