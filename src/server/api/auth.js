@@ -13,6 +13,9 @@ module.exports = (router) => {
       const { email, password, nickname, locale = 'en' } = req.body;
       if (!email || !password || !nickname) return res.sendStatus(400);
 
+      const user = await User.findOne({ email });
+      if (user) return res.sendStatus(409);
+
       const expiresInMinutes = envConfig.AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
       try {
         const token = await User.createRegistrationToken({ email, password, nickname });

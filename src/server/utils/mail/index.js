@@ -17,9 +17,9 @@ if (EMAIL_MAILGUN_API_KEY && EMAIL_MAILGUN_DOMAIN) {
     apiKey: EMAIL_MAILGUN_API_KEY,
     domain: EMAIL_MAILGUN_DOMAIN,
   });
-  logger.success('Mailgun setup successful');
+  logger.success('MAILGUN setup successful');
 } else {
-  logger.info('EMAIL_MAILGUN_API_KEY and/or EMAIL_MAILGUN_DOMAIN not set, skipping Mailgun setup');
+  logger.info('MAILGUN settings missing, mails will be saved to the TEMP folder');
 }
 
 class Mail {

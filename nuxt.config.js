@@ -29,7 +29,6 @@ module.exports = {
     'plugins/filters',
     'plugins/logger',
     'plugins/i18n',
-    'plugins/validators',
     'plugins/auth',
   ],
 
