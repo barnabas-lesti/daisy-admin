@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 const {
   AUTH_SALT_ROUNDS,
   AUTH_SECRET,
-  AUTH_ACCESS_TOKEN_EXPIRATION_IN_MINUTES,
-  AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
+  ACCESS_TOKEN_EXPIRATION_IN_MINUTES,
+  EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
 } = require('../../../env.config');
 
 const userDbSchema = new mongoose.Schema({
@@ -54,7 +54,7 @@ User.createAccessToken = async ({ _id, email, rank }) => {
   const token = await jwt.sign(
     { _id, email, rank },
     AUTH_SECRET,
-    { expiresIn: `${AUTH_ACCESS_TOKEN_EXPIRATION_IN_MINUTES}m` }
+    { expiresIn: `${ACCESS_TOKEN_EXPIRATION_IN_MINUTES}m` }
   );
   return token;
 };
@@ -63,7 +63,7 @@ User.createRegistrationToken = async ({ email, password, nickname }) => {
   const token = await jwt.sign(
     { email, password, nickname },
     AUTH_SECRET,
-    { expiresIn: `${AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
+    { expiresIn: `${EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
   );
   return token;
 };
@@ -72,7 +72,7 @@ User.createPasswordResetToken = async ({ email }) => {
   const token = await jwt.sign(
     { email },
     AUTH_SECRET,
-    { expiresIn: `${AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
+    { expiresIn: `${EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
   );
   return token;
 };

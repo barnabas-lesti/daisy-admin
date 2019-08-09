@@ -12,16 +12,17 @@ module.exports = {
 
   dev: !envConfig.IS_PRODUCTION,
 
+  env: {
+    NODE_ENV: envConfig.NODE_ENV,
+    IS_PRODUCTION: envConfig.IS_PRODUCTION,
+  },
+
   head: {
     titleTemplate: '%s | Daisy',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
-  },
-
-  env: {
-    baseUrl: envConfig.BASE_URL,
   },
 
   plugins: [

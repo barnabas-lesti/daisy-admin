@@ -12,7 +12,7 @@ if (NODE_ENV === 'test') {
   routes.push(...[
     require('./test'),
   ]);
-  logger.info('TEST routes initialized');
+  logger.info('TEST routes initialized: /api/test');
 }
 
 module.exports = routes;

@@ -8,7 +8,7 @@ const envConfig = require('../../../env.config');
 module.exports = (router) => {
   router.route('/auth/send-registration-email')
     .post(async (req, res) => {
-      if (envConfig.AUTH_REGISTRATION_DISABLED) return res.sendStatus(403);
+      if (envConfig.REGISTRATION_DISABLED) return res.sendStatus(403);
 
       const { email, password, nickname, locale = 'en' } = req.body;
       if (!email || !password || !nickname) return res.sendStatus(400);
@@ -16,7 +16,7 @@ module.exports = (router) => {
       const user = await User.findOne({ email });
       if (user) return res.sendStatus(409);
 
-      const expiresInMinutes = envConfig.AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
+      const expiresInMinutes = envConfig.EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
       try {
         const token = await User.createRegistrationToken({ email, password, nickname });
         const link = encodeURI(`${envConfig.BASE_URL}/${locale}/register?token=${token}`);
@@ -35,7 +35,7 @@ module.exports = (router) => {
 
   router.route('/auth/register')
     .post(async (req, res) => {
-      if (envConfig.AUTH_REGISTRATION_DISABLED) return res.sendStatus(403);
+      if (envConfig.REGISTRATION_DISABLED) return res.sendStatus(403);
 
       const { token } = req.body;
       if (!token) return res.sendStatus(400);
@@ -116,7 +116,7 @@ module.exports = (router) => {
       const user = await User.findOne({ email });
       if (!user) return res.sendStatus(404);
 
-      const expiresInMinutes = envConfig.AUTH_EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
+      const expiresInMinutes = envConfig.EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
       try {
         const token = await User.createPasswordResetToken({ email });
         const link = encodeURI(`${envConfig.BASE_URL}/${locale}/reset-password?token=${token}`);

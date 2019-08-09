@@ -3,8 +3,8 @@ const fs = require('fs-extra');
 const mailgunJs = require('mailgun-js');
 
 const {
-  EMAIL_MAILGUN_API_KEY,
-  EMAIL_MAILGUN_DOMAIN,
+  MAILGUN_API_KEY,
+  MAILGUN_DOMAIN,
   EMAIL_FROM_ADDRESS,
   TEMP_FOLDER_PATH,
 } = require('../../../../env.config');
@@ -12,10 +12,10 @@ const logger = require('../logger');
 const { templateNames, templates } = require('./templates');
 
 let mailgun;
-if (EMAIL_MAILGUN_API_KEY && EMAIL_MAILGUN_DOMAIN) {
+if (MAILGUN_API_KEY && MAILGUN_DOMAIN) {
   mailgun = mailgunJs({
-    apiKey: EMAIL_MAILGUN_API_KEY,
-    domain: EMAIL_MAILGUN_DOMAIN,
+    apiKey: MAILGUN_API_KEY,
+    domain: MAILGUN_DOMAIN,
   });
   logger.success('MAILGUN setup successful');
 } else {

@@ -7,12 +7,13 @@ const {
   NODE_ENV,
   PORT,
   BASE_URL,
-  DEBUG_NO_CLIENT,
+  NO_CLIENT,
   IS_PRODUCTION,
   TEMP_FOLDER_PATH,
-  AUTH_HTTP_ACCESS_USERNAME,
-  AUTH_HTTP_ACCESS_PASSWORD,
-  DEBUG_RESPONSE_DELAY,
+  HTTP_ACCESS_USERNAME,
+  HTTP_ACCESS_PASSWORD,
+  RESPONSE_DELAY,
+  CLEAN_UP_TEMP_FOLDER,
 } = require('../../env.config');
 const { logger, Database } = require('./utils');
 
@@ -25,14 +26,14 @@ class App {
 
     this._app.use(bodyParser.json());
 
-    if (AUTH_HTTP_ACCESS_USERNAME && AUTH_HTTP_ACCESS_PASSWORD) {
+    if (HTTP_ACCESS_USERNAME && HTTP_ACCESS_PASSWORD) {
       this._app.use(require('./middlewares/http-access')());
       logger.info('Using http-access middleware');
     }
 
-    if (DEBUG_RESPONSE_DELAY) {
+    if (RESPONSE_DELAY) {
       this._app.use('/api', require('./middlewares/debug-response-delay')());
-      logger.info(`Using debug-response-delay middleware on /api (timeout: ${DEBUG_RESPONSE_DELAY})`);
+      logger.info(`Using debug-response-delay middleware on /api (timeout: ${RESPONSE_DELAY})`);
     }
 
     this._app.use('/api', [
@@ -44,9 +45,10 @@ class App {
   async start () {
     logger.info(`Using configuration: "${NODE_ENV}"`);
 
-    if (DEBUG_NO_CLIENT) {
-      logger.info('DEBUG_NO_CLIENT is enabled, skipping client setup');
+    if (NO_CLIENT) {
+      logger.info('NO_CLIENT is enabled, skipping client setup');
     } else {
+      logger.info('Building client...');
       if (!IS_PRODUCTION) {
         const builder = new Builder(this._nuxt);
         await builder.build();
@@ -54,6 +56,7 @@ class App {
         await this._nuxt.ready();
       }
       this._app.use(this._nuxt.render);
+      logger.success('Client ready');
     }
 
     await this._createTempDir();
@@ -75,10 +78,10 @@ class App {
   }
 
   async _createTempDir () {
-    if (await fs.pathExists(TEMP_FOLDER_PATH)) await fs.remove(TEMP_FOLDER_PATH);
+    if (CLEAN_UP_TEMP_FOLDER && await fs.pathExists(TEMP_FOLDER_PATH)) await fs.remove(TEMP_FOLDER_PATH);
 
     await fs.ensureDir(TEMP_FOLDER_PATH);
-    logger.success(`TEMP directory created (${TEMP_FOLDER_PATH})`);
+    logger.success(`TEMP directory ready (cleanup: ${CLEAN_UP_TEMP_FOLDER})`);
   }
 }
 

@@ -22,14 +22,14 @@ describe('auth', () => {
 
   describe('POST /api/auth/send-registration-email', () => {
     test('should respond with 403 if registration is disabled', async () => {
-      const originalEnvValue = envConfig.AUTH_REGISTRATION_DISABLED;
-      envConfig.AUTH_REGISTRATION_DISABLED = true;
+      const originalEnvValue = envConfig.REGISTRATION_DISABLED;
+      envConfig.REGISTRATION_DISABLED = true;
       try {
         await http.post('/api/auth/send-registration-email', {});
       } catch (error) {
         expect(error.response.status).toBe(403);
       }
-      envConfig.AUTH_REGISTRATION_DISABLED = originalEnvValue;
+      envConfig.REGISTRATION_DISABLED = originalEnvValue;
     });
 
     test('should respond with 400 if "email" is not provided', async () => {
@@ -78,14 +78,14 @@ describe('auth', () => {
 
   describe('POST /api/auth/register', () => {
     test('should respond with 403 if registration is disabled', async () => {
-      const originalEnvValue = envConfig.AUTH_REGISTRATION_DISABLED;
-      envConfig.AUTH_REGISTRATION_DISABLED = true;
+      const originalEnvValue = envConfig.REGISTRATION_DISABLED;
+      envConfig.REGISTRATION_DISABLED = true;
       try {
         await http.post('/api/auth/register', {});
       } catch (error) {
         expect(error.response.status).toBe(403);
       }
-      envConfig.AUTH_REGISTRATION_DISABLED = originalEnvValue;
+      envConfig.REGISTRATION_DISABLED = originalEnvValue;
     });
 
     test('should respond with 400 if "token" is not provided', async () => {
