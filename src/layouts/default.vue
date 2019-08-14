@@ -1,7 +1,15 @@
 <template lang="pug">
   v-app.layout-default
-    layout-toolbar(:menu-items='menuItems', :user='user', @open-sidebar='isSidebarOpen = true;')
-    layout-sidebar(v-model='isSidebarOpen', :menu-items='menuItems', :user='user')
+    layout-toolbar(
+      :menu-items='menuItems',
+      :user='user',
+      @open-sidebar='isSidebarOpen = true;',
+    )
+    layout-sidebar(
+      v-model='isSidebarOpen',
+      :menu-items='menuItems',
+      :user='user',
+    )
     v-content
       v-container.layout-default_container(grid-list-xl)
         nuxt

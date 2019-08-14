@@ -1,20 +1,26 @@
-const envConfig = require('./env.config');
+const {
+  NODE_ENV,
+  IS_PRODUCTION,
+  REGISTRATION_DISABLED,
+  PORT,
+  BASE_URL,
+  SENTRY_DSN,
+} = require('./env.config');
 
 module.exports = {
   mode: 'universal',
   srcDir: './src',
-
   loading: '~/components/base/base-loader.vue',
 
-  server: {
-    port: envConfig.PORT,
-  },
-
-  dev: !envConfig.IS_PRODUCTION,
-
   env: {
-    NODE_ENV: envConfig.NODE_ENV,
-    IS_PRODUCTION: envConfig.IS_PRODUCTION,
+    NODE_ENV,
+    IS_PRODUCTION,
+    REGISTRATION_DISABLED,
+  },
+  dev: !IS_PRODUCTION,
+
+  server: {
+    port: PORT,
   },
 
   head: {
@@ -41,20 +47,21 @@ module.exports = {
   ],
 
   axios: {
-    baseURL: envConfig.BASE_URL,
+    baseURL: BASE_URL,
   },
 
   sentry: {
-    dsn: envConfig.SENTRY_DSN,
+    dsn: SENTRY_DSN,
   },
 
   vuetify: {
     materialIcons: true,
-    treeShake: envConfig.IS_PRODUCTION,
+    treeShake: IS_PRODUCTION,
   },
 
   router: {
     middleware: [
+      'config',
       'auth',
       'i18n',
     ],

@@ -1,11 +1,12 @@
 export default ({ isHMR, params, store, redirect, route, app }) => {
   if (isHMR) return;
 
+  const { locales, defaultLocale } = store.state.i18n;
   const requestedLocale = params.locale;
-  if (store.state.i18n.locales.indexOf(requestedLocale) === -1) {
+  if (locales.indexOf(requestedLocale) === -1) {
     redirect({
       name: 'locale',
-      params: { locale: app.i18n.fallbackLocale },
+      params: { locale: defaultLocale },
       query: { ...route.query },
     });
     return;

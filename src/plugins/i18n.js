@@ -4,9 +4,6 @@ import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
 export default ({ app, store }) => {
-  app.i18n = new VueI18n({
-    locale: store.state.i18n.locale,
-    fallbackLocale: process.env.IS_PRODUCTION ? 'en' : '',
-    silentTranslationWarn: true,
-  });
+  const { locale, fallbackLocale, silentTranslationWarn } = store.state.i18n;
+  app.i18n = new VueI18n({ locale, fallbackLocale, silentTranslationWarn });
 };

@@ -1,6 +1,12 @@
+const locales = [ 'en' ];
+const [ locale ] = locales;
+
 export const state = () => ({
-  locales: [ 'en', 'test' ],
-  locale: 'en',
+  locales,
+  locale,
+  defaultLocale: locale,
+  fallbackLocale: locale,
+  silentTranslationWarn: false,
 });
 
 export const mutations = {
@@ -8,5 +14,9 @@ export const mutations = {
     if (state.locales.indexOf(locale) !== -1) {
       state.locale = locale;
     }
+  },
+  pushLocales (state, payload) {
+    const locales = Array.isArray(payload) ? payload : [ payload ];
+    state.locales.push(...locales);
   },
 };

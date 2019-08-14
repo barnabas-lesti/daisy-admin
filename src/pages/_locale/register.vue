@@ -9,60 +9,63 @@
 
     v-flex(
       xs12,
-      md6,
+      md8
+      lg6,
     )
-      v-form(
-        ref='form',
-        @submit.prevent='sendRegistrationEmail()',
-      )
-        v-layout(wrap)
-          v-flex(xs12)
-            v-scroll-y-transition
-              .red--text(v-if='serverError') {{ serverError }}
-          v-flex(xs12)
-            v-text-field(
-              v-model='form.nickname',
-              :label='$t("labels.nickname")',
-              :error='!!serverError',
-              :rules='rules.nickname',
-              name='nickname'
-              type='text',
-              append-icon='face',
-            )
-            v-text-field(
-              v-model='form.email',
-              :label='$t("labels.email")',
-              :error='!!serverError',
-              :rules='rules.email',
-              name='email'
-              type='email',
-              append-icon='account_circle',
-            )
-            v-text-field(
-              v-model='form.password',
-              :label='$t("labels.password")',
-              :error='!!serverError',
-              :rules='rules.password',
-              name='password'
-              type='password',
-              append-icon='vpn_key',
-            )
-            v-text-field(
-              v-model='form.passwordConfirmation',
-              :label='$t("labels.passwordConfirmation")',
-              :error='!!serverError',
-              :rules='rules.passwordConfirmation',
-              name='passwordConfirmation'
-              type='password',
-              append-icon='vpn_key',
-            )
-          v-flex(xs12)
-            nuxt-link(:to='{ name: "locale-sign-in" }') {{ $t('signInLink') }}
-          v-flex.text-xs-right(xs12)
-            v-btn.info.ma-0(
-              type='submit',
-              large,
-            ) {{ $t('labels.submit') }}
+      v-card
+        v-card-text
+          v-form(
+            ref='form',
+            @submit.prevent='sendRegistrationEmail()',
+          )
+            v-layout(wrap)
+              v-flex(xs12)
+                v-scroll-y-transition
+                  .red--text(v-if='serverError') {{ serverError }}
+              v-flex(xs12)
+                v-text-field(
+                  v-model='form.nickname',
+                  :label='$t("labels.nickname")',
+                  :error='!!serverError',
+                  :rules='rules.nickname',
+                  name='nickname'
+                  type='text',
+                  append-icon='face',
+                )
+                v-text-field(
+                  v-model='form.email',
+                  :label='$t("labels.email")',
+                  :error='!!serverError',
+                  :rules='rules.email',
+                  name='email'
+                  type='email',
+                  append-icon='account_circle',
+                )
+                v-text-field(
+                  v-model='form.password',
+                  :label='$t("labels.password")',
+                  :error='!!serverError',
+                  :rules='rules.password',
+                  name='password'
+                  type='password',
+                  append-icon='vpn_key',
+                )
+                v-text-field(
+                  v-model='form.passwordConfirmation',
+                  :label='$t("labels.passwordConfirmation")',
+                  :error='!!serverError',
+                  :rules='rules.passwordConfirmation',
+                  name='passwordConfirmation'
+                  type='password',
+                  append-icon='vpn_key',
+                )
+              v-flex(xs12)
+                nuxt-link(:to='{ name: "locale-sign-in" }') {{ $t('signInLink') }}
+              v-flex.text-xs-right(xs12)
+                v-btn.info.ma-0(
+                  type='submit',
+                  large,
+                ) {{ $t('labels.submit') }}
 </template>
 
 <script>
@@ -79,8 +82,6 @@ export default {
   },
   data () {
     return {
-      items: [],
-
       form: {
         nickname: '',
         email: '',
