@@ -12,13 +12,13 @@
         v-list-tile-content
           v-list-tile-title {{ user.nickname }}
           v-list-tile-sub-title {{ user.email }}
-      v-list-tile(v-else, :to="{ name: 'locale-sign-in', query: { 'ref': $route.name } }", nuxt)
+      v-list-tile(v-else, :to="localePath({ name: 'sign-in', query: { 'ref': $route.name } })", nuxt)
         v-list-tile-action
           v-icon exit_to_app
         v-list-tile-content {{ $t('signIn') }}
       v-divider
 
-      v-list-tile(v-for='item of menuItems', :key='item.labelKey', :to='{ name: item.routeName }', :exact='item.exact', nuxt)
+      v-list-tile(v-for='item of menuItems', :key='item.labelKey', :to='localePath({ name: item.routeName })', :exact='item.exact', nuxt)
         v-list-tile-action
           v-icon {{ item.icon }}
         v-list-tile-content
@@ -26,11 +26,11 @@
 
       template(v-if='user')
         v-divider
-        v-list-tile(:to="{ name: 'locale-profile' }", nuxt)
+        v-list-tile(:to="localePath('profile')", nuxt)
           v-list-tile-action
             v-icon account_circle
           v-list-tile-content {{ $t('profile') }}
-        v-list-tile(:to="{ name: 'locale-sign-out', query: { 'ref': $route.name } }", nuxt)
+        v-list-tile(:to="localePath({ name: 'sign-out', query: { 'ref': $route.name } })", nuxt)
           v-list-tile-action
             v-icon.layout-sidebar_sign-out-icon exit_to_app
           v-list-tile-content {{ $t('signOut') }}

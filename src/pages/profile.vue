@@ -48,12 +48,12 @@ import { mapState } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators';
 
-import BaseModal from '../../components/base/base-modal';
+import BaseModal from '../components/base/base-modal';
 
 export default {
   name: 'PagesProfile',
   mixins: [ validationMixin ],
-  middleware: 'signed-in',
+  middleware: 'local/signed-in',
   components: {
     BaseModal,
   },
@@ -65,7 +65,7 @@ export default {
     };
   },
   data () {
-    const { nickname, profileImageUrl } = this.$store.state.user.user;
+    const { nickname, profileImageUrl } = this.$store.state.auth.user;
     return {
       isModalOpen: false,
       modal: {
@@ -94,7 +94,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('user', [ 'user', 'accessToken' ]),
+    ...mapState('auth', [ 'user', 'accessToken' ]),
     profileImageSrc () { return (this.user && this.user.profileImageUrl) || '/images/no-profile-image.png'; },
   },
   methods: {
@@ -103,7 +103,7 @@ export default {
     },
     confirmProfileImageUpdate () {
       this.forms.profile.profileImageUrl = this.modal.profileImageUrl;
-      this.$store.commit('user/updateUser', { profileImageUrl: this.modal.profileImageUrl || null });
+      this.$store.commit('auth/updateUser', { profileImageUrl: this.modal.profileImageUrl || null });
       this.isModalOpen = false;
     },
     discardProfileImageUpdate () {
@@ -142,7 +142,7 @@ export default {
         this.$v.forms.profile.$reset();
         try {
           await this.$axios.$patch('/api/auth/profile', this.forms.profile);
-          this.$store.commit('user/updateUser', this.forms.profile);
+          this.$store.commit('auth/updateUser', this.forms.profile);
           this.$store.commit('notifications/showInfo', { html: this.$t('notifications.profile.updated') });
         } catch (ex) {
           this.$store.commit('notifications/showError', this.$t('errors.serverError'));

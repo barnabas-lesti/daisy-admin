@@ -1,28 +1,28 @@
 export const state = () => ({
   menuItems: [
     {
-      routeName: 'locale',
+      routeName: 'index',
       labelKey: 'menuItems.home',
       icon: 'home',
       exact: true,
     },
     {
-      routeName: 'locale-calculator',
+      routeName: 'calculator',
       labelKey: 'menuItems.calculator',
       icon: 'grid_on',
     },
     {
-      routeName: 'locale-recipes',
+      routeName: 'recipes',
       labelKey: 'menuItems.recipes',
       icon: 'book',
     },
     {
-      routeName: 'locale-food',
+      routeName: 'food',
       labelKey: 'menuItems.food',
       icon: 'fastfood',
     },
     {
-      routeName: 'locale-exercises',
+      routeName: 'exercises',
       labelKey: 'menuItems.exercises',
       icon: 'directions_run',
     },

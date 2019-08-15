@@ -32,10 +32,9 @@ module.exports = {
   },
 
   plugins: [
-    'plugins/utils',
     'plugins/filters',
+    'plugins/mixins',
     'plugins/logger',
-    'plugins/i18n',
     'plugins/auth',
   ],
 
@@ -43,15 +42,16 @@ module.exports = {
     '@nuxtjs/sentry',
     '@nuxtjs/axios',
     '@nuxtjs/vuetify',
+    'nuxt-i18n',
     'cookie-universal-nuxt',
   ],
 
-  axios: {
-    baseURL: BASE_URL,
-  },
-
   sentry: {
     dsn: SENTRY_DSN,
+  },
+
+  axios: {
+    baseURL: BASE_URL,
   },
 
   vuetify: {
@@ -59,11 +59,32 @@ module.exports = {
     treeShake: IS_PRODUCTION,
   },
 
+  i18n: {
+    locales: [
+      { code: 'en', iso: 'en-US' },
+    ],
+    defaultLocale: 'en',
+    vueI18nLoader: true,
+    strategy: 'prefix',
+    seo: false,
+    baseUrl: BASE_URL,
+    rootRedirect: 'en',
+    detectBrowserLanguage: {
+      fallbackLocale: 'en',
+    },
+    vueI18n: {
+      fallbackLocale: 'en',
+      silentTranslationWarn: false,
+    },
+    vuex: {
+      moduleName: 'i18n',
+      syncLocale: true,
+    },
+  },
+
   router: {
     middleware: [
-      'config',
-      'auth',
-      'i18n',
+      'global/auth',
     ],
   },
 
@@ -73,10 +94,7 @@ module.exports = {
         {
           resourceQuery: /blockType=i18n/,
           type: 'javascript/auto',
-          loaders: [
-            '@kazupon/vue-i18n-loader',
-            'yaml-loader',
-          ],
+          loaders: [ '@kazupon/vue-i18n-loader', 'yaml-loader' ],
         },
       );
     },

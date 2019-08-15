@@ -32,13 +32,16 @@ export default {
     LayoutFooter,
     LayoutNotifications,
   },
+  head () {
+    return this.$nuxtI18nSeo();
+  },
   data () {
     return {
       isSidebarOpen: false,
     };
   },
   computed: {
-    ...mapState('user', [ 'user' ]),
+    ...mapState('auth', [ 'user' ]),
     ...mapState('navigation', [ 'socialItems' ]),
 
     menuItems () {

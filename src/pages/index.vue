@@ -8,7 +8,7 @@
         .pb-3(v-html="$t('descriptionHtml')")
 
       v-flex.mb-3(v-for="(item, index) of cards", :key='index', xs12, sm6)
-        v-card(:to='{ name: item.routeName }', nuxt, hover)
+        v-card(:to='localePath({ name: item.routeName })', nuxt, hover)
           v-img(:src='item.thumbnailPath', height='190px')
           v-card-title(primary-title)
             div
@@ -35,28 +35,28 @@ export default {
           descriptionHtml: this.$t('cards.food.descriptionHtml'),
           actionLabel: this.$t('cards.defaultActionLabel'),
           thumbnailPath: '/images/food-materials.jpg',
-          routeName: 'locale-food',
+          routeName: 'food',
         },
         {
           title: this.$t('cards.recipes.title'),
           descriptionHtml: this.$t('cards.recipes.descriptionHtml'),
           actionLabel: this.$t('cards.defaultActionLabel'),
           thumbnailPath: '/images/recipes.jpg',
-          routeName: 'locale-recipes',
+          routeName: 'recipes',
         },
         {
           title: this.$t('cards.exercises.title'),
           descriptionHtml: this.$t('cards.exercises.descriptionHtml'),
           actionLabel: this.$t('cards.defaultActionLabel'),
           thumbnailPath: '/images/exercise.jpg',
-          routeName: 'locale-exercises',
+          routeName: 'exercises',
         },
         {
           title: this.$t('cards.calculator.title'),
           descriptionHtml: this.$t('cards.calculator.descriptionHtml'),
           actionLabel: this.$t('cards.defaultActionLabel'),
           thumbnailPath: '/images/calorie-calculation.jpg',
-          routeName: 'locale-calculator',
+          routeName: 'calculator',
         },
       ],
     };

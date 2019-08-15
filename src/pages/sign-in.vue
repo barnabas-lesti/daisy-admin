@@ -20,7 +20,7 @@
                 v-text-field(v-model='$v.form.password.$model', :error='!!serverErrors.length', :error-messages="fieldErrors.password",
                   :label="$t('password')", type='password', append-icon='vpn_key', name='password', @change='updatePasswordErrors()')
               v-flex(xs12)
-                nuxt-link.d-block.mb-2(:to="{ name: 'locale-register' }") {{ $t('registrationLink') }}
+                nuxt-link.d-block.mb-2(:to='localePath({ name: "register" })') {{ $t('registrationLink') }}
                 a.d-block(href='#', @click.prevent='sendPasswordResetEmail()') {{ $t('forgotPassword') }}
               v-flex.text-xs-right(xs12)
                 v-btn.info.ma-0(type='submit', large) {{ $t('button') }}

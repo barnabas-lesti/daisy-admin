@@ -61,13 +61,13 @@
 <script>
 import { mapState } from 'vuex';
 
-import CalculatorItem from '../../models/calculator-item';
+import CalculatorItem from '../models/calculator-item';
 
-import BaseControlTitle from '../../components/base/base-control-title';
-import BaseFab from '../../components/base/base-fab';
-import BaseModal from '../../components/base/base-modal';
-import BaseNutritionSummary from '../../components/base/base-nutrition-summary';
-import CalculatorTable from '../../components/calculator/calculator-table';
+import BaseControlTitle from '../components/base/base-control-title';
+import BaseFab from '../components/base/base-fab';
+import BaseModal from '../components/base/base-modal';
+import BaseNutritionSummary from '../components/base/base-nutrition-summary';
+import CalculatorTable from '../components/calculator/calculator-table';
 
 export default {
   name: 'PagesCalculatorIndex',
@@ -100,7 +100,7 @@ export default {
 
     modalMode: {
       get () { return this.$route.query['modal']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'modal': newValue }); },
+      // set (newValue) {},
     },
     summary () {
       return CalculatorItem.getNutrientSummary(this.items);

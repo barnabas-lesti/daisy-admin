@@ -60,7 +60,7 @@
                   append-icon='vpn_key',
                 )
               v-flex(xs12)
-                nuxt-link(:to='{ name: "locale-sign-in" }') {{ $t('signInLink') }}
+                nuxt-link(:to='localePath({ name: "sign-in" })') {{ $t('signInLink') }}
               v-flex.text-xs-right(xs12)
                 v-btn.info.ma-0(
                   type='submit',
@@ -73,7 +73,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 
 export default {
   name: 'PagesRegister',
-  middleware: 'signed-out',
+  middleware: 'local/signed-out',
   head () {
     return {
       title: this.$t('title'),
@@ -92,7 +92,7 @@ export default {
       rules: {
         nickname: [
           v => !!v || this.$t('errors.nickname.required'),
-          ({ length }) => (length > 6 && length < 22) || this.$t('errors.nickname.between', { min: 6, max: 22 }),
+          ({ length }) => (length >= 6 && length <= 22) || this.$t('errors.nickname.between', { min: 6, max: 22 }),
         ],
         email: [
           v => !!v || this.$t('errors.email.required'),
@@ -100,7 +100,7 @@ export default {
         ],
         password: [
           v => !!v || this.$t('errors.password.required'),
-          ({ length }) => (length > 6 && length < 22) || this.$t('errors.password.between', { min: 6, max: 22 }),
+          ({ length }) => (length >= 6 && length <= 22) || this.$t('errors.password.between', { min: 6, max: 22 }),
         ],
         passwordConfirmation: [
           v => !!v || this.$t('errors.passwordConfirmation.required'),
@@ -112,25 +112,13 @@ export default {
   methods: {
     async sendRegistrationEmail () {
       if (this.$refs.form.validate()) {
-        this.$nuxt.$loading.start();
-        this.serverError = '';
-        const { email, password, nickname } = this.form;
-        const { locale } = this.$store.state.i18n;
         try {
-          await this.$axios.$post('/api/auth/send-registration-email', { email, password, nickname, locale });
+          await this.$store.dispatch('auth/sendRegistrationEmail', this.form);
           this.$refs.form.reset();
-          this.$store.commit('notifications/showInfo', { html: this.$t('notifications.registrationEmailSent', { email }) });
-          this.$router.push({ name: this.$route.query['ref'] || 'locale' });
-        } catch (ex) {
-          const error = ex.response || ex;
-          if (error.status === 409) this.serverError = this.$t('errors.emailAlreadyInUse');
-          else if (error.status === 400) this.serverError = this.$t('errors.badRequest');
-          else {
-            this.$store.commit('notifications/showError', this.$t('errors.serverError'));
-            this.$logger.error(error);
-          }
+          this.$router.push({ name: this.$route.query['ref'] || 'index' });
+        } catch ({ errorMessage }) {
+          this.serverError = errorMessage;
         }
-        this.$nuxt.$loading.finish();
       }
     },
     async register (token) {
@@ -138,7 +126,7 @@ export default {
       try {
         await this.$axios.$post('/api/auth/register', { token });
         this.$store.commit('notifications/showSuccess', { html: this.$t('notifications.registrationSuccessful') });
-        this.$router.push({ name: 'locale-sign-in' });
+        this.$router.push(this.localePath({ name: 'sign-in' }));
       } catch (ex) {
         const error = ex.response || ex;
         if (error.status === 401 || error.status === 400) this.$store.commit('notifications/showError', this.$t('errors.tokenInvalid'));
@@ -146,7 +134,7 @@ export default {
           this.$store.commit('notifications/showError', this.$t('errors.serverError'));
           this.$logger.error(error);
         }
-        this.$utils.pushRouteQuery({ 'token': undefined });
+        this.pushRouteQuery({ 'token': undefined });
       }
       this.$nuxt.$loading.finish();
     },

@@ -61,12 +61,12 @@
 <script>
 import { mapState } from 'vuex';
 
-import Food from '../../models/food';
+import Food from '../models/food';
 
-import BaseControlTitle from '../../components/base/base-control-title';
-import BaseFab from '../../components/base/base-fab';
-import BaseModal from '../../components/base/base-modal';
-import FoodTable from '../../components/food/food-table';
+import BaseControlTitle from '../components/base/base-control-title';
+import BaseFab from '../components/base/base-fab';
+import BaseModal from '../components/base/base-modal';
+import FoodTable from '../components/food/food-table';
 
 export default {
   name: 'PagesFoodIndex',
@@ -94,15 +94,15 @@ export default {
 
     selection: {
       get () { return this.$route.query['selection']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'selection': newValue }); },
+      // set (newValue) {},
     },
     modalMode: {
       get () { return this.$route.query['modal']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'modal': newValue }); },
+      // set (newValue) {},
     },
     searchString: {
       get () { return this.$route.query['search']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'search': newValue }); },
+      // set (newValue) {},
     },
     selectedFood: {
       get () { return this.food.filter(item => item._id === this.selection)[0]; },

@@ -23,11 +23,11 @@
 <script>
 import { mapState } from 'vuex';
 
-import Recipe from '../../../models/recipe';
+import Recipe from '../../models/recipe';
 
-import BaseControlTitle from '../../../components/base/base-control-title';
-import BaseFab from '../../../components/base/base-fab';
-import RecipesTable from '../../../components/recipes/recipes-table';
+import BaseControlTitle from '../../components/base/base-control-title';
+import BaseFab from '../../components/base/base-fab';
+import RecipesTable from '../../components/recipes/recipes-table';
 
 export default {
   name: 'PagesRecipesIndex',
@@ -47,7 +47,7 @@ export default {
 
     searchString: {
       get () { return this.$route.query['search']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'search': newValue }); },
+      // set (newValue) {},
     },
     computedRecipes () {
       return this.recipes.map(recipe => new Recipe({
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     createNewRecipe () {
-      this.$router.push({ name: 'locale-recipes-new' });
+      this.$router.push(this.localePaht({ name: 'recipes-new' }));
     },
     onSearchInput () {
       if (this._searchInputTimeoutId) {

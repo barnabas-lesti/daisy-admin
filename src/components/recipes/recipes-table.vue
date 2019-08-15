@@ -37,7 +37,7 @@ export default {
     };
   },
   methods: {
-    onListItemClick (id) { this.$router.push({ name: 'locale-recipes-id', params: { id } }); },
+    onListItemClick (id) { this.$router.push(this.localePath({ name: 'recipes-id', params: { id } })); },
   },
 };
 </script>

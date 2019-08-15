@@ -89,7 +89,7 @@ export default {
           await this.$axios.$patch('/api/auth/password', { token: this.$route.query['token'], password: this.form.password });
           this.form.password = this.form.passwordConfirmation = '';
           this.$store.commit('notifications/showSuccess', this.$t('notifications.resetSuccessful'));
-          this.$router.push({ name: 'locale-sign-in' });
+          this.$router.push(this.localePath({ name: 'sign-in' }));
         } catch (ex) {
           const error = ex.response || ex;
           if (error.status === 401) {

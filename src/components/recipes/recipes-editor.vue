@@ -127,7 +127,7 @@ export default {
 
     modalMode: {
       get () { return this.$route.query['modal']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'modal': newValue }); },
+      // set (newValue) {},
     },
 
     summary () {
@@ -178,7 +178,7 @@ export default {
         try {
           await this.$axios.$delete(`/api/recipes/${this.recipe._id}`);
           this.$store.commit('notifications/showSuccess', this.$t('notifications.deleted'));
-          this.$router.push({ name: 'locale-recipes' });
+          this.$router.push(this.localePath({ name: 'recipes' }));
         } catch (ex) {
           this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));
         }
@@ -196,7 +196,7 @@ export default {
         } else {
           const { _id: id } = await this.$axios.$put('/api/recipes', this.recipe);
           this.$store.commit('notifications/showSuccess', this.$t('notifications.created'));
-          this.$router.push({ name: 'locale-recipes-id', params: { id } });
+          this.$router.push(this.localePath({ name: 'recipes-id', params: { id } }));
         }
       } catch (ex) {
         this.$store.commit('notifications/showError', this.$t('notifications.unknownErrorOccurred'));

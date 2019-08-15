@@ -46,12 +46,12 @@
 <script>
 import { mapState } from 'vuex';
 
-import Exercise from '../../models/exercise';
+import Exercise from '../models/exercise';
 
-import BaseControlTitle from '../../components/base/base-control-title';
-import BaseFab from '../../components/base/base-fab';
-import BaseModal from '../../components/base/base-modal';
-import ExercisesTable from '../../components/exercises/exercises-table';
+import BaseControlTitle from '../components/base/base-control-title';
+import BaseFab from '../components/base/base-fab';
+import BaseModal from '../components/base/base-modal';
+import ExercisesTable from '../components/exercises/exercises-table';
 
 export default {
   name: 'PagesExercisesIndex',
@@ -79,15 +79,15 @@ export default {
 
     selection: {
       get () { return this.$route.query['selection']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'selection': newValue }); },
+      // set (newValue) {},
     },
     modalMode: {
       get () { return this.$route.query['modal']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'modal': newValue }); },
+      // set (newValue) {},
     },
     searchString: {
       get () { return this.$route.query['search']; },
-      set (newValue) { this.$utils.pushRouteQuery({ 'search': newValue }); },
+      // set (newValue) {},
     },
     selectedExercise: {
       get () { return this.exercises.filter(item => item._id === this.selection)[0]; },
