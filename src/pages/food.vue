@@ -192,37 +192,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  searchPlaceholder: Search food
-  name: Name
-  serving: Serving
-  unit: Unit
-  description: Description
-  page:
-    title: Food
-    description: Lorem ipsum dolor sit amet.
-  modal:
-    createTitle: Create food
-    editTitle: Edit food
-  notifications:
-    created: Food successfully created
-    updated: Food successfully updated
-    deleted: Food successfully deleted
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    energy: Energy
-    fat: Fat
-    fiber: Fiber
-    protein: Protein
-    salt: Salt
-    saturatedFat: Saturated Fat
-    sugar: Sugar
-  units:
-    g: g
-    kcal: kcal
-    ml: ml
-    kj: kJ
-</i18n>

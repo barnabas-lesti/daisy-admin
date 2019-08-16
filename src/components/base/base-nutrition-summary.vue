@@ -29,15 +29,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    fat: Fat
-    protein: Protein
-  units:
-    g: g
-    kcal: kcal
-</i18n>

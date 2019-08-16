@@ -135,28 +135,3 @@ export default {
     max-width 600px
 
 </style>
-
-<i18n>
-en:
-  title: Sign in
-  description: Sign in to your account to access the cool features of Daisy!
-  descriptionHtml: "Sign in to your account to access the cool features of <strong>Daisy</strong>!"
-  email: Email
-  password: Password
-  button: Sign in
-  cancel: Cancel
-  registrationLink: Don't have an account? Register!
-  forgotPassword: Forgot your password?
-  errors:
-    authenticationFailed: Sign in failed, invalid credentials
-    serverError: Sorry, an unexpected error occurred
-    userNotFound: User with given email address does not exist
-    email:
-      required: Email is required
-      email: Email format is invalid
-    password:
-      required: Password is required
-  notifications:
-    signInSuccessful: "Signed in as <strong>{email}</strong>."
-    passwordResetEmailSent: "Password reset email sent to <strong>{email}</strong>, please check your inbox."
-</i18n>

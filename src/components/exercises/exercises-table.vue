@@ -69,16 +69,3 @@ export default {
     &_name
       width 130px
 </style>
-
-<i18n>
-en:
-  name: Name
-  calorieBurn: Calorie Burn
-  duration: Duration
-  description: Description
-  noDescription: No description available
-  noData: No exercises found
-  units:
-    kcal: kcal
-    mins: min | mins
-</i18n>

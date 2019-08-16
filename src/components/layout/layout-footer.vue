@@ -21,9 +21,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  descriptionHtml: Lorem ipsum dolor sit amet. <strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus.
-  copyrightHtml: "&copy;2019 — <strong>RainbowSoft</strong>"
-</i18n>

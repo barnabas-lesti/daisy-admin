@@ -160,19 +160,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  nutritionSummary: Summary
-  noItems: Click on the button to add items
-  page:
-    title: Calculator
-    description: Tool to help calculate your calorie intake
-  modal:
-    addItems: Add items
-    searchPlaceholder: Search recipes, food...
-    table:
-      noData: No items found
-  notifications:
-    unknownErrorOccurred: Something went wrong
-</i18n>

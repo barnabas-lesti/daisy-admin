@@ -1,7 +1,7 @@
 const consola = require('consola').withScope('daisy:api');
 const Sentry = require('@sentry/node');
 
-const { SENTRY_DSN } = require('../../../env.config');
+const { SENTRY_DSN } = require('../../../config/env');
 
 if (SENTRY_DSN) {
   Sentry.init({ SENTRY_DSN });

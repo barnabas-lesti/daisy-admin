@@ -1,4 +1,4 @@
-const { NODE_ENV } = require('../../../env.config');
+const { NODE_ENV } = require('../../../config/env');
 const { logger } = require('../utils');
 
 const routes = [

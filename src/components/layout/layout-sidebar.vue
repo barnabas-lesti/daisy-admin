@@ -65,12 +65,3 @@ export default {
     transform rotate(180deg)
 
 </style>
-
-<i18n>
-en:
-  brand: Daisy
-  register: Register
-  signIn: Sign in or Register
-  signOut: Sign out
-  profile: Profile
-</i18n>

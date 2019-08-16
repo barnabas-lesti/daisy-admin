@@ -177,25 +177,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  searchPlaceholder: Search exercises
-  name: Name
-  calorieBurn: Calorie Burn
-  duration: Duration
-  description: Description
-  page:
-    title: Exercises
-    description: List of exercises
-  units:
-    kcal: kcal
-    mins: min | mins
-  modal:
-    createTitle: Create exercise
-    editTitle: Edit exercise
-  notifications:
-    created: Exercise successfully created
-    updated: Exercise successfully updated
-    deleted: Exercise successfully deleted
-</i18n>

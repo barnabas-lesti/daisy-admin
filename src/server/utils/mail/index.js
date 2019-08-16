@@ -7,7 +7,7 @@ const {
   MAILGUN_DOMAIN,
   EMAIL_FROM_ADDRESS,
   TEMP_FOLDER_PATH,
-} = require('../../../../env.config');
+} = require('../../../../config/env');
 const logger = require('../logger');
 const { templateNames, templates } = require('./templates');
 

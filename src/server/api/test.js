@@ -1,7 +1,7 @@
 const pathLib = require('path');
 const fs = require('fs-extra');
 
-const { TEMP_FOLDER_PATH } = require('../../../env.config');
+const { TEMP_FOLDER_PATH } = require('../../../config/env');
 
 module.exports = (router) => {
   router.route('/test/temp-file')

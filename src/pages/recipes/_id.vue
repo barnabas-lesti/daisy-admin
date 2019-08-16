@@ -25,9 +25,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  page:
-    fallbackTitle: Just a recipe
-</i18n>

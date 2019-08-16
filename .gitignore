@@ -2,8 +2,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/env/*
-!env/default.yml
+.env*
+!.env.example
 
 /.nuxt/
 /temp/

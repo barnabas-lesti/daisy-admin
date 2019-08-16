@@ -1,0 +1,2 @@
+# Empty locale file for test environment
+# Also can't be empty because json-loader dies - like me in the summer.

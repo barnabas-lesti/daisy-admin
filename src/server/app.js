@@ -8,20 +8,19 @@ const {
   PORT,
   BASE_URL,
   NO_CLIENT,
-  IS_PRODUCTION,
   TEMP_FOLDER_PATH,
   HTTP_ACCESS_USERNAME,
   HTTP_ACCESS_PASSWORD,
   RESPONSE_DELAY,
   CLEAN_UP_TEMP_FOLDER,
-} = require('../../env.config');
+} = require('../../config/env');
 const { logger, Database } = require('./utils');
 
 class App {
   constructor () {
     this._server = null;
     this._app = express();
-    this._nuxt = new Nuxt(require('../../nuxt.config'));
+    this._nuxt = new Nuxt(require('../../config/nuxt'));
     this._db = new Database();
 
     this._app.use(bodyParser.json());
@@ -49,7 +48,7 @@ class App {
       logger.info('NO_CLIENT is enabled, skipping client setup');
     } else {
       logger.info('Building client...');
-      if (!IS_PRODUCTION) {
+      if (NODE_ENV !== 'production') {
         const builder = new Builder(this._nuxt);
         await builder.build();
       } else {

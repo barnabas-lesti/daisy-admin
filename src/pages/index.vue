@@ -3,6 +3,7 @@
     v-layout(row, wrap)
       v-flex(xs12)
         h1.pb-3 {{ $t('title') }}
+        h1.pb-3 {{ $t('t.test') }}
 
       v-flex(xs12)
         .pb-3(v-html="$t('descriptionHtml')")
@@ -63,24 +64,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  title: Welcome to Daisy
-  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  descriptionHtml: "<strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  cards:
-    defaultActionLabel: Check out
-    food:
-      title: Food
-      descriptionHtml: Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus.
-    recipes:
-      title: Recipes
-      descriptionHtml: Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Quisque porttitor nibh</strong> id massa semper. Cras venenatis euismod dapibus.
-    exercises:
-      title: Exercises
-      descriptionHtml: "<strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus."
-    calculator:
-      title: Calculator
-      descriptionHtml: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non dictum ex cursus. Cras venenatis euismod dapibus.
-</i18n>

@@ -22,16 +22,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  goBack: Go Back
-  notFound:
-    title: Page not found
-    description: Page not found
-    content: Sorry, the page you requested was not found.
-  serverError:
-    title: Internal Server Error
-    description: Internal Server Error
-    content: Sorry, but someting went wrong.
-</i18n>

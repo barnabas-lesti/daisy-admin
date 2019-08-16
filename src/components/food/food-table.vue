@@ -75,20 +75,3 @@ export default {
     &_name
       width 160px
 </style>
-
-<i18n>
-en:
-  name: Name
-  description: Description
-  noDescription: No description available
-  noData: No food found
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    fat: Fat
-    protein: Protein
-  units:
-    g: g
-    kcal: kcal
-    ml: ml
-</i18n>

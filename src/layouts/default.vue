@@ -72,13 +72,3 @@ export default {
       max-width 1185px
 
 </style>
-
-<i18n>
-en:
-  menuItems:
-    home: Home
-    calculator: Calculator
-    food: Food
-    recipes: Recipes
-    exercises: Exercises
-</i18n>

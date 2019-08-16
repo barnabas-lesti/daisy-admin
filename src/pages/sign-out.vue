@@ -19,8 +19,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  title: Signing out...
-</i18n>

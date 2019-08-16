@@ -66,19 +66,3 @@ export default {
     &_name
       width 160px
 </style>
-
-<i18n>
-en:
-  name: Name
-  serving: Serving
-  noDataFallback: No food found
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    fat: Fat
-    protein: Protein
-  units:
-    g: g
-    kcal: kcal
-    ml: ml
-</i18n>

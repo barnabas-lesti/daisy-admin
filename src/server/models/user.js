@@ -7,7 +7,7 @@ const {
   AUTH_SECRET,
   ACCESS_TOKEN_EXPIRATION_IN_MINUTES,
   EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
-} = require('../../../env.config');
+} = require('../../../config/env');
 
 const userDbSchema = new mongoose.Schema({
   email: {

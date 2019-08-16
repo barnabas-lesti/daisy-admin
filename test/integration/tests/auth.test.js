@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { JSDOM } = require('jsdom');
 
-const envConfig = require('../../../env.config');
+const envConfig = require('../../../config/env');
 const { User } = require('../../../src/server/models');
 const { http, readEmailFile, createFakeUser } = require('../utils');
 

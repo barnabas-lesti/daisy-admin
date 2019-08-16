@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const axios = require('axios');
 const faker = require('faker');
 
-const { BASE_URL, TEMP_FOLDER_PATH } = require('../../env.config');
+const { BASE_URL, TEMP_FOLDER_PATH } = require('../../config/env');
 
 const http = axios.create({
   baseURL: BASE_URL,

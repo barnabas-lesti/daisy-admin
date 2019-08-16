@@ -78,22 +78,3 @@ export default {
     &_name
       width 150px
 </style>
-
-<i18n>
-en:
-  name: Name
-  serving: Serving
-  noDataFallback: No items found
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    fat: Fat
-    protein: Protein
-  units:
-    kj: kJ
-    g: g
-    ml: ml
-    kcal: kcal
-    mins: min | mins
-    plates: plate | plates
-</i18n>

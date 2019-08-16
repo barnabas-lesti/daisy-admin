@@ -112,23 +112,3 @@ export default {
     max-width 600px
 
 </style>
-
-<i18n>
-en:
-  title: Reset your password
-  description: Please provide a new password for your account
-  password: Password
-  passwordConfirmation: Confirm your password
-  button: Reset password
-  notifications:
-    resetSuccessful: Password changed, please sign in to your account
-  errors:
-    invalidToken: Reset failed, invalid token
-    serverError: Sorry, an unexpected error occurred
-    password:
-      required: Password is required
-      length: Password must be between {min} and {max} characters
-    passwordConfirmation:
-      required: Password confirmation is required
-      sameAs: Passwords must match
-</i18n>

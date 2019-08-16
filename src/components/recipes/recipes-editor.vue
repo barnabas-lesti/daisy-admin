@@ -211,23 +211,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  fallbackTitle: Just a recipe
-  modal:
-    addFood: Add food
-    searchPlaceholder: Search food
-  form:
-    name: Name
-    description: Description
-  nutritionSummary: Nutrition summary
-  table:
-    addFood: Click on the button to add food
-    title: Food
-  notifications:
-    created: Recipe successfully created
-    updated: Recipe successfully updated
-    deleted: Recipe successfully deleted
-    unknownErrorOccurred: Something went wrong
-</i18n>

@@ -18,10 +18,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  page:
-    title: New recipe
-    description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-</i18n>

@@ -54,17 +54,3 @@ export default {
       width 160px
 
 </style>
-
-<i18n>
-en:
-  name: Name
-  noData: No recipes found
-  nutrients:
-    calories: Calories
-    carbs: Carbs
-    fat: Fat
-    protein: Protein
-  units:
-    g: g
-    kcal: kcal
-</i18n>

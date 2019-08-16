@@ -92,13 +92,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  searchPlaceholder: Search recipes
-  page:
-    title: Recipes
-    description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  notifications:
-    unknownErrorOccurred: Something went wrong
-</i18n>

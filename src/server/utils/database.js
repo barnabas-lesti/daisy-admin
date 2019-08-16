@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { MONGO_URI } = require('../../../env.config');
+const { MONGO_URI } = require('../../../config/env');
 const logger = require('./logger');
 
 mongoose.set('useFindAndModify', false);

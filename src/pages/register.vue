@@ -145,36 +145,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-en:
-  title: Register
-  description: Register an account to access the cool features of Daisy
-  signInLink: Already have an account? Sign in!
-  labels:
-    nickname: Nickname
-    email: Email
-    password: Password
-    passwordConfirmation: Confirm your password
-    submit: Register
-  notifications:
-    registrationEmailSent: "Registration email sent to <strong>{email}</strong>, please check your inbox"
-    registrationSuccessful: Registration successful, please sign in
-  errors:
-    emailAlreadyInUse: Email already in use
-    serverError: Sorry, an unexpected error occurred
-    tokenInvalid: Token invalid, maybe you waited for too long?
-    badRequest: Some information is invalid, is the email address valid?
-    nickname:
-      required: Nickname is required
-      between: Nickname must be between {min} and {max} characters
-    email:
-      required: Email is required
-      email: Email format is invalid
-    password:
-      required: Password is required
-      between: Password must be between {min} and {max} characters
-    passwordConfirmation:
-      required: Password confirmation is required
-      sameAs: Passwords must match
-</i18n>
