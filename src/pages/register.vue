@@ -4,8 +4,9 @@
     wrap,
     justify-space-around,
   )
+    | {{ $t('common.test') }}
     v-flex.text-xs-center(xs12)
-      h1 {{ $t('title') }}
+      h1 {{ $t('pages.register.title') }}
 
     v-flex(
       xs12,
@@ -25,7 +26,7 @@
               v-flex(xs12)
                 v-text-field(
                   v-model='form.nickname',
-                  :label='$t("labels.nickname")',
+                  :label='$t("pages.register.labels.nickname")',
                   :error='!!serverError',
                   :rules='rules.nickname',
                   name='nickname'
@@ -34,7 +35,7 @@
                 )
                 v-text-field(
                   v-model='form.email',
-                  :label='$t("labels.email")',
+                  :label='$t("pages.register.labels.email")',
                   :error='!!serverError',
                   :rules='rules.email',
                   name='email'
@@ -43,7 +44,7 @@
                 )
                 v-text-field(
                   v-model='form.password',
-                  :label='$t("labels.password")',
+                  :label='$t("pages.register.labels.password")',
                   :error='!!serverError',
                   :rules='rules.password',
                   name='password'
@@ -52,7 +53,7 @@
                 )
                 v-text-field(
                   v-model='form.passwordConfirmation',
-                  :label='$t("labels.passwordConfirmation")',
+                  :label='$t("pages.register.labels.passwordConfirmation")',
                   :error='!!serverError',
                   :rules='rules.passwordConfirmation',
                   name='passwordConfirmation'
@@ -60,12 +61,12 @@
                   append-icon='vpn_key',
                 )
               v-flex(xs12)
-                nuxt-link(:to='localePath({ name: "sign-in" })') {{ $t('signInLink') }}
+                nuxt-link(:to='localePath({ name: "sign-in" })') {{ $t('pages.register.signInLink') }}
               v-flex.text-xs-right(xs12)
                 v-btn.info.ma-0(
                   type='submit',
                   large,
-                ) {{ $t('labels.submit') }}
+                ) {{ $t('pages.register.labels.submit') }}
 </template>
 
 <script>
@@ -76,8 +77,8 @@ export default {
   middleware: 'local/signed-out',
   head () {
     return {
-      title: this.$t('title'),
-      meta: [ { name: 'description', content: this.$t('description') } ],
+      title: this.$t('pages.register.title'),
+      meta: [ { name: 'description', content: this.$t('pages.register.description') } ],
     };
   },
   data () {
@@ -91,20 +92,20 @@ export default {
       serverError: '',
       rules: {
         nickname: [
-          v => !!v || this.$t('errors.nickname.required'),
-          ({ length }) => (length >= 6 && length <= 22) || this.$t('errors.nickname.between', { min: 6, max: 22 }),
+          v => !!v || this.$t('pages.register.errors.nickname.required'),
+          ({ length }) => (length >= 6 && length <= 22) || this.$t('pages.register.errors.nickname.between', { min: 6, max: 22 }),
         ],
         email: [
-          v => !!v || this.$t('errors.email.required'),
-          v => EMAIL_REGEX.test(v) || this.$t('errors.email.email'),
+          v => !!v || this.$t('pages.register.errors.email.required'),
+          v => EMAIL_REGEX.test(v) || this.$t('pages.register.errors.email.email'),
         ],
         password: [
-          v => !!v || this.$t('errors.password.required'),
-          ({ length }) => (length >= 6 && length <= 22) || this.$t('errors.password.between', { min: 6, max: 22 }),
+          v => !!v || this.$t('pages.register.errors.password.required'),
+          ({ length }) => (length >= 6 && length <= 22) || this.$t('pages.register.errors.password.between', { min: 6, max: 22 }),
         ],
         passwordConfirmation: [
-          v => !!v || this.$t('errors.passwordConfirmation.required'),
-          v => this.form.password === v || this.$t('errors.passwordConfirmation.sameAs'),
+          v => !!v || this.$t('pages.register.errors.passwordConfirmation.required'),
+          v => this.form.password === v || this.$t('pages.register.errors.passwordConfirmation.sameAs'),
         ],
       },
     };
@@ -125,13 +126,13 @@ export default {
       this.$nextTick(() => this.$nuxt.$loading.start());
       try {
         await this.$axios.$post('/api/auth/register', { token });
-        this.$store.commit('notifications/showSuccess', { html: this.$t('notifications.registrationSuccessful') });
+        this.$store.commit('notifications/showSuccess', { html: this.$t('pages.register.notifications.registrationSuccessful') });
         this.$router.push(this.localePath({ name: 'sign-in' }));
       } catch (ex) {
         const error = ex.response || ex;
-        if (error.status === 401 || error.status === 400) this.$store.commit('notifications/showError', this.$t('errors.tokenInvalid'));
-        else if (error.status === 409) this.$store.commit('notifications/showError', this.$t('errors.emailAlreadyInUse')); else {
-          this.$store.commit('notifications/showError', this.$t('errors.serverError'));
+        if (error.status === 401 || error.status === 400) this.$store.commit('notifications/showError', this.$t('pages.register.errors.tokenInvalid'));
+        else if (error.status === 409) this.$store.commit('notifications/showError', this.$t('pages.register.errors.emailAlreadyInUse')); else {
+          this.$store.commit('notifications/showError', this.$t('pages.register.errors.serverError'));
           this.$logger.error(error);
         }
         this.pushRouteQuery({ 'token': undefined });

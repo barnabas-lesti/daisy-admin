@@ -19,6 +19,8 @@ const {
   HTTP_ACCESS_USERNAME = '',
   HTTP_ACCESS_PASSWORD = '',
   I18N_DEFAULT_LOCALE = '',
+  I18N_FALLBACK_LOCALE = '',
+  I18N_SILENT_TRANSLATION_WARN = false,
   MAILGUN_DOMAIN = '',
   MAILGUN_API_KEY = '',
   MONGO_URI = '',
@@ -44,6 +46,8 @@ const envConfig = {
   HTTP_ACCESS_USERNAME,
   HTTP_ACCESS_PASSWORD,
   I18N_DEFAULT_LOCALE,
+  I18N_FALLBACK_LOCALE,
+  I18N_SILENT_TRANSLATION_WARN,
   MAILGUN_API_KEY,
   MAILGUN_DOMAIN,
   MONGO_URI,
@@ -58,7 +62,6 @@ const envConfig = {
   IS_TEST: NODE_ENV === 'test',
   IS_PROD: NODE_ENV === 'production',
   TEMP_DIR_PATH: path.join(__dirname, '../temp'),
-  STATIC_DIR_PATH: path.join(__dirname, '../src/static'),
 };
 
 module.exports = envConfig;

@@ -5,6 +5,10 @@ export const state = () => ({
   accessToken: null,
 });
 
+export const getters = {
+  profileImageSrc (state) { return (state.user && state.user.profileImageUrl) || '/images/no-profile-image.png'; },
+};
+
 export const mutations = {
   signIn (state, { user, accessToken }) {
     state.user = new User(user);

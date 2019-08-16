@@ -7,8 +7,9 @@ const {
   BASE_URL,
   SENTRY_DSN,
   I18N_DEFAULT_LOCALE,
+  I18N_FALLBACK_LOCALE,
+  I18N_SILENT_TRANSLATION_WARN,
   IS_DEV,
-  IS_TEST,
   IS_PROD,
 } = require('./env');
 
@@ -22,6 +23,8 @@ const getLocales = () => {
     return { file, code, iso };
   });
 };
+
+console.log(I18N_SILENT_TRANSLATION_WARN);
 
 module.exports = {
   mode: 'universal',
@@ -93,8 +96,8 @@ module.exports = {
       fallbackLocale: I18N_DEFAULT_LOCALE,
     },
     vueI18n: {
-      fallbackLocale: IS_TEST ? '' : I18N_DEFAULT_LOCALE,
-      silentTranslationWarn: IS_TEST,
+      fallbackLocale: I18N_FALLBACK_LOCALE,
+      silentTranslationWarn: I18N_SILENT_TRANSLATION_WARN,
     },
     vuex: {
       moduleName: 'i18n',

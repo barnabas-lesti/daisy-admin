@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { validationMixin } from 'vuelidate';
 import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators';
 
@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     ...mapState('auth', [ 'user', 'accessToken' ]),
-    profileImageSrc () { return (this.user && this.user.profileImageUrl) || '/images/no-profile-image.png'; },
+    ...mapGetters('auth', [ 'profileImageSrc' ]),
   },
   methods: {
     onProfileImageClick () {
