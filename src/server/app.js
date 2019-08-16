@@ -8,7 +8,7 @@ const {
   PORT,
   BASE_URL,
   NO_CLIENT,
-  TEMP_FOLDER_PATH,
+  TEMP_DIR_PATH,
   HTTP_ACCESS_USERNAME,
   HTTP_ACCESS_PASSWORD,
   RESPONSE_DELAY,
@@ -77,9 +77,9 @@ class App {
   }
 
   async _createTempDir () {
-    if (CLEAN_UP_TEMP_FOLDER && await fs.pathExists(TEMP_FOLDER_PATH)) await fs.remove(TEMP_FOLDER_PATH);
+    if (CLEAN_UP_TEMP_FOLDER && await fs.pathExists(TEMP_DIR_PATH)) await fs.remove(TEMP_DIR_PATH);
 
-    await fs.ensureDir(TEMP_FOLDER_PATH);
+    await fs.ensureDir(TEMP_DIR_PATH);
     logger.success(`TEMP directory ready (cleanup: ${CLEAN_UP_TEMP_FOLDER})`);
   }
 }

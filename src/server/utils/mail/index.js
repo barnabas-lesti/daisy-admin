@@ -6,7 +6,7 @@ const {
   MAILGUN_API_KEY,
   MAILGUN_DOMAIN,
   EMAIL_FROM_ADDRESS,
-  TEMP_FOLDER_PATH,
+  TEMP_DIR_PATH,
 } = require('../../../../config/env');
 const logger = require('../logger');
 const { templateNames, templates } = require('./templates');
@@ -43,7 +43,7 @@ class Mail {
     if (mailgun) {
       await mailgun.messages().send(data);
     } else {
-      const emailFilePath = path.join(TEMP_FOLDER_PATH, './email', `${this.to}_${this.template}_${this.locale}.html`);
+      const emailFilePath = path.join(TEMP_DIR_PATH, './email', `${this.to}_${this.template}_${this.locale}.html`);
       await fs.outputFile(emailFilePath, data.html);
     }
     return this.content;

@@ -1,11 +1,27 @@
+const path = require('path');
+const fs = require('fs-extra');
+
 const {
   NODE_ENV,
   PORT,
   BASE_URL,
   SENTRY_DSN,
+  I18N_DEFAULT_LOCALE,
+  IS_DEV,
+  IS_TEST,
+  IS_PROD,
 } = require('./env');
 
-const isTest = NODE_ENV === 'test';
+const I18N_LANG_DIR = 'locales/';
+
+const getLocales = () => {
+  const files = fs.readdirSync(path.join(__dirname, '../src', I18N_LANG_DIR));
+  return files.map((file) => {
+    const iso = file.replace(/\.ya?ml|\.json|\.js/, '');
+    const code = iso.replace(/-../, '');
+    return { file, code, iso };
+  });
+};
 
 module.exports = {
   mode: 'universal',
@@ -16,7 +32,7 @@ module.exports = {
     NODE_ENV,
   },
 
-  dev: NODE_ENV === 'development',
+  dev: IS_DEV,
 
   server: {
     port: PORT,
@@ -61,27 +77,24 @@ module.exports = {
 
   vuetify: {
     materialIcons: true,
-    treeShake: NODE_ENV === 'production',
+    treeShake: IS_PROD,
   },
 
   i18n: {
-    locales: [
-      { code: 'en', iso: 'en-US', file: 'en.yml' },
-      ...(isTest ? [ { code: 'te', iso: 'te-TE', file: 'te.yml' } ] : []),
-    ],
-    defaultLocale: 'en',
+    locales: getLocales(),
+    defaultLocale: I18N_DEFAULT_LOCALE,
     vueI18nLoader: true,
     lazy: true,
-    langDir: 'locales/',
+    langDir: I18N_LANG_DIR,
     strategy: 'prefix',
     baseUrl: BASE_URL,
-    rootRedirect: 'en',
+    rootRedirect: I18N_DEFAULT_LOCALE,
     detectBrowserLanguage: {
-      fallbackLocale: 'en',
+      fallbackLocale: I18N_DEFAULT_LOCALE,
     },
     vueI18n: {
-      fallbackLocale: isTest ? '' : 'en',
-      silentTranslationWarn: isTest,
+      fallbackLocale: IS_TEST ? '' : I18N_DEFAULT_LOCALE,
+      silentTranslationWarn: IS_TEST,
     },
     vuex: {
       moduleName: 'i18n',

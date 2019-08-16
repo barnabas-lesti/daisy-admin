@@ -18,6 +18,7 @@ const {
   EMAIL_TOKEN_EXPIRATION_IN_MINUTES = 0,
   HTTP_ACCESS_USERNAME = '',
   HTTP_ACCESS_PASSWORD = '',
+  I18N_DEFAULT_LOCALE = '',
   MAILGUN_DOMAIN = '',
   MAILGUN_API_KEY = '',
   MONGO_URI = '',
@@ -28,9 +29,6 @@ const {
   RESPONSE_DELAY = 0,
   SENTRY_DSN = '',
 } = process.env;
-
-const TEMP_FOLDER_PATH = path.join(__dirname, '../temp');
-const STATIC_FOLDER_PATH = path.join(__dirname, '../src/static');
 
 /**
  * Application configuration object.
@@ -45,6 +43,7 @@ const envConfig = {
   EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
   HTTP_ACCESS_USERNAME,
   HTTP_ACCESS_PASSWORD,
+  I18N_DEFAULT_LOCALE,
   MAILGUN_API_KEY,
   MAILGUN_DOMAIN,
   MONGO_URI,
@@ -55,8 +54,11 @@ const envConfig = {
   RESPONSE_DELAY,
   SENTRY_DSN,
 
-  TEMP_FOLDER_PATH,
-  STATIC_FOLDER_PATH,
+  IS_DEV: NODE_ENV === 'development',
+  IS_TEST: NODE_ENV === 'test',
+  IS_PROD: NODE_ENV === 'production',
+  TEMP_DIR_PATH: path.join(__dirname, '../temp'),
+  STATIC_DIR_PATH: path.join(__dirname, '../src/static'),
 };
 
 module.exports = envConfig;

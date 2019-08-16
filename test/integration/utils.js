@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const axios = require('axios');
 const faker = require('faker');
 
-const { BASE_URL, TEMP_FOLDER_PATH } = require('../../config/env');
+const { BASE_URL, TEMP_DIR_PATH } = require('../../config/env');
 
 const http = axios.create({
   baseURL: BASE_URL,
@@ -19,7 +19,7 @@ const sortArrayOfObjects = (array, key) => {
 };
 
 const readEmailFile = async (email, type, locale) => {
-  const emailFolderPath = path.join(TEMP_FOLDER_PATH, './email');
+  const emailFolderPath = path.join(TEMP_DIR_PATH, './email');
   const content = await fs.readFile(path.join(emailFolderPath, `${email}_${type}_${locale}.html`), 'utf-8');
   return content;
 };
