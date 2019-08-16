@@ -9,52 +9,54 @@ const final = require('dotenv-parse-variables')(expanded.parsed);
 process.env = { ...process.env, ...final };
 
 const {
-  ACCESS_TOKEN_EXPIRATION_IN_MINUTES = 60 * 24 * 7,
-  AUTH_SECRET = 'dEfAuLtApPSeCrEt1234',
-  AUTH_SALT_ROUNDS = 5,
-  BASE_URL = 'http://localhost:3000',
+  ACCESS_TOKEN_EXPIRATION_IN_MINUTES = 0,
+  AUTH_SALT_ROUNDS = 0,
+  AUTH_SECRET = '',
+  BASE_URL = '',
   CLEAN_UP_TEMP_FOLDER = false,
-  EMAIL_FROM_ADDRESS = 'no-reply@dev.daisy.com',
-  EMAIL_TOKEN_EXPIRATION_IN_MINUTES = 60 * 2,
+  EMAIL_FROM_ADDRESS = '',
+  EMAIL_TOKEN_EXPIRATION_IN_MINUTES = 0,
   HTTP_ACCESS_USERNAME = '',
   HTTP_ACCESS_PASSWORD = '',
   MAILGUN_DOMAIN = '',
   MAILGUN_API_KEY = '',
-  MONGO_URI = 'mongodb://localhost/daisy_dev',
+  MONGO_URI = '',
   NO_CLIENT = false,
-  NODE_ENV = 'development',
-  PORT = 3000,
+  NODE_ENV = '',
+  PORT = 0,
   REGISTRATION_DISABLED = false,
   RESPONSE_DELAY = 0,
   SENTRY_DSN = '',
 } = process.env;
 
+const TEMP_FOLDER_PATH = path.join(__dirname, '../temp');
+const STATIC_FOLDER_PATH = path.join(__dirname, '../src/static');
+
 /**
  * Application configuration object.
  */
 const envConfig = {
-  NODE_ENV,
-  PORT,
-  BASE_URL,
-  MONGO_URI,
-  SENTRY_DSN,
-  AUTH_SECRET,
   ACCESS_TOKEN_EXPIRATION_IN_MINUTES,
-  EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
   AUTH_SALT_ROUNDS,
+  AUTH_SECRET,
+  BASE_URL,
+  CLEAN_UP_TEMP_FOLDER,
+  EMAIL_FROM_ADDRESS,
+  EMAIL_TOKEN_EXPIRATION_IN_MINUTES,
   HTTP_ACCESS_USERNAME,
   HTTP_ACCESS_PASSWORD,
-  EMAIL_FROM_ADDRESS,
   MAILGUN_API_KEY,
   MAILGUN_DOMAIN,
-  RESPONSE_DELAY,
+  MONGO_URI,
   NO_CLIENT,
+  NODE_ENV,
+  PORT,
   REGISTRATION_DISABLED,
-  CLEAN_UP_TEMP_FOLDER,
+  RESPONSE_DELAY,
+  SENTRY_DSN,
 
-  TEMP_FOLDER_PATH: path.join(__dirname, '../temp'),
-  STATIC_FOLDER_PATH: path.join(__dirname, '../src/static'),
+  TEMP_FOLDER_PATH,
+  STATIC_FOLDER_PATH,
 };
 
-// console.log(envConfig);
 module.exports = envConfig;

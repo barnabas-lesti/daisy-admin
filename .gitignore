@@ -3,7 +3,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .env*
-!.env.example
+!.env
 
 /.nuxt/
 /temp/
