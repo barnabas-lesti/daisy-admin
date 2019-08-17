@@ -59,7 +59,6 @@ module.exports = {
     'plugins/filters',
     'plugins/mixins',
     'plugins/logger',
-    'plugins/auth',
   ],
 
   modules: [

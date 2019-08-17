@@ -30,6 +30,16 @@ export const mutations = {
 };
 
 export const actions = {
+  async verifyAccessToken (store, { accessToken }) {
+    try {
+      const user = await this.$axios.$post('/api/auth/verify-access-token', { token: accessToken });
+      store.commit('signIn', { user, accessToken });
+    } catch (ex) {
+      const error = ex.response || ex;
+      if (error.status === 401) this.$cookies.remove('access-token');
+      else this.$logger.error(error);
+    }
+  },
   async sendRegistrationEmail (store, { email, password, fullName }) {
     store.commit('startLoading', null, { root: true });
     const { locale } = store.rootState.i18n;
