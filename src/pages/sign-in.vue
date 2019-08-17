@@ -133,5 +133,4 @@ export default {
 .pages-sign-in
   &_card
     max-width 600px
-
 </style>

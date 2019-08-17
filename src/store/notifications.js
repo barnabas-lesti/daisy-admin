@@ -5,14 +5,14 @@ export const state = () => ({
 });
 
 export const mutations = {
-  showInfo (state, payload) {
-    state.notification = new Notification(Notification.Types.INFO, payload);
+  showInfo (state, { messageKey, payload }) {
+    state.notification = new Notification(messageKey, Notification.Types.INFO, payload);
   },
-  showSuccess (state, payload) {
-    state.notification = new Notification(Notification.Types.SUCCESS, payload);
+  showSuccess (state, { messageKey, payload }) {
+    state.notification = new Notification(messageKey, Notification.Types.SUCCESS, payload);
   },
-  showError (state, payload) {
-    state.notification = new Notification(Notification.Types.ERROR, payload);
+  showError (state, { messageKey, payload }) {
+    state.notification = new Notification(messageKey, Notification.Types.ERROR, payload);
   },
   clear (state) {
     state.notification = null;

@@ -1,3 +1,4 @@
+import AppError from '../models/app-error';
 import User from '../models/user';
 
 export const state = () => ({
@@ -26,24 +27,36 @@ export const mutations = {
 
 export const actions = {
   async sendRegistrationEmail (store, { email, password, nickname }) {
-    store.commit('startLoading');
+    store.commit('startLoading', null, { root: true });
     const { locale } = store.rootState.i18n;
-    console.log(store);
-    console.log(this);
     try {
       await this.$axios.$post('/api/auth/send-registration-email', { email, password, nickname, locale });
-      store.commit('notifications/showInfo', 'notifications.registrationEmailSent', { email });
     } catch (ex) {
-      let errorMessageKey;
       const error = ex.response || ex;
-      if (error.status === 409) errorMessageKey = 'errors.emailAlreadyInUse';
-      else if (error.status === 400) errorMessageKey = 'errors.badRequest';
+      if (error.status === 409) throw new AppError('emailAlreadyInUse');
+      else if (error.status === 400) throw new AppError('badRequest');
       else {
-        errorMessageKey = 'errors.serverError';
         this.$logger.error(error);
+        throw new AppError('serverError');
       }
-      throw { errorMessageKey };
+    } finally {
+      store.commit('finishLoading', null, { root: true });
     }
-    this.$nuxt.$loading.finish();
+  },
+  async register (store, { token }) {
+    store.commit('startLoading', null, { root: true });
+    try {
+      await this.$axios.$post('/api/auth/register', { token });
+    } catch (ex) {
+      const error = ex.response || ex;
+      if (error.status === 401 || error.status === 400) throw new AppError('tokenInvalid');
+      else if (error.status === 409) throw new AppError('emailAlreadyInUse');
+      else {
+        this.$logger.error(error);
+        throw new AppError('serverError');
+      }
+    } finally {
+      store.commit('finishLoading', null, { root: true });
+    }
   },
 };

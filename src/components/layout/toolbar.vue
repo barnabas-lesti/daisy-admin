@@ -8,7 +8,7 @@
     v-spacer
     v-toolbar-items
       v-btn.hidden-sm-and-down(
-        v-for='item of menuItems',
+        v-for='item of toolbarItems',
         :key='item.labelKey',
         :to='localePath({ name: item.routeName })',
         :exact='item.exact',
@@ -78,8 +78,8 @@ import { mapState, mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'LayoutToolbar',
   computed: {
+    ...mapState('navigation', [ 'toolbarItems' ]),
     ...mapState('auth', [ 'user' ]),
-    ...mapState('navigation', [ 'menuItems' ]),
     ...mapGetters('auth', [ 'profileImageSrc' ]),
   },
   methods: {

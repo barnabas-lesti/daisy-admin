@@ -8,11 +8,7 @@
     :right='$vuetify.breakpoint.smAndUp',
     auto-height,
   )
-    span(
-      v-if='notification.html',
-      v-html='notification.html'
-    )
-    span(v-else) {{ notification.text }}
+    span(v-html='$t(notification.messageKey, notification.payload)')
 </template>
 
 <script>

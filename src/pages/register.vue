@@ -4,7 +4,6 @@
     wrap,
     justify-space-around,
   )
-    | {{ $t('common.test') }}
     v-flex.text-xs-center(xs12)
       h1 {{ $t('pages.register.title') }}
 
@@ -22,7 +21,7 @@
             v-layout(wrap)
               v-flex(xs12)
                 v-scroll-y-transition
-                  .red--text(v-if='serverError') {{ serverError }}
+                  .red--text(v-if='serverError') {{ $t(serverError.messageKey) }}
               v-flex(xs12)
                 v-text-field(
                   v-model='form.nickname',
@@ -83,17 +82,17 @@ export default {
   },
   data () {
     return {
+      serverError: null,
       form: {
         nickname: '',
         email: '',
         password: '',
         passwordConfirmation: '',
       },
-      serverError: '',
       rules: {
         nickname: [
           v => !!v || this.$t('pages.register.errors.nickname.required'),
-          ({ length }) => (length >= 6 && length <= 22) || this.$t('pages.register.errors.nickname.between', { min: 6, max: 22 }),
+          (v = '') => (v.length >= 6 && v.length <= 22) || this.$t('pages.register.errors.nickname.between', { min: 6, max: 22 }),
         ],
         email: [
           v => !!v || this.$t('pages.register.errors.email.required'),
@@ -101,7 +100,7 @@ export default {
         ],
         password: [
           v => !!v || this.$t('pages.register.errors.password.required'),
-          ({ length }) => (length >= 6 && length <= 22) || this.$t('pages.register.errors.password.between', { min: 6, max: 22 }),
+          (v = '') => (v.length >= 6 && v.length <= 22) || this.$t('pages.register.errors.password.between', { min: 6, max: 22 }),
         ],
         passwordConfirmation: [
           v => !!v || this.$t('pages.register.errors.passwordConfirmation.required'),
@@ -112,32 +111,28 @@ export default {
   },
   methods: {
     async sendRegistrationEmail () {
+      this.serverError = null;
       if (this.$refs.form.validate()) {
         try {
           await this.$store.dispatch('auth/sendRegistrationEmail', this.form);
-          this.$refs.form.reset();
+          this.$store.commit('notifications/showSuccess', {
+            messageKey: 'pages.register.notifications.registrationEmailSent',
+            payload: { email: this.form.email },
+          });
           this.$router.push({ name: this.$route.query['ref'] || 'index' });
-        } catch ({ errorMessage }) {
-          this.serverError = errorMessage;
+        } catch ({ type }) {
+          this.serverError = { type, messageKey: `pages.register.errors.${type}` };
         }
       }
     },
     async register (token) {
-      this.$nextTick(() => this.$nuxt.$loading.start());
       try {
-        await this.$axios.$post('/api/auth/register', { token });
-        this.$store.commit('notifications/showSuccess', { html: this.$t('pages.register.notifications.registrationSuccessful') });
+        await this.$store.dispatch('auth/register', { token });
+        this.$store.commit('notifications/showSuccess', { messageKey: 'pages.register.notifications.registrationSuccessful' });
         this.$router.push(this.localePath({ name: 'sign-in' }));
-      } catch (ex) {
-        const error = ex.response || ex;
-        if (error.status === 401 || error.status === 400) this.$store.commit('notifications/showError', this.$t('pages.register.errors.tokenInvalid'));
-        else if (error.status === 409) this.$store.commit('notifications/showError', this.$t('pages.register.errors.emailAlreadyInUse')); else {
-          this.$store.commit('notifications/showError', this.$t('pages.register.errors.serverError'));
-          this.$logger.error(error);
-        }
-        this.pushRouteQuery({ 'token': undefined });
+      } catch ({ type }) {
+        this.$store.commit('notifications/showError', { messageKey: `pages.register.errors.${type}` });
       }
-      this.$nuxt.$loading.finish();
     },
   },
   mounted () {

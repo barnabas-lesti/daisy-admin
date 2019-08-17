@@ -9,7 +9,7 @@ export default {
   middleware: 'local/signed-in',
   head () {
     return {
-      title: this.$t('title'),
+      title: this.$t('pages.signOut.title'),
     };
   },
   created () {

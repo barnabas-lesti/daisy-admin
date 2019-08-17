@@ -1,19 +1,17 @@
-class Notification {
-  constructor (type, payload) {
-    if (typeof payload === 'string') {
-      this.text = payload;
-    } else {
-      this.text = payload.text;
-      this.html = payload.html;
-    }
-    this.type = type;
-  }
-}
-
-Notification.Types = {
+const Types = {
   INFO: 'info',
   SUCCESS: 'success',
   ERROR: 'error',
 };
+
+class Notification {
+  constructor (messageKey, type = Types.INFO, payload = {}) {
+    this.messageKey = messageKey;
+    this.type = type;
+    this.payload = payload;
+  }
+}
+
+Notification.Types = Types;
 
 export default Notification;

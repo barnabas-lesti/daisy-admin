@@ -1,22 +1,25 @@
-'common.test': Test string
-
+# Common translations that are used in multiple places and should change in
+# every place when updated
 common:
   brand: Daisy
-  menuItems:
-    home: Home
-    calculator: Calculator
-    food: Food
-    recipes: Recipes
-    exercises: Exercises
 
-
+# Translation for application components. Object structure should be the same
+# as the components folder and file structure.
 components:
   layout:
     sidebar:
+      index: Home
+      calculator: Calculator
+      food: Food
+      recipes: Recipes
       signIn: Sign in or Register
       signOut: Sign out
       profile: Profile
     toolbar:
+      index: Home
+      calculator: Calculator
+      food: Food
+      recipes: Recipes
       register: Register
       signIn: Sign in
       signOut: Sign out
@@ -25,6 +28,7 @@ components:
       descriptionHtml: Lorem ipsum dolor sit amet. <strong>Quisque porttitor nibh</strong> id massa semper, non dictum ex cursus. Cras venenatis euismod dapibus.
       copyrightHtml: "&copy;2019 — <strong>RainbowSoft</strong>"
 
+# Page level translations
 pages:
   index:
     title: Welcome to Daisy
@@ -75,3 +79,5 @@ pages:
       passwordConfirmation:
         required: Password confirmation is required
         sameAs: Passwords must match
+  signOut:
+    title: Signing out...

@@ -1,31 +1,45 @@
 export const state = () => ({
-  menuItems: [
+  sidebarItems: [
     {
       routeName: 'index',
-      labelKey: 'common.menuItems.home',
+      labelKey: 'components.layout.sidebar.index',
       icon: 'home',
       exact: true,
     },
     {
       routeName: 'calculator',
-      labelKey: 'common.menuItems.calculator',
+      labelKey: 'components.layout.sidebar.calculator',
       icon: 'grid_on',
     },
     {
       routeName: 'recipes',
-      labelKey: 'common.menuItems.recipes',
+      labelKey: 'components.layout.sidebar.recipes',
       icon: 'book',
     },
     {
       routeName: 'food',
-      labelKey: 'common.menuItems.food',
+      labelKey: 'components.layout.sidebar.food',
       icon: 'fastfood',
     },
-    // {
-    //   routeName: 'exercises',
-    //   labelKey: 'common.menuItems.exercises',
-    //   icon: 'directions_run',
-    // },
+  ],
+  toolbarItems: [
+    {
+      routeName: 'index',
+      labelKey: 'components.layout.toolbar.index',
+      exact: true,
+    },
+    {
+      routeName: 'calculator',
+      labelKey: 'components.layout.toolbar.calculator',
+    },
+    {
+      routeName: 'recipes',
+      labelKey: 'components.layout.toolbar.recipes',
+    },
+    {
+      routeName: 'food',
+      labelKey: 'components.layout.toolbar.food',
+    },
   ],
   socialItems: [
     {

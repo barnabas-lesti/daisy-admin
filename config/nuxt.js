@@ -24,8 +24,6 @@ const getLocales = () => {
   });
 };
 
-console.log(I18N_SILENT_TRANSLATION_WARN);
-
 module.exports = {
   mode: 'universal',
   srcDir: './src',

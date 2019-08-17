@@ -30,7 +30,7 @@
       v-divider
 
       v-list-tile(
-        v-for='item of menuItems',
+        v-for='item of sidebarItems',
         :key='item.labelKey',
         :to='localePath({ name: item.routeName })',
         :exact='item.exact',
@@ -65,8 +65,8 @@ import { mapState, mapGetters } from 'vuex';
 export default {
   name: 'LayoutSidebar',
   computed: {
+    ...mapState('navigation', [ 'sidebarItems' ]),
     ...mapState('auth', [ 'user' ]),
-    ...mapState('navigation', [ 'menuItems' ]),
     ...mapGetters('auth', [ 'profileImageSrc' ]),
 
     isSidebarOpen: {
@@ -81,5 +81,4 @@ export default {
 .layout-sidebar
   &_sign-out-icon
     transform rotate(180deg)
-
 </style>
