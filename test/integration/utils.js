@@ -27,7 +27,7 @@ const readEmailFile = async (email, type, locale) => {
 const createFakeUser = () => ({
   email: faker.internet.email(),
   password: faker.internet.password(),
-  nickname: faker.name.findName(),
+  fullName: faker.name.findName(),
 });
 
 const createFakeIngredient = (creatorId = '') => ({

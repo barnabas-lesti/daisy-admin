@@ -51,14 +51,12 @@ pages:
   register:
     title: Register
     description: Register an account to access the cool features of Daisy!
-    descriptionHtml: "Register an account to access the cool features of <strong>Daisy</strong>!"
     signInLink: Already have an account? Sign in!
-    labels:
-      nickname: Nickname
-      email: Email
-      password: Password
-      passwordConfirmation: Confirm your password
-      submit: Register
+    fullName: Full name
+    email: Email
+    password: Password
+    passwordConfirmation: Confirm your password
+    submit: Register
     notifications:
       registrationEmailSent: "Registration email sent to <strong>{email}</strong>, please check your inbox"
       registrationSuccessful: Registration successful, please sign in
@@ -67,9 +65,9 @@ pages:
       serverError: Sorry, an unexpected error occurred
       tokenInvalid: Token invalid, maybe you waited for too long?
       badRequest: Some information is invalid, is the email address valid?
-      nickname:
-        required: Nickname is required
-        between: Nickname should be between {min} and {max} characters
+      fullName:
+        required: Full name is required
+        between: Full name should be between {min} and {max} characters
       email:
         required: Email is required
         email: Email format is invalid
@@ -79,5 +77,47 @@ pages:
       passwordConfirmation:
         required: Password confirmation is required
         sameAs: Passwords must match
+  signIn:
+    title: Sign in
+    description: Sign in to your account to access the cool features of Daisy!
+    email: Email
+    password: Password
+    submit: Sign in
+    registrationLink: Don't have an account? Register!
+    forgotPassword: Forgot your password?
+    errors:
+      authenticationFailed: Invalid email or password
+      serverError: Sorry, an unexpected error occurred
+      email:
+        required: Email is required
+        email: Email format is invalid
+      password:
+        required: Password is required
+    notifications:
+      signInSuccessful: "Signed in as <strong>{email}</strong>"
   signOut:
     title: Signing out...
+  forgotPassword:
+    title: Forgot password
+    description: Reset your password on this page
+    email: Email
+    password: Password
+    passwordConfirmation: Confirm your password
+    emailFormSubmit: Send email
+    resetPasswordFormSubmit: Reset password
+    notifications:
+      resetSuccessful: Password changed, please sign in to your account
+      passwordResetEmailSent: "Password reset email sent to <strong>{email}</strong>, please check your inbox"
+    errors:
+      invalidToken: Reset failed, invalid token
+      userNotFound: User with given email address does not exist
+      serverError: Sorry, an unexpected error occurred
+      email:
+        required: Email is required
+        email: Email format is invalid
+      password:
+        required: Password is required
+        between: Password must be between {min} and {max} characters
+      passwordConfirmation:
+        required: Password confirmation is required
+        sameAs: Passwords must match

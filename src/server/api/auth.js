@@ -10,15 +10,15 @@ module.exports = (router) => {
     .post(async (req, res) => {
       if (envConfig.REGISTRATION_DISABLED) return res.sendStatus(403);
 
-      const { email, password, nickname, locale = 'en' } = req.body;
-      if (!email || !password || !nickname) return res.sendStatus(400);
+      const { email, password, fullName, locale = 'en' } = req.body;
+      if (!email || !password || !fullName) return res.sendStatus(400);
 
       const user = await User.findOne({ email });
       if (user) return res.sendStatus(409);
 
       const expiresInMinutes = envConfig.EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
       try {
-        const token = await User.createRegistrationToken({ email, password, nickname });
+        const token = await User.createRegistrationToken({ email, password, fullName });
         const link = encodeURI(`${envConfig.BASE_URL}/${locale}/register?token=${token}`);
         try {
           const verificationMail = new Mail(email, locale, Mail.Templates.REGISTRATION, { link, expiresInMinutes });
@@ -40,18 +40,18 @@ module.exports = (router) => {
       const { token } = req.body;
       if (!token) return res.sendStatus(400);
 
-      let email, nickname, password;
+      let email, fullName, password;
       try {
-        ({ email, nickname, password } = await jwt.verify(token, envConfig.AUTH_SECRET));
+        ({ email, fullName, password } = await jwt.verify(token, envConfig.AUTH_SECRET));
       } catch (jwtError) {
         return res.sendStatus(401);
       }
 
-      if (!email || !password || !nickname) return res.sendStatus(400);
+      if (!email || !password || !fullName) return res.sendStatus(400);
 
       let passwordHash = await User.hashPassword(password);
       try {
-        const doc = await User.create({ email, passwordHash, nickname });
+        const doc = await User.create({ email, passwordHash, fullName });
         let user;
         ({ passwordHash, ...user } = doc.toObject());
         return res.send(user);
@@ -119,7 +119,7 @@ module.exports = (router) => {
       const expiresInMinutes = envConfig.EMAIL_TOKEN_EXPIRATION_IN_MINUTES;
       try {
         const token = await User.createPasswordResetToken({ email });
-        const link = encodeURI(`${envConfig.BASE_URL}/${locale}/reset-password?token=${token}`);
+        const link = encodeURI(`${envConfig.BASE_URL}/${locale}/forgot-password?token=${token}`);
         try {
           const passwordResetMail = new Mail(email, locale, Mail.Templates.PASSWORD_RESET, { link, expiresInMinutes });
           await passwordResetMail.send();
@@ -162,7 +162,7 @@ module.exports = (router) => {
     .patch(async (req, res) => {
       const { user, body } = req;
       if (!user) return res.sendStatus(401);
-      if (!body.nickname) return res.sendStatus(400);
+      if (!body.fullName) return res.sendStatus(400);
 
       try {
         await User.findOneAndUpdate({ _id: user._id }, body);

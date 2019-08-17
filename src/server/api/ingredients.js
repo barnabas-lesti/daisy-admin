@@ -9,7 +9,7 @@ module.exports = (router) => {
       const query = {};
       if (search) query['content.name'] = new RegExp(search.split(',').map(fragment => fragment.trim()).join('|'), 'i');
 
-      const docs = await Ingredient.find(query).populate('creator', '_id, nickname');
+      const docs = await Ingredient.find(query).populate('creator', '_id, fullName');
       return res.send(docs);
     })
     .put(async (req, res) => {
@@ -19,7 +19,7 @@ module.exports = (router) => {
       if (!content.name) return res.sendStatus(400);
 
       const { _id } = await Ingredient.create({ ...req.body, creator: { _id: req.user._id } });
-      const doc = await Ingredient.findById(_id).populate('creator', '_id, nickname');
+      const doc = await Ingredient.findById(_id).populate('creator', '_id, fullName');
       return res.send(doc);
     });
 
@@ -28,7 +28,7 @@ module.exports = (router) => {
       const { _id } = req.params;
       if (!Types.ObjectId.isValid(_id)) return res.sendStatus(404);
 
-      const doc = await Ingredient.findById(_id).populate('creator', '_id, nickname');
+      const doc = await Ingredient.findById(_id).populate('creator', '_id, fullName');
       if (!doc) return res.sendStatus(404);
 
       return res.send(doc);

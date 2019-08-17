@@ -6,16 +6,15 @@
 
 export default {
   name: 'PagesSignOut',
-  middleware: 'local/signed-in',
   head () {
     return {
       title: this.$t('pages.signOut.title'),
     };
   },
   created () {
+    this.$store.commit('auth/signOut');
     const ref = this.$route.query['ref'];
-    this.$auth.signOut();
-    this.$router.push(this.localePath({ name: ref || 'sign-in' }));
+    this.$router.push(ref ? { name: ref } : this.localePath({ name: 'sign-in' }));
   },
 };
 </script>

@@ -61,6 +61,7 @@ const envConfig = {
   IS_DEV: NODE_ENV === 'development',
   IS_TEST: NODE_ENV === 'test',
   IS_PROD: NODE_ENV === 'production',
+  EMAIL_REGEX: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
   TEMP_DIR_PATH: path.join(__dirname, '../temp'),
 };
 

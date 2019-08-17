@@ -24,17 +24,17 @@
                   .red--text(v-if='serverError') {{ $t(serverError.messageKey) }}
               v-flex(xs12)
                 v-text-field(
-                  v-model='form.nickname',
-                  :label='$t("pages.register.labels.nickname")',
+                  v-model='form.fullName',
+                  :label='$t("pages.register.fullName")',
                   :error='!!serverError',
-                  :rules='rules.nickname',
-                  name='nickname'
+                  :rules='rules.fullName',
+                  name='fullName'
                   type='text',
                   append-icon='face',
                 )
                 v-text-field(
                   v-model='form.email',
-                  :label='$t("pages.register.labels.email")',
+                  :label='$t("pages.register.email")',
                   :error='!!serverError',
                   :rules='rules.email',
                   name='email'
@@ -43,7 +43,7 @@
                 )
                 v-text-field(
                   v-model='form.password',
-                  :label='$t("pages.register.labels.password")',
+                  :label='$t("pages.register.password")',
                   :error='!!serverError',
                   :rules='rules.password',
                   name='password'
@@ -52,7 +52,7 @@
                 )
                 v-text-field(
                   v-model='form.passwordConfirmation',
-                  :label='$t("pages.register.labels.passwordConfirmation")',
+                  :label='$t("pages.register.passwordConfirmation")',
                   :error='!!serverError',
                   :rules='rules.passwordConfirmation',
                   name='passwordConfirmation'
@@ -65,12 +65,10 @@
                 v-btn.info.ma-0(
                   type='submit',
                   large,
-                ) {{ $t('pages.register.labels.submit') }}
+                ) {{ $t('pages.register.submit') }}
 </template>
 
 <script>
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
 export default {
   name: 'PagesRegister',
   middleware: 'local/signed-out',
@@ -84,19 +82,19 @@ export default {
     return {
       serverError: null,
       form: {
-        nickname: '',
+        fullName: '',
         email: '',
         password: '',
         passwordConfirmation: '',
       },
       rules: {
-        nickname: [
-          v => !!v || this.$t('pages.register.errors.nickname.required'),
-          (v = '') => (v.length >= 6 && v.length <= 22) || this.$t('pages.register.errors.nickname.between', { min: 6, max: 22 }),
+        fullName: [
+          v => !!v || this.$t('pages.register.errors.fullName.required'),
+          (v = '') => (v.length >= 6 && v.length <= 22) || this.$t('pages.register.errors.fullName.between', { min: 6, max: 22 }),
         ],
         email: [
           v => !!v || this.$t('pages.register.errors.email.required'),
-          v => EMAIL_REGEX.test(v) || this.$t('pages.register.errors.email.email'),
+          v => this.$store.state.config.EMAIL_REGEX.test(v) || this.$t('pages.register.errors.email.email'),
         ],
         password: [
           v => !!v || this.$t('pages.register.errors.password.required'),
@@ -119,7 +117,6 @@ export default {
             messageKey: 'pages.register.notifications.registrationEmailSent',
             payload: { email: this.form.email },
           });
-          this.$router.push({ name: this.$route.query['ref'] || 'index' });
         } catch ({ type }) {
           this.serverError = { type, messageKey: `pages.register.errors.${type}` };
         }

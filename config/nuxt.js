@@ -11,6 +11,7 @@ const {
   I18N_SILENT_TRANSLATION_WARN,
   IS_DEV,
   IS_PROD,
+  EMAIL_REGEX,
 } = require('./env');
 
 const I18N_LANG_DIR = 'locales/';
@@ -31,6 +32,7 @@ module.exports = {
 
   env: {
     NODE_ENV,
+    EMAIL_REGEX_STRING: EMAIL_REGEX.toString().slice(1, -1),
   },
 
   dev: IS_DEV,
@@ -88,6 +90,7 @@ module.exports = {
     lazy: true,
     langDir: I18N_LANG_DIR,
     strategy: 'prefix',
+    routesNameSeparator: '_',
     baseUrl: BASE_URL,
     rootRedirect: I18N_DEFAULT_LOCALE,
     detectBrowserLanguage: {

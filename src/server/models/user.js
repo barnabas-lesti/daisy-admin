@@ -19,7 +19,7 @@ const userDbSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  nickname: {
+  fullName: {
     type: String,
     trim: true,
   },
@@ -59,9 +59,9 @@ User.createAccessToken = async ({ _id, email, rank }) => {
   return token;
 };
 
-User.createRegistrationToken = async ({ email, password, nickname }) => {
+User.createRegistrationToken = async ({ email, password, fullName }) => {
   const token = await jwt.sign(
-    { email, password, nickname },
+    { email, password, fullName },
     AUTH_SECRET,
     { expiresIn: `${EMAIL_TOKEN_EXPIRATION_IN_MINUTES}m` }
   );

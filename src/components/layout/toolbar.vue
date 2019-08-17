@@ -34,20 +34,17 @@
               size='36',
             ) account_circle
         v-list(v-if='user')
-          v-list-tile(avatar)
+          v-list-tile(
+            :to='localePath("profile")',
+            avatar,
+            nuxt,
+          )
             v-list-tile-avatar
               img.elevation-3(:src='profileImageSrc')
             v-list-tile-content
-              v-list-tile-title {{ user.nickname }}
+              v-list-tile-title {{ user.fullName }}
               v-list-tile-sub-title {{ user.email }}
           v-divider
-          v-list-tile(
-            :to='localePath("profile")',
-            nuxt,
-          )
-            v-list-tile-action
-              v-icon account_circle
-            v-list-tile-content {{ $t('components.layout.toolbar.profile') }}
           v-list-tile(
             :to='localePath({ name: "sign-out", query: { "ref": $route.name } })',
             nuxt,

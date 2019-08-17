@@ -60,7 +60,7 @@ describe('ingredients', () => {
       expect(status).toBe(200);
       expect(data).toBeDefined();
       expect(data.content.name).toEqual(newIngredient.content.name);
-      expect(data.creator.nickname).toEqual(creatorUserDoc.nickname);
+      expect(data.creator.fullName).toEqual(creatorUserDoc.fullName);
     });
   });
 
@@ -88,7 +88,7 @@ describe('ingredients', () => {
       expect(status).toBe(200);
       expect(data).toBeDefined();
       expect(data.content.name).toEqual(ingredientDoc.content.name);
-      expect(data.creator.nickname).toEqual(creatorUserDoc.nickname);
+      expect(data.creator.fullName).toEqual(creatorUserDoc.fullName);
     });
   });
 

@@ -1,7 +1,7 @@
 <template lang="pug">
   v-layout.pages-profile(row, wrap, justify-space-around)
     v-flex.text-xs-center(xs12)
-      h1 {{ $t('title', { nickname: user.nickname }) }}
+      h1 {{ $t('title', { fullName: user.fullName }) }}
 
     v-flex.text-xs-center.text-lg-left(xs12, lg3)
       v-avatar.pages-profile_avatar.elevation-3.mb-3(size='240', @click='onProfileImageClick()')
@@ -13,8 +13,8 @@
       v-form(@submit.prevent='updateProfile()')
         v-text-field(:value='user.email', :label='$t("forms.profile.email")',
           type='email', disabled)
-        v-text-field(v-model='$v.forms.profile.nickname.$model', :label='$t("forms.profile.nickname")',
-          :error-messages='errors.profile.nickname', type='text', @change='updateErrors("nickname")')
+        v-text-field(v-model='$v.forms.profile.fullName.$model', :label='$t("forms.profile.fullName")',
+          :error-messages='errors.profile.fullName', type='text', @change='updateErrors("fullName")')
         .text-xs-right(xs12)
           v-btn.info.ma-0(type='submit') {{ $t('forms.profile.submit') }}
 
@@ -58,14 +58,14 @@ export default {
     BaseModal,
   },
   head () {
-    const { nickname } = this.user;
+    const { fullName } = this.user;
     return {
-      title: this.$t('title', { nickname }),
-      meta: [ { name: 'description', content: this.$t('description', { nickname }) } ],
+      title: this.$t('title', { fullName }),
+      meta: [ { name: 'description', content: this.$t('description', { fullName }) } ],
     };
   },
   data () {
-    const { nickname, profileImageUrl } = this.$store.state.auth.user;
+    const { fullName, profileImageUrl } = this.$store.state.auth.user;
     return {
       isModalOpen: false,
       modal: {
@@ -73,11 +73,11 @@ export default {
         profileImageUrl,
       },
       forms: {
-        profile: { nickname, profileImageUrl },
+        profile: { fullName, profileImageUrl },
         password: { password: '', passwordConfirmation: '' },
       },
       errors: {
-        profile: { nickname: [] },
+        profile: { fullName: [] },
         password: { password: [], passwordConfirmation: [] },
       },
     };
@@ -85,7 +85,7 @@ export default {
   validations () {
     return {
       forms: {
-        profile: { nickname: { required }, profileImageUrl: {} },
+        profile: { fullName: { required }, profileImageUrl: {} },
         password: {
           password: { required, minLength: minLength(6), maxLength: maxLength(22) },
           passwordConfirmation: { required, sameAs: sameAs(model => model.password) },
@@ -110,12 +110,12 @@ export default {
       this.modal.imageSrc = this.modal.profileImageUrl = this.forms.profile.profileImageUrl;
       this.isModalOpen = false;
     },
-    updateErrors (args = [ 'nickname', 'password', 'passwordConfirmation' ]) {
+    updateErrors (args = [ 'fullName', 'password', 'passwordConfirmation' ]) {
       const fields = Array.isArray(args) ? args : [ args ];
-      if (fields.includes('nickname')) {
-        const { nickname } = this.$v.forms.profile;
-        this.errors.profile.nickname = nickname.$dirty ? [
-          ...(nickname.required ? [] : [this.$t('errors.profile.nickname.required')]),
+      if (fields.includes('fullName')) {
+        const { fullName } = this.$v.forms.profile;
+        this.errors.profile.fullName = fullName.$dirty ? [
+          ...(fullName.required ? [] : [this.$t('errors.profile.fullName.required')]),
         ] : [];
       }
       if (fields.includes('password')) {
@@ -136,7 +136,7 @@ export default {
     },
     async updateProfile () {
       this.$v.forms.profile.$touch();
-      this.updateErrors('nickname');
+      this.updateErrors('fullName');
       if (!this.$v.forms.profile.$anyError) {
         this.$nuxt.$loading.start();
         this.$v.forms.profile.$reset();

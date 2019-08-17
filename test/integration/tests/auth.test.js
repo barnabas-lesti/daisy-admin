@@ -34,8 +34,8 @@ describe('auth', () => {
 
     test('should respond with 400 if "email" is not provided', async () => {
       try {
-        const { nickname, password } = notExistingUser;
-        await http.post('/api/auth/send-registration-email', { nickname, password });
+        const { fullName, password } = notExistingUser;
+        await http.post('/api/auth/send-registration-email', { fullName, password });
       } catch (error) {
         expect(error.response.status).toBe(400);
       }
@@ -43,14 +43,14 @@ describe('auth', () => {
 
     test('should respond with 400 if "password" is not provided', async () => {
       try {
-        const { email, nickname } = notExistingUser;
-        await http.post('/api/auth/send-registration-email', { email, nickname });
+        const { email, fullName } = notExistingUser;
+        await http.post('/api/auth/send-registration-email', { email, fullName });
       } catch (error) {
         expect(error.response.status).toBe(400);
       }
     });
 
-    test('should respond with 400 if "nickname" is not provided', async () => {
+    test('should respond with 400 if "fullName" is not provided', async () => {
       try {
         const { email, password } = notExistingUser;
         await http.post('/api/auth/send-registration-email', { email, password });
@@ -61,8 +61,8 @@ describe('auth', () => {
 
     test('should respond with 409 if "email" is already registered', async () => {
       try {
-        const { email, password, nickname } = notExistingUser;
-        await http.post('/api/auth/send-registration-email', { email, password, nickname });
+        const { email, password, fullName } = notExistingUser;
+        await http.post('/api/auth/send-registration-email', { email, password, fullName });
       } catch (error) {
         expect(error.response.status).toBe(409);
       }
@@ -108,8 +108,8 @@ describe('auth', () => {
 
     test('should respond with 400 if "token" does not contain the "email"', async () => {
       try {
-        const { nickname, password } = notExistingUser;
-        const token = await User.createRegistrationToken({ password, nickname });
+        const { fullName, password } = notExistingUser;
+        const token = await User.createRegistrationToken({ password, fullName });
         await http.post('/api/auth/register', { token });
       } catch (error) {
         expect(error.response.status).toBe(400);
@@ -118,15 +118,15 @@ describe('auth', () => {
 
     test('should respond with 400 if "token" does not contain the "password"', async () => {
       try {
-        const { email, nickname } = notExistingUser;
-        const token = await User.createRegistrationToken({ email, nickname });
+        const { email, fullName } = notExistingUser;
+        const token = await User.createRegistrationToken({ email, fullName });
         await http.post('/api/auth/register', { token });
       } catch (error) {
         expect(error.response.status).toBe(400);
       }
     });
 
-    test('should respond with 400 if "token" does not contain the "nickname"', async () => {
+    test('should respond with 400 if "token" does not contain the "fullName"', async () => {
       try {
         const { email, password } = notExistingUser;
         const token = await User.createRegistrationToken({ email, password });
@@ -362,7 +362,7 @@ describe('auth', () => {
       const { window: { document } } = new JSDOM(content);
       const linkElement = document.querySelector('a[data-password-reset-link]');
       expect(linkElement).not.toBeNull();
-      expect(linkElement.getAttribute('href')).toMatch(/reset-password\?token=?/g);
+      expect(linkElement.getAttribute('href')).toMatch(/forgot-password\?token=?/g);
     });
   });
 });
