@@ -121,3 +121,39 @@ pages:
       passwordConfirmation:
         required: Password confirmation is required
         sameAs: Passwords must match
+  profile:
+    title: "{fullName}"
+    description: "{fullName}"
+    clickToEdit: Click to edit profile image
+
+    changePassword: Change password
+    generalForm:
+      title: General
+      email: Email
+      fullName: Full name
+      submit: Update profile
+    changePasswordForm:
+      title: Change password
+      password: Password
+      passwordConfirmation: Confirm your password
+      submit: Change password
+    modal:
+      title: Update profile image
+      profileImageUrl: Profile Image URL
+      confirm: Change image
+      discard: Discard
+    notifications:
+      profileUpdated: Profile successfully updated
+      passwordChanged: Password successfully changed
+    errors:
+      serverError: Sorry, an unexpected error occurred
+      invalidToken: Your token has expired please sign in again
+      fullName:
+        required: Full name is required
+        between: Full name must be between {min} and {max} characters
+      password:
+        required: Password is required
+        between: Password must be between {min} and {max} characters
+      passwordConfirmation:
+        required: Password confirmation is required
+        sameAs: Passwords must match

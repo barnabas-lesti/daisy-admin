@@ -50,7 +50,7 @@ import Exercise from '../models/exercise';
 
 import BaseControlTitle from '../components/base/base-control-title';
 import BaseFab from '../components/base/base-fab';
-import BaseModal from '../components/base/base-modal';
+import BaseModal from '../components/base/modal';
 import ExercisesTable from '../components/exercises/exercises-table';
 
 export default {

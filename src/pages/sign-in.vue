@@ -54,7 +54,7 @@
 <script>
 export default {
   name: 'PagesSignIn',
-  middleware: 'local/signed-out',
+  middleware: 'signed-out',
   head () {
     return {
       title: this.$t('pages.signIn.title'),

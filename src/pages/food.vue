@@ -65,7 +65,7 @@ import Food from '../models/food';
 
 import BaseControlTitle from '../components/base/base-control-title';
 import BaseFab from '../components/base/base-fab';
-import BaseModal from '../components/base/base-modal';
+import BaseModal from '../components/base/modal';
 import FoodTable from '../components/food/food-table';
 
 export default {

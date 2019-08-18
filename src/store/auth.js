@@ -1,4 +1,4 @@
-import AppError from '../models/app-error';
+import StoreError from '../models/store-error';
 import User from '../models/user';
 
 export const state = () => ({
@@ -47,11 +47,11 @@ export const actions = {
       await this.$axios.$post('/api/auth/send-registration-email', { email, password, fullName, locale });
     } catch (ex) {
       const error = ex.response || ex;
-      if (error.status === 409) throw new AppError('emailAlreadyInUse');
-      else if (error.status === 400) throw new AppError('badRequest');
+      if (error.status === 409) throw new StoreError('emailAlreadyInUse');
+      else if (error.status === 400) throw new StoreError('badRequest');
       else {
         this.$logger.error(error);
-        throw new AppError('serverError');
+        throw new StoreError('serverError');
       }
     } finally {
       store.commit('finishLoading', null, { root: true });
@@ -64,10 +64,10 @@ export const actions = {
       await this.$axios.$post('/api/auth/send-password-reset-email', { email, locale });
     } catch (ex) {
       const error = ex.response || ex;
-      if (error.status === 404) throw new AppError('userNotFound');
+      if (error.status === 404) throw new StoreError('userNotFound');
       else {
         this.$logger.error(error);
-        throw new AppError('serverError');
+        throw new StoreError('serverError');
       }
     } finally {
       store.commit('finishLoading', null, { root: true });
@@ -79,11 +79,11 @@ export const actions = {
       await this.$axios.$post('/api/auth/register', { token });
     } catch (ex) {
       const error = ex.response || ex;
-      if (error.status === 401 || error.status === 400) throw new AppError('tokenInvalid');
-      else if (error.status === 409) throw new AppError('emailAlreadyInUse');
+      if (error.status === 401 || error.status === 400) throw new StoreError('tokenInvalid');
+      else if (error.status === 409) throw new StoreError('emailAlreadyInUse');
       else {
         this.$logger.error(error);
-        throw new AppError('serverError');
+        throw new StoreError('serverError');
       }
     } finally {
       store.commit('finishLoading', null, { root: true });
@@ -96,10 +96,10 @@ export const actions = {
       store.commit('signIn', { user, accessToken });
     } catch (ex) {
       const error = ex.response || ex;
-      if (error.status === 401) throw new AppError('authenticationFailed');
+      if (error.status === 401) throw new StoreError('authenticationFailed');
       else {
         this.$logger.error(error);
-        throw new AppError('serverError');
+        throw new StoreError('serverError');
       }
     } finally {
       store.commit('finishLoading', null, { root: true });
@@ -111,11 +111,24 @@ export const actions = {
       await this.$axios.$patch('/api/auth/password', { token, password });
     } catch (ex) {
       const error = ex.response || ex;
-      if (error.status === 401) throw new AppError('invalidToken');
+      if (error.status === 401) throw new StoreError('invalidToken');
       else {
         this.$logger.error(error);
-        throw new AppError('serverError');
+        throw new StoreError('serverError');
       }
+    } finally {
+      store.commit('finishLoading', null, { root: true });
+    }
+  },
+  async updateProfile (store, { fullName, profileImageUrl }) {
+    store.commit('startLoading', null, { root: true });
+    try {
+      await this.$axios.$patch('/api/auth/profile', { fullName, profileImageUrl });
+      store.commit('updateUser', { fullName, profileImageUrl });
+    } catch (ex) {
+      const error = ex.response || ex;
+      this.$logger.error(error);
+      throw new StoreError('serverError');
     } finally {
       store.commit('finishLoading', null, { root: true });
     }

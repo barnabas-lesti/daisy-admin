@@ -814,10 +814,6 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@kazupon/vue-i18n-loader@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@kazupon/vue-i18n-loader/-/vue-i18n-loader-0.3.0.tgz#e068de2d75d891275814ae28ad1fcaf1b537694f"
-
 "@kazupon/vue-i18n-loader@^0.4.0":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@kazupon/vue-i18n-loader/-/vue-i18n-loader-0.4.1.tgz#71730a821ff15754eb004629d673b47f8d80fdd1"
@@ -10150,10 +10146,6 @@ vue-i18n-extensions@^0.2.1:
   resolved "https://registry.yarnpkg.com/vue-i18n-extensions/-/vue-i18n-extensions-0.2.1.tgz#86ebea45a1f9c9594cd124f264e107aea193d7dd"
   integrity sha512-xBrItI7bEwBnG7eAlnyUARP41JYYn2+ABMR8q1Yh5FM9hHCbs4XPZwG+4+FPeIZ6b5gYk4YUP//m+fWiuU9z9A==
 
-vue-i18n@^8.11.2:
-  version "8.11.2"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.11.2.tgz#92827fc42449f4602d2a0ddb437dfc4e3370d9d7"
-
 vue-i18n@^8.12.0:
   version "8.14.0"
   resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.14.0.tgz#613cbbc21d71dc608cd085f8a94ea3a40badcd33"
@@ -10235,10 +10227,6 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
 vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
-
-vuelidate@^0.7.4:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/vuelidate/-/vuelidate-0.7.4.tgz#5a0e54be09ac0192f1aa3387d74b92e0945bf8aa"
 
 vuetify-loader@^1.2.2:
   version "1.2.2"

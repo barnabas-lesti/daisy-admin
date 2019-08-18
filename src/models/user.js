@@ -1,13 +1,5 @@
-import _ from 'lodash';
-
 class User {
-  constructor (skeleton = {}) {
-    const {
-      email,
-      profileImageUrl,
-      fullName,
-    } = _.cloneDeep(skeleton);
-
+  constructor ({ email, fullName, profileImageUrl }) {
     this.email = email;
     this.profileImageUrl = profileImageUrl;
     this.fullName = fullName;

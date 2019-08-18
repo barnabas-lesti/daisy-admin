@@ -38,12 +38,9 @@
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.6.3",
     "nuxt": "^2.4.0",
-    "nuxt-i18n": "^6.0.1",
-    "vue-i18n": "^8.11.2",
-    "vuelidate": "^0.7.4"
+    "nuxt-i18n": "^6.0.1"
   },
   "devDependencies": {
-    "@kazupon/vue-i18n-loader": "^0.3.0",
     "@nuxtjs/eslint-config": "^0.0.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",

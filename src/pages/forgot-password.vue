@@ -76,7 +76,7 @@
 <script>
 export default {
   name: 'PagesVerifyEmail',
-  middleware: 'local/signed-out',
+  middleware: 'signed-out',
   head () {
     return {
       title: this.$t('pages.forgotPassword.title'),

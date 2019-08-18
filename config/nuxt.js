@@ -49,16 +49,11 @@ module.exports = {
     ],
   },
 
-  router: {
-    middleware: [
-      'global/auth',
-    ],
-  },
-
   plugins: [
     'plugins/filters',
     'plugins/mixins',
     'plugins/logger',
+    'plugins/auth',
   ],
 
   modules: [

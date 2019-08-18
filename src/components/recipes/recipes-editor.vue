@@ -86,7 +86,7 @@ import RecipeItem from '../../models/recipe-item';
 
 import BaseControlTitle from '../base/base-control-title';
 import BaseFab from '../base/base-fab';
-import BaseModal from '../base/base-modal';
+import BaseModal from '../base/modal';
 import BaseNutritionSummary from '../base/base-nutrition-summary';
 import RecipesFoodSelector from '../recipes/recipes-food-selector';
 

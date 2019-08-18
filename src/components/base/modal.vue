@@ -1,14 +1,30 @@
 <template lang="pug">
-  v-dialog.base-modal(:value='value', transition='dialog-bottom-transition', :fullscreen='$vuetify.breakpoint.xs',
-    :max-width='$vuetify.breakpoint.xs ? "none" : maxWidth', lazy, @input='emitInput($event)')
+  v-dialog.base-modal(
+    :value='value',
+    transition='dialog-bottom-transition',
+    :fullscreen='$vuetify.breakpoint.xs',
+    :max-width='$vuetify.breakpoint.xs ? "none" : maxWidth',
+    lazy,
+    @input='emitInput($event)',
+  )
     v-card
-      v-toolbar.blue.lighten-1(card, dark)
+      v-toolbar.blue.lighten-1(
+        card,
+        dark,
+      )
         v-toolbar-title(v-if='title') {{ title }}
         v-spacer
         v-toolbar-items
-          v-btn(:loading='loading', icon, @click="emitAccept()")
+          v-btn(
+            :loading='loading',
+            icon,
+            @click='emitAccept()',
+          )
             v-icon done
-          v-btn(icon, @click="emitDiscard()")
+          v-btn(
+            icon,
+            @click='emitDiscard()',
+          )
             v-icon close
       v-card-text
         slot
@@ -16,7 +32,7 @@
 
 <script>
 export default {
-  name: 'BaseLoader',
+  name: 'BaseModal',
   props: {
     value: {
       type: Boolean,

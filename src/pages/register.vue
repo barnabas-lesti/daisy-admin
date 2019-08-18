@@ -71,7 +71,7 @@
 <script>
 export default {
   name: 'PagesRegister',
-  middleware: 'local/signed-out',
+  middleware: 'signed-out',
   head () {
     return {
       title: this.$t('pages.register.title'),
