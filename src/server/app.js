@@ -14,14 +14,14 @@ const {
   RESPONSE_DELAY,
   CLEAN_UP_TEMP_FOLDER,
 } = require('../../config/env');
-const { logger, Database } = require('./utils');
+const { logger, database } = require('./utils');
 
 class App {
   constructor () {
     this._server = null;
     this._app = express();
     this._nuxt = new Nuxt(require('../../config/nuxt'));
-    this._db = new Database();
+    this._db = database;
 
     this._app.use(bodyParser.json());
 

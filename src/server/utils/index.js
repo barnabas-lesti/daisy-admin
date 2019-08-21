@@ -1,5 +1,5 @@
 module.exports = {
   logger: require('./logger'),
-  Database: require('./database'),
+  database: require('./database'),
   Mail: require('./mail'),
 };

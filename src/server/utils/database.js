@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { MONGO_URI } = require('../../../config/env');
+const { MONGO_URI, IS_TEST } = require('../../../config/env');
 const logger = require('./logger');
 
 mongoose.set('useFindAndModify', false);
@@ -35,6 +35,14 @@ class Database {
       logger.info('No active MongoDB connection, can\'t disconnect');
     }
   }
+
+  async dropDb (yesImSure = false) {
+    if (!IS_TEST) throw new Error('Dropping the database is only allowed in "test" mode');
+    if (!yesImSure) return logger.info('You need to be sure about dropping the database');
+    if (!this._connection) return logger.info('No active connection, can\'t drop database');
+
+    await this._connection.dropDatabase();
+  }
 }
 
-module.exports = Database;
+module.exports = new Database();
