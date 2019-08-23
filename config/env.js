@@ -10,6 +10,7 @@ process.env = { ...process.env, ...final };
 
 const {
   ACCESS_TOKEN_EXPIRATION_IN_MINUTES = 0,
+  REFRESH_TOKEN_EXPIRATION_IN_MINUTES = 0,
   AUTH_SALT_ROUNDS = 0,
   AUTH_SECRET = '',
   BASE_URL = '',
@@ -37,6 +38,7 @@ const {
  */
 const envConfig = {
   ACCESS_TOKEN_EXPIRATION_IN_MINUTES,
+  REFRESH_TOKEN_EXPIRATION_IN_MINUTES,
   AUTH_SALT_ROUNDS,
   AUTH_SECRET,
   BASE_URL,

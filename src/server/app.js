@@ -9,9 +9,6 @@ const {
   BASE_URL,
   NO_CLIENT,
   TEMP_DIR_PATH,
-  HTTP_ACCESS_USERNAME,
-  HTTP_ACCESS_PASSWORD,
-  RESPONSE_DELAY,
   CLEAN_UP_TEMP_FOLDER,
 } = require('../../config/env');
 const { logger, database } = require('./utils');
@@ -23,19 +20,14 @@ class App {
     this._nuxt = new Nuxt(require('../../config/nuxt'));
     this._db = database;
 
-    this._app.use(bodyParser.json());
-
-    if (HTTP_ACCESS_USERNAME && HTTP_ACCESS_PASSWORD) {
-      this._app.use(require('./middlewares/http-access')());
-      logger.info('Using http-access middleware');
-    }
-
-    if (RESPONSE_DELAY) {
-      this._app.use('/api', require('./middlewares/debug-response-delay')());
-      logger.info(`Using debug-response-delay middleware on /api (timeout: ${RESPONSE_DELAY})`);
-    }
+    this._app.use([
+      bodyParser.json(),
+      require('./middlewares/http-access')(),
+    ]);
 
     this._app.use('/api', [
+      require('./middlewares/populate-config')(),
+      require('./middlewares/debug-response-delay')(),
       require('./middlewares/populate-user')(),
       ...require('./api').map(routeFactory => routeFactory(express.Router())),
     ]);

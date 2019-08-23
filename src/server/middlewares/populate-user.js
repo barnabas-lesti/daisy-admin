@@ -1,16 +1,20 @@
 const jwt = require('jsonwebtoken');
 
 const { AUTH_SECRET } = require('../../../config/env');
+const User = require('../models/user');
 
 module.exports = () => async (req, res, next) => {
   const authHeader = req.header('Authorization') || '';
-  const [ , accessToken ] = authHeader.split('Bearer ');
+  const [ , accessToken, refreshToken ] = authHeader.split('Bearer ');
 
-  if (accessToken) {
-    try {
-      const { iat, exp, ...user } = await jwt.verify(accessToken, AUTH_SECRET);
-      req.user = user;
-    } catch (jwtError) {}
+  if (accessToken && refreshToken) {
+    const shallowUser = await User.verifyAccessToken(accessToken);
+    if (shallowUser) {
+      req.user = shallowUser;
+      return next();
+    }
+
+    const refreshPayload = await User.verifyRefreshToken(refreshToken);
   }
 
   return next();
