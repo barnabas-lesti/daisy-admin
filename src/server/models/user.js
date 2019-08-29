@@ -43,6 +43,45 @@ const User = mongoose.model('User', userDbSchema);
 
 const createRefreshTokenSecret = ({ passwordHash }) => AUTH_SECRET + passwordHash;
 
+const createAccessToken = async ({ email, fullName }) => {
+  const expiresIn = `${ACCESS_TOKEN_EXPIRATION_IN_MINUTES}m`;
+  const accessToken = await jwt.sign({ email, fullName }, AUTH_SECRET, { expiresIn });
+  return accessToken;
+};
+
+const createRefreshToken = async (user) => {
+  const refreshTokenSecret = createRefreshTokenSecret(user);
+  const expiresIn = `${REFRESH_TOKEN_EXPIRATION_IN_MINUTES}m`;
+  const refreshToken = await jwt.sign({ email: user.email }, refreshTokenSecret, { expiresIn });
+  return refreshToken;
+};
+
+const verifyAccessToken = async (accessToken) => {
+  try {
+    const shallowUser = await jwt.verify(accessToken, AUTH_SECRET);
+    return shallowUser;
+  } catch (jwtError) {
+    return null;
+  }
+};
+
+const verifyRefreshToken = async (refreshToken) => {
+  const shallowUser = jwt.decode(refreshToken);
+  if (!shallowUser) return null;
+
+  const userDoc = await User.findOne({ email: shallowUser.email });
+  if (!userDoc) return null;
+
+  try {
+    const refreshTokenSecret = createRefreshTokenSecret(shallowUser);
+    await jwt.verify(refreshToken, refreshTokenSecret);
+    const { passwordHash, ...user } = userDoc.toObject();
+    return user;
+  } catch (jwtError) {
+    return null;
+  }
+};
+
 User.hashPassword = async (password) => {
   const passwordHash = await bcrypt.hash(`${password}`, AUTH_SALT_ROUNDS);
   return passwordHash;
@@ -53,24 +92,11 @@ User.comparePasswords = async (password, passwordHash) => {
   return result;
 };
 
-User.createAccessToken = async ({ email, fullName }) => {
-  const expiresIn = `${ACCESS_TOKEN_EXPIRATION_IN_MINUTES}m`;
-  const accessToken = await jwt.sign({ email, fullName }, AUTH_SECRET, { expiresIn });
-  return accessToken;
-};
-
-User.createRefreshToken = async (user) => {
-  const refreshTokenSecret = createRefreshTokenSecret(user);
-  const expiresIn = `${REFRESH_TOKEN_EXPIRATION_IN_MINUTES}m`;
-  const refreshToken = await jwt.sign({ email: user.email }, refreshTokenSecret, { expiresIn });
-  return refreshToken;
-};
-
 User.createAccessAndRefreshTokens = async (user) => {
-  const [ accessToken, refreshToken ] = await Promise.all(
-    User.createAccessToken(user),
-    User.createRefreshToken(user),
-  );
+  const [ accessToken, refreshToken ] = await Promise.all([
+    createAccessToken(user),
+    createRefreshToken(user),
+  ]);
   return { accessToken, refreshToken };
 };
 
@@ -79,35 +105,19 @@ User.createPasswordResetToken = async ({ email }) => {
   return token;
 };
 
-User.verifyAccessToken = async (accessToken) => {
-  try {
-    const shallowUser = await jwt.verify(accessToken, AUTH_SECRET);
-    return shallowUser;
-  } catch (jwtError) {
-    return null;
-  }
-};
-
-User.verifyRefreshToken = async (refreshToken) => {
-  const shallowUser = jwt.decode(refreshToken);
-  const doc = await User.findOne({ email: shallowUser.email });
-  if (!doc) return null;
-
-  try {
-    const refreshTokenSecret = createRefreshTokenSecret(shallowUser);
-    await jwt.verify(refreshToken, refreshTokenSecret);
-    return shallowUser;
-  } catch (jwtError) {
-    return null;
-  }
-};
+User.createAuthorizationHeaderString = (accessToken, refreshToken) => `Access ${accessToken}; Refresh ${refreshToken};`;
 
 User.verifyAccessAndRefreshTokens = async (accessToken, refreshToken) => {
-  if (await User.verifyAccessToken(accessToken)) {
+  const accessPayload = await verifyAccessToken(accessToken);
+  if (accessPayload) return { payload: accessPayload };
 
+  const refreshPayload = await await verifyRefreshToken(refreshToken);
+  if (refreshPayload) {
+    const newAccessToken = await createAccessToken(refreshPayload);
+    return { payload: refreshPayload, newAccessToken };
   }
 
-  return true;
+  return null;
 };
 
 module.exports = User;

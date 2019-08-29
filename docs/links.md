@@ -24,3 +24,4 @@
 ## Other
 - https://medium.com/swlh/a-practical-guide-for-jwt-authentication-using-nodejs-and-express-d48369e7e6d4
 - https://12factor.net/
+- https://www.joyent.com/node-js/production/design

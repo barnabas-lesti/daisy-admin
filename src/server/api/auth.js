@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-
 const { User } = require('../models');
 const { Mail, logger } = require('../utils');
 
@@ -15,10 +13,8 @@ module.exports = (router) => {
 
       try {
         const passwordHash = await User.hashPassword(password);
-        const userDoc = await User.create({ email, passwordHash, fullName });
-        const { accessToken, refreshToken } = await User.createAccessAndRefreshTokens(userDoc);
-        const { passwordHash: hash, ...user } = userDoc.toObject();
-        return res.send({ user, accessToken, refreshToken });
+        await User.create({ email, passwordHash, fullName });
+        return res.sendStatus(200);
       } catch (error) {
         if (error.code === 11000) return res.sendStatus(409);
 
@@ -34,44 +30,23 @@ module.exports = (router) => {
 
       try {
         const userDoc = await User.findOne({ email });
-        if (userDoc) {
-          if (await User.comparePasswords(password, userDoc.passwordHash)) {
-            const { passwordHash, ...user } = userDoc.toObject();
-            const { accessToken, refreshToken } = await User.createAccessAndRefreshTokens(userDoc);
-            return res.send({ user, accessToken, refreshToken });
-          }
+        if (userDoc && await User.comparePasswords(password, userDoc.passwordHash)) {
+          const { accessToken, refreshToken } = await User.createAccessAndRefreshTokens(userDoc);
+          res.set('Authorization', User.createAuthorizationHeaderString(accessToken, refreshToken));
+          return res.sendStatus(200);
         }
-        // Not sending 404 to share less information about the auth. failure
+
         return res.sendStatus(401);
-      } catch (unknownError) {
-        logger.error(unknownError);
+      } catch (error) {
+        logger.error(error);
         return res.sendStatus(500);
       }
     });
 
-  // router.route('/auth/verify')
-  //   .post(async (req, res) => {
-  //     const { accessToken, refreshToken } = req.body;
-  //     if (!accessToken || !refreshToken) return res.sendStatus(400);
-
-  //     let email;
-  //     try {
-  //       ({ email } = await User.verifyAccessAndRefreshTokens(accessToken, refreshToken));
-  //     } catch (jwtError) {
-  //       return res.sendStatus(401);
-  //     }
-
-  //     try {
-  //       const doc = await User.findOne({ email });
-  //       if (!doc) return res.sendStatus(401);
-
-  //       const { passwordHash, ...user } = doc.toObject();
-  //       return res.send(user);
-  //     } catch (unknownError) {
-  //       logger.error(unknownError);
-  //       return res.sendStatus(500);
-  //     }
-  //   });
+  router.route('/auth/verify')
+    .post((req, res) => {
+      return res.send(req.user);
+    });
 
   // router.route('/auth/send-registration-email')
   //   .post(async (req, res) => {
